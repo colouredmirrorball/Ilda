@@ -25,25 +25,26 @@ import java.util.ArrayList;
 public class IldaReader {
     protected String location;
     protected byte[] b;
-    protected ArrayList<String> status = new ArrayList();
     protected ArrayList<Integer> framePositions = new ArrayList();
     IldaPalette palette;
+    Ilda ilda;
 
-    public IldaReader(String location) {
+    public IldaReader(Ilda ilda, String location) {
         this.location = location;
+        this.ilda = ilda;
         try {
             b = Files.readAllBytes(new File(location).toPath());
         } catch (Exception e) {
-            status.clear();
-            status.add("Could not read file");
+            ilda.status.clear();
+            ilda.status.add("Could not read file");
 
         }
-        status.clear();
-        status.add("Succesfully read file " + location);
+        ilda.status.clear();
+        ilda.status.add("Succesfully read file " + location);
     }
 
-    public IldaReader(File file) {
-
+    public IldaReader(Ilda ilda, File file) {
+        this(ilda, file.getAbsolutePath());
     }
 
     public ArrayList<IldaFrame> getFramesFromBytes() {
@@ -57,7 +58,7 @@ public class IldaReader {
 
         if (b.length < 32) {
             //There isn't even a complete header here!
-            status.add("Invalid file");
+            ilda.status.add("Invalid file");
             return null;
         }
 
@@ -69,8 +70,8 @@ public class IldaReader {
         }
         String hdr = new String(theHeader);
         if (!hdr.equals("ILDA")) {
-            status.add("Error: file not an Ilda file. Loading cancelled.");
-            status.add("Expected \"ILDA\", found \"" + hdr + "\"");
+            ilda.status.add("Error: file not an Ilda file. Loading cancelled.");
+            ilda.status.add("Expected \"ILDA\", found \"" + hdr + "\"");
             b = new byte[0];
             return null;
         }
@@ -83,7 +84,7 @@ public class IldaReader {
 
         //This should never be true, because there was already a check if the file starts with an Ilda string
         if (framePositions == null) {
-            status.add("No frames found.");
+            ilda.status.add("No frames found.");
             return null;
         }
 
@@ -114,7 +115,7 @@ public class IldaReader {
         return theFrames;
     }
 
-    ArrayList<Integer> getFramePositions() {
+    public ArrayList<Integer> getFramePositions() {
         ArrayList<Integer> positions = new ArrayList();
         for (int j = 0; j < b.length - 6; j++) {
             if ((char) b[j] == 'I' && (char) b[j + 1] == 'L' && (char) b[j + 2] == 'D' && (char) b[j + 3] == 'A' && b[j + 4] == 0 && b[j + 5] == 0 && b[j + 5] == 0) {
@@ -124,10 +125,10 @@ public class IldaReader {
         return positions;
     }
 
-    IldaFrame readFrame(int offset, int end) {
+    public IldaFrame readFrame(int offset, int end) {
 
         if (offset > end - 32) {
-            status.add("Invalid frame");
+            ilda.status.add("Invalid frame");
             return null;
         }
         if (offset >= b.length - 32) {
@@ -145,8 +146,8 @@ public class IldaReader {
         }
         String hdr = new String(theHeader);
         if (!hdr.equals("ILDA")) {
-            status.add("Error: file not an Ilda file. Loading cancelled.");
-            status.add("Expected \"ILDA\", found \"" + hdr + "\"");
+            ilda.status.add("Error: file not an Ilda file. Loading cancelled.");
+            ilda.status.add("Expected \"ILDA\", found \"" + hdr + "\"");
             return null;
         }
 
@@ -178,13 +179,13 @@ public class IldaReader {
 
         //Unsupported format detection:
         if (ildaVersion != 0 && ildaVersion != 1 && ildaVersion != 2 && ildaVersion != 4 && ildaVersion != 5) {
-            status.add("Unsupported file format: " + ildaVersion);
+            ilda.status.add("Unsupported file format: " + ildaVersion);
             return null;
         }
 
         //Is this a palette or a frame? 2 = palette, rest = frame
         if (ildaVersion == 2) {
-            status.add("Palette included");
+            ilda.status.add("Palette included");
             palette = new IldaPalette();
 
             palette.name = new String(name);

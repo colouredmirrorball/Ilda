@@ -9,7 +9,7 @@ import processing.core.*;
 import java.util.ArrayList;
 
 /**
- * This package allows you ot render Ilda files straight from Processing!
+ * This package allows you to render Ilda files straight from Processing!
  */
 
 public class Ilda {
@@ -27,6 +27,7 @@ public class Ilda {
     /**
      * Any error, quirk, remark, success and such is stored within the class.
      * Use this method to retrieve it for eg a console-like text box.
+     * This is for testing purposes and will get eliminated when stuff gets more mature.
      *
      * @return The status
      */
@@ -36,9 +37,14 @@ public class Ilda {
     }
 
     public ArrayList<IldaFrame> readFile(String location) {
-        IldaReader reader = new IldaReader(location);
+        IldaReader reader = new IldaReader(this, location);
         ArrayList<IldaFrame> frames = reader.getFramesFromBytes();
-        status = reader.status;
         return frames;
+    }
+
+    public void writeFile(ArrayList<IldaFrame> frames, String location) {
+        IldaWriter writer = new IldaWriter(this);
+        writer.writeFile(location, frames);
+
     }
 }
