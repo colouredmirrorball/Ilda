@@ -38,8 +38,7 @@ public class Ilda {
 
     public ArrayList<IldaFrame> readFile(String location) {
         IldaReader reader = new IldaReader(this, location);
-        ArrayList<IldaFrame> frames = reader.getFramesFromBytes();
-        return frames;
+        return reader.getFramesFromBytes();
     }
 
     public void writeFile(ArrayList<IldaFrame> frames, String location) {

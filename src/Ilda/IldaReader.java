@@ -34,12 +34,12 @@ public class IldaReader {
         this.ilda = ilda;
         try {
             b = Files.readAllBytes(new File(location).toPath());
+            ilda.status.add("Found bytes, length: " + b.length);
         } catch (Exception e) {
             ilda.status.clear();
             ilda.status.add("Could not read file");
 
         }
-        ilda.status.clear();
         ilda.status.add("Succesfully read file " + location);
     }
 
@@ -54,7 +54,10 @@ public class IldaReader {
     public ArrayList<IldaFrame> getFramesFromBytes(byte[] b) {
 
         ArrayList<IldaFrame> theFrames = new ArrayList<IldaFrame>();
-        if (b == null) return null;
+        if (b == null) {
+            ilda.status.add("Found no bytes to parse as frames");
+            return null;
+        }
 
         if (b.length < 32) {
             //There isn't even a complete header here!
@@ -72,7 +75,6 @@ public class IldaReader {
         if (!hdr.equals("ILDA")) {
             ilda.status.add("Error: file not an Ilda file. Loading cancelled.");
             ilda.status.add("Expected \"ILDA\", found \"" + hdr + "\"");
-            b = new byte[0];
             return null;
         }
 
@@ -81,6 +83,8 @@ public class IldaReader {
         framePositions = getFramePositions();
         //This actually returns the number of headers, and is normally one more than the real number of frames
 
+        ilda.parent.println(framePositions);
+
 
         //This should never be true, because there was already a check if the file starts with an Ilda string
         if (framePositions == null) {
@@ -88,7 +92,7 @@ public class IldaReader {
             return null;
         }
 
-        IldaFrame frame = new IldaFrame();
+        IldaFrame frame;
 
         //If there is only one header, read until the end
         if (framePositions.size() == 1) {
@@ -112,6 +116,7 @@ public class IldaReader {
                 }
             }
         }
+        ilda.status.add("Read " + theFrames.size() + " frames.");
         return theFrames;
     }
 

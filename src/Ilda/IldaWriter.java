@@ -21,10 +21,17 @@ public class IldaWriter {
     }
 
     public void writeFile(String location, ArrayList<IldaFrame> frames) {
+        if (frames == null) return;
+        ilda.status.add("frames size: " + frames.size());
         byte[] b = getBytesFromFrames(frames);
+        if (b == null) return;
+        ilda.status.add("b_length " + b.length);
         try {
-            Files.write(new File(location).toPath(), b);
-            
+            File file = new File(location);
+            if (file.createNewFile()) ilda.status.add("Created a new file at " + location);
+            else ilda.status.add("Wrote file over " + location);
+            Files.write(file.toPath(), b);
+
         } catch (Exception e) {
             ilda.status.add("Error upon writing file to " + location);
             ilda.status.add(e.toString());
