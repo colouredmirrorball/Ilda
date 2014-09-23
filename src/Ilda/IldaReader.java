@@ -61,7 +61,7 @@ public class IldaReader {
 
         if (b.length < 32) {
             //There isn't even a complete header here!
-            ilda.status.add("Invalid file");
+            ilda.status.add("File too short");
             return null;
         }
 
@@ -104,15 +104,19 @@ public class IldaReader {
             //Though as this chance is rare I decided to take the risk
             //And by "rare" I mean one in 72 quadrillion (1/256^7) for each byte
             //If you ever encounter such a frame, I'll send you a cookie
-            for (int i = 1; i < framePositions.size(); i++) {
-                //Skip to next ILDA occurence when ILDA occurs in the header
-                if (framePositions.get(i) - framePositions.get(i - 1) <= 32 && (i + 1) < framePositions.size()) {
-                    frame = readFrame(framePositions.get(i - 1), framePositions.get(i + 1));
-                    if (frame != null) theFrames.add(frame);
-                } else {
-                    //Read the frame between this and the next header
-                    frame = readFrame(framePositions.get(i - 1), framePositions.get(i));
-                    if (frame != null) theFrames.add(frame);
+            if (framePositions.size() == 1) {
+                readFrame(0, b.length - 1);
+            } else {
+                for (int i = 1; i < framePositions.size(); i++) {
+                    //Skip to next ILDA occurence when ILDA occurs in the header
+                    if (framePositions.get(i) - framePositions.get(i - 1) <= 32 && (i + 1) < framePositions.size()) {
+                        frame = readFrame(framePositions.get(i - 1), framePositions.get(i + 1));
+                        if (frame != null) theFrames.add(frame);
+                    } else {
+                        //Read the frame between this and the next header
+                        frame = readFrame(framePositions.get(i - 1), framePositions.get(i));
+                        if (frame != null) theFrames.add(frame);
+                    }
                 }
             }
         }
@@ -125,6 +129,7 @@ public class IldaReader {
         for (int j = 0; j < b.length - 6; j++) {
             if ((char) b[j] == 'I' && (char) b[j + 1] == 'L' && (char) b[j + 2] == 'D' && (char) b[j + 3] == 'A' && b[j + 4] == 0 && b[j + 5] == 0 && b[j + 5] == 0) {
                 positions.add(j);
+                ilda.parent.println("Found ilda header at " + j);
             }
         }
         return positions;
@@ -163,17 +168,21 @@ public class IldaReader {
         for (int i = 0; i < 8; i++) {
             name[i] = (char) b[i + 8 + offset];
         }
+        ilda.status.add("frame name: " + new String(name));
 
         //Bytes 16-23: company name
         char[] company = new char[8];
         for (int i = 0; i < 8; i++) {
             company[i] = (char) b[i + 16 + offset];
         }
+        ilda.status.add("company name: " + new String(company));
 
         //Bytes 24-25: point count in frames or total colours in palettes
         byte[] pointCountt = new byte[2];
         pointCountt[0] = b[24 + offset];
         pointCountt[1] = b[25 + offset];
+
+        ilda.status.add("Point count: " + unsignedShortToInt(pointCountt));
 
         //Bytes 26-27: frame number in frames or palette number in palettes
         byte[] frameNumber = new byte[2];
@@ -181,6 +190,8 @@ public class IldaReader {
         frameNumber[1] = b[27 + offset];
 
         int ildaVersion = b[7 + offset];
+
+        ilda.status.add("ilda format: " + ildaVersion);
 
         //Unsupported format detection:
         if (ildaVersion != 0 && ildaVersion != 1 && ildaVersion != 2 && ildaVersion != 4 && ildaVersion != 5) {
@@ -259,7 +270,7 @@ public class IldaReader {
                         frame.points.add(point);
                     }
                 }
-
+                if (palette == null) palette.setDefaultPalette();
                 frame.palettePaint(palette);
             }
 
@@ -287,7 +298,7 @@ public class IldaReader {
                         frame.points.add(point);
                     }
                 }
-
+                if (palette == null) palette.setDefaultPalette();
                 frame.palettePaint(palette);
             }
 
@@ -339,7 +350,7 @@ public class IldaReader {
                     }
                 }
             }
-
+            ilda.status.add("Added a frame with " + frame.points.size() + " points.");
             return frame;
         }
     }
