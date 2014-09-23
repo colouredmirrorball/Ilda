@@ -24,6 +24,7 @@ public class IldaWriter {
         byte[] b = getBytesFromFrames(frames);
         try {
             Files.write(new File(location).toPath(), b);
+            
         } catch (Exception e) {
             ilda.status.add("Error upon writing file to " + location);
             ilda.status.add(e.toString());
