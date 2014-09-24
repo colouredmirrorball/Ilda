@@ -20,7 +20,7 @@ public class IldaPalette {
     }
 
     public void addColour(int r, int g, int b) {
-        colours.add(r << 16 + g << 8 + b);
+        colours.add(((r & 0xFF) << 16) + ((g & 0xFF) << 8) + ((b & 0xFF)));
     }
 
     public int getColour(int index) {

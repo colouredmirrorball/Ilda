@@ -1,8 +1,9 @@
 package Ilda;
 
-import java.util.ArrayList;
+import processing.core.PApplet;
+import processing.core.PGraphics;
 
-import processing.core.*;
+import java.util.ArrayList;
 
 /**
  * A frame is essentially a collection of points.
@@ -90,12 +91,18 @@ public class IldaFrame {
         }
         pg.updatePixels();
 */
+        //pg.frustum(-sizex, sizex, sizey, -sizey, (sizex + sizey)*0.5f, 0);
+
+        pg.ortho(0, sizex, sizey, 0, 0, sizex + sizey);
         pg.pushMatrix();
+
         pg.translate((float) (sizex * 0.5), (float) (sizey * 0.5), (float) ((sizex + sizey) * 0.25));
         pg.rotateX(rotx);
         pg.rotateY(roty);
         pg.rotateZ(rotz);
         pg.translate((float) (-sizex * 0.5), (float) (-sizey * 0.5), (float) (-(sizex + sizey) * 0.25));
+
+
         if (points.size() > 0) {
             boolean firstPoint = true;
             float oldpositionx = 0;
