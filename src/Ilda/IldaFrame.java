@@ -9,7 +9,7 @@ import processing.core.*;
  */
 public class IldaFrame {
     ArrayList<IldaPoint> points = new ArrayList<IldaPoint>();
-              //The Points in the Frame
+    //The Points in the Frame
 
 
     protected int ildaVersion = 4;    //Data retrieved from header
@@ -41,55 +41,72 @@ public class IldaFrame {
     public void setIldaFormat(int versionNumber) throws IllegalArgumentException {
 
 
-        if (versionNumber != 0 || versionNumber != 1 || versionNumber != 4 || versionNumber != 5) {
+        if (versionNumber != 0 && versionNumber != 1 && versionNumber != 4 && versionNumber != 5) {
             throw new IllegalArgumentException();
         } else ildaVersion = versionNumber;
     }
 
-    public PGraphics renderFrame(int sizex, int sizey) {
-        return renderFrame(true, sizex, sizey);
+    public PGraphics renderFrame(PApplet parent) {
+        return renderFrame(parent, parent.width, parent.height);
     }
 
-    public PGraphics renderFrame(boolean showBlanking, int sizex, int sizey) {
-        return renderFrame(showBlanking, sizex, sizey, 0, 0, 0);
+    public PGraphics renderFrame(PApplet parent, int sizex, int sizey) {
+        return renderFrame(parent, true, sizex, sizey);
     }
 
-    public PGraphics renderFrame(boolean showBlanking, int sizex, int sizey, float rotx, float roty, float rotz) {
+    public PGraphics renderFrame(PApplet parent, boolean showBlanking, int sizex, int sizey) {
+        return renderFrame(parent, showBlanking, sizex, sizey, 0, 0, 0);
+    }
+
+    public PGraphics renderFrame(PApplet parent, boolean showBlanking, int sizex, int sizey, float rotx, float roty, float rotz) {
         PGraphics pg = new PGraphics();
-        boolean firstPoint = true;
-        float oldpositionx = 0;
-        float oldpositiony = 0;
-        float oldpositionz = 0;
-        for (IldaPoint point : points) {
-            float pointx = (float) (((point.x) + 32768) * sizex * 0.00001525878);
-            float pointy = (float) (((point.y) + 32768) * sizex * 0.00001525878);
-            float pointz = (float) (((point.z) + 32768) * sizex * 0.00001525878);
-            if (showBlanking || !point.blanked) {
-                pg.strokeWeight(3);
-                pg.stroke(point.colour);
-                if (point.blanked) {
-                    pg.stroke(75 << 16 + 75 << 8 + 75);
+        pg.setParent(parent);
+        pg.setPrimary(false);
+        pg.setSize(sizex, sizey);
+        pg.beginDraw();
+        //parent.println("Began drawing frame " + frameName);
+
+        if (points.size() > 0) {
+            boolean firstPoint = true;
+            float oldpositionx = 0;
+            float oldpositiony = 0;
+            float oldpositionz = 0;
+            for (IldaPoint point : points) {
+                float pointx = (float) (((point.x) + 32768) * sizex * 0.00001525878);
+                float pointy = (float) (((point.y) + 32768) * sizey * 0.00001525878);
+                float pointz = 0;
+                //float pointz = (float) (((point.z) + 32768) * sizex * 0.00001525878);
+                if (showBlanking || !point.blanked) {
+                    pg.strokeWeight(3);
+                    //pg.stroke(point.colour);
+                    pg.stroke(255);
+                    if (point.blanked) {
+                        //pg.stroke(75 << 16 + 75 << 8 + 75);
+                        pg.stroke(75);
+                    }
+                    pg.point(pointx, pointy, pointz);
                 }
-                pg.point(pointx, pointy, pointz);
-            }
 
 
-            if (!firstPoint) {
-                pg.strokeWeight(1);
-                if (!showBlanking && point.blanked) pg.stroke(0);
-                else {
-                    pg.line(pointx, pointy, pointz, oldpositionx, oldpositiony, oldpositionz);
+                if (!firstPoint) {
+                    pg.strokeWeight(1);
+                    if (!showBlanking && point.blanked) pg.stroke(0);
+                    else {
+                        pg.line(pointx, pointy, pointz, oldpositionx, oldpositiony, oldpositionz);
+                    }
+                    oldpositionx = pointx;
+                    oldpositiony = pointy;
+                    oldpositionz = pointz;
+                } else {
+                    firstPoint = false;
+                    oldpositionx = pointx;
+                    oldpositiony = pointy;
+                    oldpositionz = pointz;
                 }
-                oldpositionx = pointx;
-                oldpositiony = pointy;
-                oldpositionz = pointz;
-            } else {
-                firstPoint = false;
-                oldpositionx = pointx;
-                oldpositiony = pointy;
-                oldpositionz = pointz;
             }
         }
+        pg.endDraw();
+        //parent.println("Ended drawing frame " + frameName);
         return pg;
     }
 

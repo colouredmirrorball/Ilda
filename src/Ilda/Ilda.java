@@ -44,6 +44,5 @@ public class Ilda {
     public void writeFile(ArrayList<IldaFrame> frames, String location) {
         IldaWriter writer = new IldaWriter(this);
         writer.writeFile(location, frames);
-
     }
 }

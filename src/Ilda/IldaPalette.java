@@ -24,7 +24,8 @@ public class IldaPalette {
     }
 
     public int getColour(int index) {
-        return colours.get(index);
+        if (index >= colours.size() || index < 0) return 0;
+        else return colours.get(index);
     }
 
     public byte[] paletteToBytes() {

@@ -25,7 +25,7 @@ import java.util.ArrayList;
 public class IldaReader {
     protected String location;
     protected byte[] b;
-    protected ArrayList<Integer> framePositions = new ArrayList();
+    protected ArrayList<Integer> framePositions = new ArrayList<Integer>();
     IldaPalette palette;
     Ilda ilda;
 
@@ -40,7 +40,7 @@ public class IldaReader {
             ilda.status.add("Could not read file");
 
         }
-        ilda.status.add("Succesfully read file " + location);
+        ilda.status.add("Successfully read file " + location);
     }
 
     public IldaReader(Ilda ilda, File file) {
@@ -49,6 +49,10 @@ public class IldaReader {
 
     public ArrayList<IldaFrame> getFramesFromBytes() {
         return getFramesFromBytes(b);
+    }
+
+    public void setPalette(IldaPalette palette) {
+        this.palette = palette;
     }
 
     public ArrayList<IldaFrame> getFramesFromBytes(byte[] b) {
@@ -247,6 +251,7 @@ public class IldaReader {
 
             // ILDA V0 (3D, Palettes)
             if (b[7 + offset] == 0) {
+                ilda.status.add("found a format 0 frame, b_length: " + b.length + " offset " + offset + " end " + end);
                 frame.palette = true;
                 for (int i = 32 + offset; i < end; i += 8) {
                     if (!(i >= b.length - 8)) {
@@ -269,8 +274,20 @@ public class IldaReader {
                         IldaPoint point = new IldaPoint(X, Y, Z, b[i + 7], bl);
                         frame.points.add(point);
                     }
+
                 }
-                if (palette == null) palette.setDefaultPalette();
+
+
+                ilda.status.add("Added " + frame.points.size() + " points to the frame.");
+                ilda.status.add("Is the palette null? " + (palette == null));
+                if (palette == null) {
+                    ilda.status.add("Creating new palette");
+                    palette = new IldaPalette();
+                    ilda.status.add("Attempting to set a default palette");
+                    palette.setDefaultPalette();
+                    ilda.status.add("Set Ilda64 palette as default");
+                }
+
                 frame.palettePaint(palette);
             }
 
@@ -298,7 +315,10 @@ public class IldaReader {
                         frame.points.add(point);
                     }
                 }
-                if (palette == null) palette.setDefaultPalette();
+                if (palette == null) {
+                    palette = new IldaPalette();
+                    palette.setDefaultPalette();
+                }
                 frame.palettePaint(palette);
             }
 
