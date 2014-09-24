@@ -1,5 +1,7 @@
 package Ilda;
 
+import processing.core.PApplet;
+
 import java.io.File;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -121,108 +123,52 @@ public class IldaWriter {
             theBytes.add((byte) (0));                    //Byte 32 is future
 
             // Ilda V0: 3D, palette
-            if (ildaVersion == 0) {
-                for (IldaPoint point : frame.points) {
-                    int posx = (int) point.x;
-                    theBytes.add((byte) ((posx >> 8) & 0xff));
-                    theBytes.add((byte) (posx & 0xff));
 
-                    int posy = (int) point.y;
-                    theBytes.add((byte) ((posy >> 8) & 0xff));
-                    theBytes.add((byte) (posy & 0xff));
+            for (IldaPoint point : frame.points) {
+                int posx = (int) point.x;
+                theBytes.add((byte) ((posx >> 8) & 0xff));
+                theBytes.add((byte) (posx & 0xff));
 
-                    int posz = (int) point.z;
-                    theBytes.add((byte) ((posz >> 8) & 0xff));
-                    theBytes.add((byte) (posz & 0xff));
+                int posy = (int) point.y;
+                theBytes.add((byte) ((posy >> 8) & 0xff));
+                theBytes.add((byte) (posy & 0xff));
 
-                    if (point.blanked) {
-                        theBytes.add((byte) 0x40);
-                    } else {
-                        theBytes.add((byte) 0);
-                    }
-                    theBytes.add((point.palIndex));
-                }
-            }
-
-            //Ilda V1: 2D, palettes
-            if (ildaVersion == 1) {
-                for (IldaPoint point : frame.points) {
-                    int posx = (int) point.x;
-                    theBytes.add((byte) ((posx >> 8) & 0xff));
-                    theBytes.add((byte) (posx & 0xff));
-
-                    int posy = (int) point.y;
-                    theBytes.add((byte) ((posy >> 8) & 0xff));
-                    theBytes.add((byte) (posy & 0xff));
-
-                    if (point.blanked) {
-                        theBytes.add((byte) 0x40);
-                    } else {
-                        theBytes.add((byte) 0);
-                    }
-                    theBytes.add((point.palIndex));
-                }
-            }
-
-
-            //Ilda V4: 3D, BGR (why not RGB? Because reasons)
-            if (ildaVersion == 4) {
-                for (IldaPoint point : frame.points) {
-                    int posx = (int) point.x;
-                    theBytes.add((byte) ((posx >> 8) & 0xff));
-                    theBytes.add((byte) (posx & 0xff));
-
-                    int posy = (int) point.y;
-                    theBytes.add((byte) ((posy >> 8) & 0xff));
-                    theBytes.add((byte) (posy & 0xff));
+                if (ildaVersion == 0 || ildaVersion == 4) //a 3D frame
+                {
 
                     int posz = (int) point.z;
                     theBytes.add((byte) ((posz >> 8) & 0xff));
                     theBytes.add((byte) (posz & 0xff));
+                }
 
-                    if (point.blanked) {
-                        theBytes.add((byte) 0x40);
-                    } else {
-                        theBytes.add((byte) 0);
-                    }
 
+                if (point.blanked) {
+                    theBytes.add((byte) 0x40);
+                } else {
+                    theBytes.add((byte) 0);
+                }
+
+                if (ildaVersion == 0 || ildaVersion == 1) theBytes.add((point.palIndex));
+                else {
                     int c = point.colour;
+
                     if (point.blanked) c = 0;  //some programs only use colour information to determine blanking
 
                     int red = (c >> 16) & 0xFF;  // Faster way of getting red(argb)
                     int green = ((c >> 8) & 0xFF);   // Faster way of getting green(argb)
                     int blue = (c & 0xFF);          // Faster way of getting blue(argb)
 
-                    theBytes.add((byte) (blue));
-                    theBytes.add((byte) (green));
-                    theBytes.add((byte) (red));
-                }
-            }
-
-            //Ilda V5: 2D, BGR
-            if (ildaVersion == 5) {
-                for (IldaPoint point : frame.points) {
-                    int posx = (int) point.x;
-                    theBytes.add((byte) ((posx >> 8) & 0xff));
-                    theBytes.add((byte) (posx & 0xff));
-
-                    int posy = (int) point.y;
-                    theBytes.add((byte) ((posy >> 8) & 0xff));
-                    theBytes.add((byte) (posy & 0xff));
-
-
-                    int c = point.colour;
-                    if (point.blanked) c = 0;  //some programs only use colour information to determine blanking
-
-                    int red = (c >> 16) & 0xFF;  // Faster way of getting red(argb)
-                    int green = ((c >> 8) & 0xFF);   // Faster way of getting green(argb)
-                    int blue = (c & 0xFF);          // Faster way of getting blue(argb)
+                    ilda.parent.println(c + " " + PApplet.binary(c) + " " + red + " " + green + " " + blue);
 
                     theBytes.add((byte) (blue));
                     theBytes.add((byte) (green));
                     theBytes.add((byte) (red));
                 }
+
+
             }
+
+
         }
 
         //File should always end with a header

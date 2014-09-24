@@ -1,5 +1,7 @@
 package Ilda;
 
+import processing.core.PApplet;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -269,8 +271,7 @@ public class IldaReader {
                         short Z = (short) unsignedShortToInt(z);
 
                         boolean bl = false;
-                        if (b[i + 6] >> 7 == 1) bl = true;   //01000000 = 64 = 0x40
-
+                        if ((b[i + 6] & 0x40) == 64) bl = true;   //01000000 = 64 = 0x40
                         IldaPoint point = new IldaPoint(X, Y, Z, b[i + 7], bl);
                         frame.points.add(point);
                     }
@@ -308,7 +309,7 @@ public class IldaReader {
 
 
                         boolean bl = false;
-                        if (b[i + 4] >> 7 == 1) bl = true;
+                        if ((b[i + 4] & 0x40) == 64) bl = true;
 
 
                         IldaPoint point = new IldaPoint(X, Y, 0, b[i + 5], bl);
@@ -340,9 +341,10 @@ public class IldaReader {
                         short Z = (short) unsignedShortToInt(z);
 
                         boolean bl = false;
-                        if (b[i + 6] >> 7 == 1) bl = true;   //01000000 = 64 = 0x40
+                        if ((b[i + 6] & 0x40) == 64) bl = true;   //01000000 = 64 = 0x40
 
-                        IldaPoint point = new IldaPoint(X, Y, Z, b[i + 9], b[i + 8], b[i + 7], bl);
+                        IldaPoint point = new IldaPoint(X, Y, Z, (int) b[i + 9] & 0xFF, (int) b[i + 8] & 0xFF, (int) b[i + 7] & 0xFF, bl);
+                        ilda.parent.println(point.colour + "\t" + PApplet.binary(point.colour) + " " + (b[i + 9] & 0xFF));
                         frame.points.add(point);
                     }
                 }
@@ -363,9 +365,9 @@ public class IldaReader {
                         short Y = (short) unsignedShortToInt(y);
 
                         boolean bl = false;
-                        if (b[i + 4] >> 7 == 1) bl = true;
+                        if ((b[i + 4] & 0x40) == 64) bl = true;
 
-                        IldaPoint point = new IldaPoint(X, Y, 0, b[i + 7], b[i + 6], b[i + 5], bl);
+                        IldaPoint point = new IldaPoint(X, Y, 0, b[i + 7] & 0xFF, b[i + 6] & 0xFF, b[i + 5] & 0xFF, bl);
                         frame.points.add(point);
                     }
                 }

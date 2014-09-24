@@ -1,5 +1,6 @@
 package Ilda;
 
+import processing.core.PApplet;
 import processing.core.PVector;
 
 /**
@@ -89,7 +90,7 @@ public class IldaPoint {
         if (green < 0) green = 0;
         if (blue < 0) blue = 0;
 
-        colour = red << 16 + green << 8 + blue;
+        colour = ((red & 0xFF) << 16) + ((green & 0xFF) << 8) + ((blue & 0xFF));
     }
 
     /**

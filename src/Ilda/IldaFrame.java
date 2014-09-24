@@ -54,23 +54,30 @@ public class IldaFrame {
         return renderFrame(parent, true, sizex, sizey);
     }
 
-    public PGraphics renderFrame(PApplet parent, boolean showBlanking, int sizex, int sizey) {
-        return renderFrame(parent, showBlanking, sizex, sizey, 0, 0, 0);
+    public PGraphics renderFrame(PGraphics pg, boolean showBlanking, int sizex, int sizey) {
+        return renderFrame(pg, showBlanking, sizex, sizey, 0, 0, 0);
     }
 
-    public PGraphics renderFrame(PApplet parent, boolean showBlanking, int sizex, int sizey, float rotx, float roty, float rotz) {
-        PGraphics pg = new PGraphics();
-        pg.setParent(parent);
-        pg.setPrimary(false);
-        pg.setSize(sizex, sizey);
+    public PGraphics renderFrame(PApplet parent, boolean showBlanking, int sizex, int sizey) {
+        return renderFrame(parent.g, showBlanking, sizex, sizey, 0, 0, 0);
+    }
+
+    public PGraphics renderFrame(PGraphics pg, boolean showBlanking, int sizex, int sizey, float rotx, float roty, float rotz) {
+
+
         pg.beginDraw();
         //parent.println("Began drawing frame " + frameName);
 
         //Set half of the pixels red just to make sure something is drawn to the PGraphics...
+        pg.background(0, 0);
+/*
         pg.loadPixels();
         for (int i = 0; i < pg.pixels.length * 0.5; i++) {
             pg.pixels[i] = pg.color(255, 0, 0);
         }
+        pg.updatePixels();
+*/
+
 
         if (points.size() > 0) {
             boolean firstPoint = true;
@@ -79,15 +86,13 @@ public class IldaFrame {
             float oldpositionz = 0;
             for (IldaPoint point : points) {
                 float pointx = (float) (((point.x) + 32768) * sizex * 0.00001525878);
-                float pointy = (float) (((point.y) + 32768) * sizey * 0.00001525878);
+                float pointy = (float) ((32768 - (point.y)) * sizey * 0.00001525878);
                 float pointz = 0;
                 //float pointz = (float) (((point.z) + 32768) * sizex * 0.00001525878);
                 if (showBlanking || !point.blanked) {
                     pg.strokeWeight(3);
-                    //pg.stroke(point.colour);
-                    pg.stroke(255);
+                    pg.stroke(point.colour);
                     if (point.blanked) {
-                        //pg.stroke(75 << 16 + 75 << 8 + 75);
                         pg.stroke(75);
                     }
                     pg.point(pointx, pointy, pointz);
@@ -111,6 +116,7 @@ public class IldaFrame {
                 }
             }
         }
+
         pg.endDraw();
         //parent.println("Ended drawing frame " + frameName);
         return pg;
