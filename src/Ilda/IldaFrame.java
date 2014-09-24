@@ -66,6 +66,12 @@ public class IldaFrame {
         pg.beginDraw();
         //parent.println("Began drawing frame " + frameName);
 
+        //Set half of the pixels red just to make sure something is drawn to the PGraphics...
+        pg.loadPixels();
+        for (int i = 0; i < pg.pixels.length * 0.5; i++) {
+            pg.pixels[i] = pg.color(255, 0, 0);
+        }
+
         if (points.size() > 0) {
             boolean firstPoint = true;
             float oldpositionx = 0;
