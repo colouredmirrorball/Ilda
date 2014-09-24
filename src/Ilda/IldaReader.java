@@ -252,8 +252,7 @@ public class IldaReader {
             // Read the points:
 
             // ILDA V0 (3D, Palettes)
-            if (b[7 + offset] == 0) {
-                ilda.status.add("found a format 0 frame, b_length: " + b.length + " offset " + offset + " end " + end);
+            if (ildaVersion == 0) {
                 frame.palette = true;
                 for (int i = 32 + offset; i < end; i += 8) {
                     if (!(i >= b.length - 8)) {
@@ -344,7 +343,7 @@ public class IldaReader {
                         if ((b[i + 6] & 0x40) == 64) bl = true;   //01000000 = 64 = 0x40
 
                         IldaPoint point = new IldaPoint(X, Y, Z, (int) b[i + 9] & 0xFF, (int) b[i + 8] & 0xFF, (int) b[i + 7] & 0xFF, bl);
-                        ilda.parent.println(point.colour + "\t" + PApplet.binary(point.colour) + " " + (b[i + 9] & 0xFF));
+
                         frame.points.add(point);
                     }
                 }

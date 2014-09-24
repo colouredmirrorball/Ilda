@@ -62,6 +62,19 @@ public class IldaFrame {
         return renderFrame(parent.g, showBlanking, sizex, sizey, 0, 0, 0);
     }
 
+    public PGraphics renderFrame(PGraphics pg, boolean showBlanking) {
+        return renderFrame(pg, showBlanking, pg.width, pg.height, 0, 0, 0);
+    }
+
+    public PGraphics renderFrame(PGraphics pg, boolean showBlanking, float rotx, float roty, float rotz) {
+        return renderFrame(pg, showBlanking, pg.width, pg.height, rotx, roty, rotz);
+    }
+
+    public PGraphics renderFrame(PApplet parent, boolean showBlanking) {
+        return renderFrame(parent, showBlanking, parent.width, parent.height);
+    }
+
+
     public PGraphics renderFrame(PGraphics pg, boolean showBlanking, int sizex, int sizey, float rotx, float roty, float rotz) {
 
 
@@ -77,8 +90,12 @@ public class IldaFrame {
         }
         pg.updatePixels();
 */
-
-
+        pg.pushMatrix();
+        pg.translate((float) (sizex * 0.5), (float) (sizey * 0.5), (float) ((sizex + sizey) * 0.25));
+        pg.rotateX(rotx);
+        pg.rotateY(roty);
+        pg.rotateZ(rotz);
+        pg.translate((float) (-sizex * 0.5), (float) (-sizey * 0.5), (float) (-(sizex + sizey) * 0.25));
         if (points.size() > 0) {
             boolean firstPoint = true;
             float oldpositionx = 0;
@@ -87,11 +104,11 @@ public class IldaFrame {
             for (IldaPoint point : points) {
                 float pointx = (float) (((point.x) + 32768) * sizex * 0.00001525878);
                 float pointy = (float) ((32768 - (point.y)) * sizey * 0.00001525878);
-                float pointz = 0;
-                //float pointz = (float) (((point.z) + 32768) * sizex * 0.00001525878);
+                float pointz = (float) (((point.z) + 32768) * (sizey + sizey) * 0.00000762939);
                 if (showBlanking || !point.blanked) {
                     pg.strokeWeight(3);
-                    pg.stroke(point.colour);
+                    //pg.stroke(point.colour); //??? y u no work ლ(ಠ益ಠლ)
+                    pg.stroke((point.colour >> 16) & 0xFF, (point.colour >> 8) & 0xFF, point.colour & 0xFF);
                     if (point.blanked) {
                         pg.stroke(75);
                     }
@@ -117,6 +134,7 @@ public class IldaFrame {
             }
         }
 
+        pg.popMatrix();
         pg.endDraw();
         //parent.println("Ended drawing frame " + frameName);
         return pg;
