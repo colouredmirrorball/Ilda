@@ -71,6 +71,10 @@ public class IldaFrame {
         return renderFrame(pg, showBlanking, pg.width, pg.height, rotx, roty, rotz);
     }
 
+    public PGraphics renderFrame(PApplet parent, boolean showBlanking, float rotx, float roty, float rotz) {
+        return renderFrame(parent.g, showBlanking, rotx, roty, rotz);
+    }
+
     public PGraphics renderFrame(PApplet parent, boolean showBlanking) {
         return renderFrame(parent, showBlanking, parent.width, parent.height);
     }
@@ -82,9 +86,10 @@ public class IldaFrame {
         pg.beginDraw();
         //parent.println("Began drawing frame " + frameName);
 
-        //Set half of the pixels red just to make sure something is drawn to the PGraphics...
+
         pg.background(0, 0);
 /*
+//Set half of the pixels red just to make sure something is drawn to the PGraphics...
         pg.loadPixels();
         for (int i = 0; i < pg.pixels.length * 0.5; i++) {
             pg.pixels[i] = pg.color(255, 0, 0);
@@ -93,6 +98,7 @@ public class IldaFrame {
 */
         //pg.frustum(-sizex, sizex, sizey, -sizey, (sizex + sizey)*0.5f, 0);
 
+        //Nop. You are getting orthogonal projection for now.
         pg.ortho(0, sizex, sizey, 0, 0, sizex + sizey);
         pg.pushMatrix();
 
@@ -143,7 +149,6 @@ public class IldaFrame {
 
         pg.popMatrix();
         pg.endDraw();
-        //parent.println("Ended drawing frame " + frameName);
         return pg;
     }
 
