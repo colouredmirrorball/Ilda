@@ -45,12 +45,23 @@ public class IldaWriter {
         return getBytesFromFrames(frames, 4);
     }
 
+    /**
+     * This method returns a byte array which can be exported directly as an Ilda file.
+     * It will insert the palette as a format 2 header before all frames.
+     * It assumes the colours already have the correct colour index, no recolourisation happens.
+     *
+     * @param frames      an ArrayList of IldaFrames which get converted to ilda-compliant bytes
+     * @param palette     an IldaPalette which gets appended before the laser art in the ilda file
+     * @param ildaVersion the ilda format the frames get saved as, can be 0, 1, 4 or 5 but only 0 and 1 use a palette. It makes no sense to export as format 4 or 5 with a palette included.
+     * @return Ilda compliant byte array which can be directly exported as an ilda file
+     */
+
     public byte[] getBytesFromFrames(ArrayList<IldaFrame> frames, IldaPalette palette, int ildaVersion) {
         byte[] pbytes = palette.paletteToBytes();
         byte[] fbytes = getBytesFromFrames(frames, ildaVersion);
         byte[] cbytes = new byte[pbytes.length + fbytes.length];
         System.arraycopy(pbytes, 0, cbytes, 0, pbytes.length);
-        System.arraycopy(fbytes, 0, cbytes, 0 + pbytes.length, fbytes.length);
+        System.arraycopy(fbytes, 0, cbytes, pbytes.length, fbytes.length);
         return cbytes;
     }
 

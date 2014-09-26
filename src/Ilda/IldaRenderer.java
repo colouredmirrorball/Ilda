@@ -10,14 +10,16 @@ import java.util.ArrayList;
  * Well, it might be.
  * Sometime in the future.
  */
-public class IldaRender extends PGraphics {
+public class IldaRenderer extends PGraphics {
     protected File file;
     protected ArrayList<IldaFrame> theFrames = new ArrayList<IldaFrame>();
     protected IldaFrame currentFrame;
     //protected Ilda ilda;
     protected int count = 0;
 
-    public IldaRender() {
+    protected IldaPoint currentPoint = new IldaPoint(0, 0, 0, 0, 0, 0, true);
+
+    public IldaRenderer() {
 
     }
 
@@ -48,6 +50,27 @@ public class IldaRender extends PGraphics {
         count++;
     }
 
+    public void beginShape(int kind) {
+
+    }
+
+    public void vertex(float x, float y) {
+        vertex(x, y, 0);
+    }
+
+    public void vertex(float x, float y, float z) {
+        short rx = (short) ((x - width * 0.5) / width * 65536);
+        short ry = (short) ((y - width * 0.5) / width * 65536);
+        short rz = (short) ((z - width * 0.5) / width * 65536);
+        currentPoint = new IldaPoint(rx, ry, rz, (int) strokeR, (int) strokeG, (int) strokeB, false);
+        currentFrame.points.add(currentPoint);
+    }
+
+    public void endShape() {
+        currentPoint.blanked = true;
+        currentFrame.points.add(currentPoint);
+    }
+
 
     public void dispose() {
 
@@ -59,5 +82,9 @@ public class IldaRender extends PGraphics {
 
     public boolean is3D() {
         return true;
+    }
+
+    public ArrayList<IldaFrame> getFrames() {
+        return theFrames;
     }
 }
