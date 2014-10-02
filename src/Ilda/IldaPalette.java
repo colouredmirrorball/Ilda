@@ -3,7 +3,7 @@ package Ilda;
 import java.util.ArrayList;
 
 /**
- * A Palette is a collection of colours. V0 and V1 files have an index referring to a colour in a palette.
+ * A Palette is a collection of colours. Points in a format 0 or 1 file have an index referring to a colour in a palette.
  * Changing a palette results in changing the colours of a frame.
  */
 public class IldaPalette {

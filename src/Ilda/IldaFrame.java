@@ -80,6 +80,21 @@ public class IldaFrame {
     }
 
 
+    /**
+     * Renders a PGraphics
+     * The PGraphics should be 3D
+     * a 2D version might get implemented
+     *
+     * @param pg           A reference to the PGraphics (it can't generate its own as this usually results in memory leaks)
+     * @param showBlanking Should blanking lines be displayed?
+     * @param sizex        Size of the PGraphics element it returns
+     * @param sizey
+     * @param rotx         Rotation of the frame
+     * @param roty
+     * @param rotz
+     * @return a PGraphics with the frame drawn
+     */
+
     public PGraphics renderFrame(PGraphics pg, boolean showBlanking, int sizex, int sizey, float rotx, float roty, float rotz) {
 
 
@@ -88,6 +103,13 @@ public class IldaFrame {
 
 
         pg.background(0, 0);
+
+        if (pg.is2D()) {
+            //For now...
+            pg.text("2D frame", 1, 15);
+            pg.endDraw();
+            return pg;
+        }
 /*
 //Set half of the pixels red just to make sure something is drawn to the PGraphics...
         pg.loadPixels();

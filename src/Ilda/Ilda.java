@@ -4,7 +4,7 @@
 
 package Ilda;
 
-import processing.core.*;
+import processing.core.PApplet;
 
 import java.util.ArrayList;
 
@@ -44,5 +44,46 @@ public class Ilda {
     public void writeFile(ArrayList<IldaFrame> frames, String location) {
         IldaWriter writer = new IldaWriter(this);
         writer.writeFile(location, frames);
+    }
+
+    /**
+     * Fixes the frame headers
+     * eg. updates point count, frame number, total frames, ...
+     * It leaves the frame name and company name untouched.
+     * It assumes the frames form a complete sequence.
+     *
+     * @param frames A reference to the frames whose headers need to get fixed.
+     */
+
+    public static void fixHeaders(ArrayList<IldaFrame> frames) {
+        int i = 1;
+        for (IldaFrame frame : frames) {
+            frame.frameNumber = i++;
+            frame.totalFrames = frames.size();
+            frame.pointCount = frame.points.size();
+        }
+    }
+
+    /**
+     * Fixes the frame headers
+     * eg.updates point count, frame number, total frames
+     * It sets the frame name and company name to the arguments you gave it.
+     * It assumes the frames form a complete sequence (for the total frame entry).
+     * Call this before rendering to ilda file.
+     *
+     * @param frames      A reference to the frames whose headers need to get fixed.
+     * @param frameName   A name you want to give the frame
+     * @param companyName Another name
+     */
+
+    public static void fixHeaders(ArrayList<IldaFrame> frames, String frameName, String companyName) {
+        int i = 1;
+        for (IldaFrame frame : frames) {
+            frame.frameName = frameName;
+            frame.companyName = companyName;
+            frame.frameNumber = i++;
+            frame.totalFrames = frames.size();
+            frame.pointCount = frame.points.size();
+        }
     }
 }

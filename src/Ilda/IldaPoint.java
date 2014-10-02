@@ -1,10 +1,14 @@
 package Ilda;
 
-import processing.core.PApplet;
 import processing.core.PVector;
 
 /**
- * A point of an ilda frame
+ * A point of an ilda frame. Location is stored in three shorts (xyz) ranging from -32767 to 32768.
+ * Colour is stored in an integer which is a 32 bit number: the first eight bits are not used,
+ * the second eight bits are red (0-255), the next eight represent green and the last eight bits are blue.
+ * This is the "official" colour representation: points also store a palIndex but this is only used to set
+ * the colour of a palette, never to render it to a screen.
+ * A point also has a blanked flag which determines if the point is off or on.
  */
 public class IldaPoint {
     protected short x, y, z;

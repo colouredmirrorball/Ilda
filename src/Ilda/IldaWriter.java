@@ -1,10 +1,10 @@
 package Ilda;
 
-import processing.core.PApplet;
 
 import java.io.File;
 import java.nio.file.Files;
 import java.util.ArrayList;
+
 
 /**
  * Writes an ilda file.
@@ -66,8 +66,7 @@ public class IldaWriter {
     }
 
     public byte[] getBytesFromFrames(ArrayList<IldaFrame> frames, int ildaVersion) {
-        ArrayList<Byte> theBytes;
-        theBytes = new ArrayList<Byte>();
+        ArrayList<Byte> theBytes = new ArrayList<Byte>();
         int frameNum = 0;
 
         if (frames.isEmpty()) return null;
@@ -151,7 +150,7 @@ public class IldaWriter {
                     theBytes.add((byte) ((posz >> 8) & 0xff));
                     theBytes.add((byte) (posz & 0xff));
                 }
-
+                ilda.parent.println(posx + " " + posy + " " + point.blanked);
 
                 if (point.blanked) {
                     theBytes.add((byte) 0x40);
@@ -169,7 +168,6 @@ public class IldaWriter {
                     int green = ((c >> 8) & 0xFF);   // Faster way of getting green(argb)
                     int blue = (c & 0xFF);          // Faster way of getting blue(argb)
 
-                    ilda.parent.println(c + " " + PApplet.binary(c) + " " + red + " " + green + " " + blue);
 
                     theBytes.add((byte) (blue));
                     theBytes.add((byte) (green));
