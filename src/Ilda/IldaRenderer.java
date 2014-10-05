@@ -22,7 +22,7 @@ public class IldaRenderer extends PGraphics {
 
     public IldaRenderer(Ilda ilda) {
         this.ilda = ilda;
-        ilda.parent.println("attempting to create renderer");
+
         width = ilda.parent.width;
         height = ilda.parent.height;
 
@@ -33,7 +33,7 @@ public class IldaRenderer extends PGraphics {
             invHeight = 1f / height;
 
         } else {
-            ilda.parent.println("Width or height were 0");
+
         }
     }
 
@@ -51,13 +51,13 @@ public class IldaRenderer extends PGraphics {
     }
 
     public void beginDraw() {
-        ilda.parent.println("attempting to begin drawing");
+
         currentFrame = new IldaFrame();
         currentFrame.ildaVersion = 4;
         currentFrame.frameName = "P5Frame";
         currentFrame.companyName = "Ilda4P5";
         currentFrame.frameNumber = count;
-        ilda.parent.println("began drawing");
+
     }
 
     public void endDraw() {
@@ -75,7 +75,7 @@ public class IldaRenderer extends PGraphics {
     }
 
     public void vertex(float x, float y, float z) {
-        //ilda.parent.println("vertex " + x + " " + y + " " + z);
+
         float vertex[] = vertices[vertexCount];
 
         vertex[X] = x;
@@ -108,14 +108,13 @@ public class IldaRenderer extends PGraphics {
         float y = -vertices[index1][Y] * invHeight;
         float z = vertices[index1][Z] * (invHeight + invWidth) * 0.5f;
         currentFrame.points.add(new IldaPoint(x, y, z, (int) (vertices[index1][SR] * 255), (int) (vertices[index1][SG] * 255), (int) (vertices[index1][SB] * 255), true));
-        ilda.parent.println("First point x: " + x + " original x: " + vertices[index1][X] + " y: " + y + " original y: " + vertices[index1][Y]);
-        ilda.parent.println("First point r: " + (int) (vertices[index1][SR] * 255));
+
         x = vertices[index2][X] * invWidth;
         y = -vertices[index2][Y] * invHeight;
         z = vertices[index2][Z] * (invHeight + invWidth) * 0.5f;
         currentPoint = new IldaPoint(x, y, z, (int) (vertices[index2][SR] * 255), (int) (vertices[index2][SG] * 255), (int) (vertices[index2][SB] * 255), false);
         currentFrame.points.add(currentPoint);
-        ilda.parent.println("Second point x: " + x + " original x: " + vertices[index2][X] + " y: " + y + " original y: " + vertices[index2][Y]);
+
 
     }
 
