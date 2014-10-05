@@ -47,6 +47,10 @@ public class IldaFrame {
         } else ildaVersion = versionNumber;
     }
 
+    public void addPoint(IldaPoint point) {
+        if (point != null) points.add(point);
+    }
+
     public PGraphics renderFrame(PApplet parent) {
         return renderFrame(parent, parent.width, parent.height);
     }
@@ -124,7 +128,7 @@ public class IldaFrame {
         pg.ortho(0, sizex, sizey, 0, 0, sizex + sizey);
         pg.pushMatrix();
 
-        pg.translate((float) (sizex * 0.5), (float) (sizey * 0.5), (float) ((sizex + sizey) * 0.25));
+        pg.translate((sizex * 0.5f), (float) (sizey * 0.5), (float) ((sizex + sizey) * 0.25));
         pg.rotateX(rotx);
         pg.rotateY(roty);
         pg.rotateZ(rotz);
@@ -137,9 +141,9 @@ public class IldaFrame {
             float oldpositiony = 0;
             float oldpositionz = 0;
             for (IldaPoint point : points) {
-                float pointx = (float) (((point.x) + 32768) * sizex * 0.00001525878);
-                float pointy = (float) ((32768 - (point.y)) * sizey * 0.00001525878);
-                float pointz = (float) (((point.z) + 32768) * (sizey + sizey) * 0.00000762939);
+                float pointx = (point.x + 1) * sizex * 0.5f;
+                float pointy = (point.y + 1) * sizey * 0.5f;
+                float pointz = (point.x + 1) * (sizex + sizey) * 0.25f;
                 if (showBlanking || !point.blanked) {
                     pg.strokeWeight(3);
                     //pg.stroke(point.colour); //??? y u no work ლ(ಠ益ಠლ)

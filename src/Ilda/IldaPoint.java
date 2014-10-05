@@ -3,7 +3,7 @@ package Ilda;
 import processing.core.PVector;
 
 /**
- * A point of an ilda frame. Location is stored in three shorts (xyz) ranging from -32767 to 32768.
+ * A point of an ilda frame. Location is stored in three shorts (xyz) ranging from -1 to 1.
  * Colour is stored in an integer which is a 32 bit number: the first eight bits are not used,
  * the second eight bits are red (0-255), the next eight represent green and the last eight bits are blue.
  * This is the "official" colour representation: points also store a palIndex but this is only used to set
@@ -11,7 +11,7 @@ import processing.core.PVector;
  * A point also has a blanked flag which determines if the point is off or on.
  */
 public class IldaPoint {
-    protected short x, y, z;
+    protected float x, y, z;
     protected int colour;
     protected boolean blanked;
     protected byte palIndex;
@@ -19,7 +19,7 @@ public class IldaPoint {
     /**
      * Constructor for an IldaPoint.
      *
-     * @param position a Processing PVector with the position of the newly created point
+     * @param position a Processing PVector with the position of the newly created point: rescale the coordinates so they're in [-1,1]! (0 = center)
      * @param red      Integer between 0-255
      * @param green
      * @param blue
@@ -38,11 +38,6 @@ public class IldaPoint {
         this.blanked = blanked;
     }
 
-    public IldaPoint(int x, int y, int z, int red, int green, int blue, boolean blanked) {
-        floatsToXYZ((float) x, (float) y, (float) z);
-        setColour(red, green, blue);
-        this.blanked = blanked;
-    }
 
     /**
      * @param paletteIndex A number corresponding to a colour in a palette, should be 0-255.
@@ -55,11 +50,6 @@ public class IldaPoint {
 
     }
 
-    public IldaPoint(int x, int y, int z, int paletteIndex, boolean blanked) {
-        floatsToXYZ((float) x, (float) y, (float) z);
-        palIndex = (byte) paletteIndex;
-        this.blanked = blanked;
-    }
 
     public IldaPoint(IldaPoint point) {
         x = point.x;
@@ -77,9 +67,9 @@ public class IldaPoint {
     }
 
     private void floatsToXYZ(float x, float y, float z) {
-        this.x = (short) x;
-        this.y = (short) y;
-        this.z = (short) z;
+        this.x = x;
+        this.y = y;
+        this.z = z;
     }
 
     /**

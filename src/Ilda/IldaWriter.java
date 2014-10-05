@@ -136,10 +136,12 @@ public class IldaWriter {
 
             for (IldaPoint point : frame.points) {
                 int posx = (int) point.x;
+                posx *= 32768;
                 theBytes.add((byte) ((posx >> 8) & 0xff));
                 theBytes.add((byte) (posx & 0xff));
 
                 int posy = (int) point.y;
+                posy *= 32768;
                 theBytes.add((byte) ((posy >> 8) & 0xff));
                 theBytes.add((byte) (posy & 0xff));
 
@@ -147,6 +149,7 @@ public class IldaWriter {
                 {
 
                     int posz = (int) point.z;
+                    posz *= 32768;
                     theBytes.add((byte) ((posz >> 8) & 0xff));
                     theBytes.add((byte) (posz & 0xff));
                 }

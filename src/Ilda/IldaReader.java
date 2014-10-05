@@ -1,8 +1,7 @@
 package Ilda;
 
-import processing.core.PApplet;
 
-import java.io.*;
+import java.io.File;
 import java.nio.file.Files;
 import java.util.ArrayList;
 
@@ -89,8 +88,6 @@ public class IldaReader {
         framePositions = getFramePositions();
         //This actually returns the number of headers, and is normally one more than the real number of frames
 
-        ilda.parent.println(framePositions);
-
 
         //This should never be true, because there was already a check if the file starts with an Ilda string
         if (framePositions == null) {
@@ -131,7 +128,7 @@ public class IldaReader {
     }
 
     public ArrayList<Integer> getFramePositions() {
-        ArrayList<Integer> positions = new ArrayList();
+        ArrayList<Integer> positions = new ArrayList<Integer>();
         for (int j = 0; j < b.length - 6; j++) {
             if ((char) b[j] == 'I' && (char) b[j + 1] == 'L' && (char) b[j + 2] == 'D' && (char) b[j + 3] == 'A' && b[j + 4] == 0 && b[j + 5] == 0 && b[j + 5] == 0) {
                 positions.add(j);
@@ -259,15 +256,18 @@ public class IldaReader {
                         byte[] x = new byte[2];
                         x[0] = b[i];
                         x[1] = b[i + 1];
-                        short X = (short) unsignedShortToInt(x);
+                        float X = unsignedShortToInt(x);
+                        X *= 0.00003051757;
                         byte[] y = new byte[2];
                         y[0] = b[i + 2];
                         y[1] = b[i + 3];
-                        short Y = (short) unsignedShortToInt(y);
+                        float Y = unsignedShortToInt(y);
+                        Y *= 0.00003051757;
                         byte[] z = new byte[2];
                         z[0] = b[i + 4];
                         z[1] = b[i + 5];
-                        short Z = (short) unsignedShortToInt(z);
+                        float Z = unsignedShortToInt(z);
+                        Z *= 0.00003051757;
 
                         boolean bl = false;
                         if ((b[i + 6] & 0x40) == 64) bl = true;   //01000000 = 64 = 0x40
@@ -300,11 +300,13 @@ public class IldaReader {
                         byte[] x = new byte[2];
                         x[0] = b[i];
                         x[1] = b[i + 1];
-                        short X = (short) unsignedShortToInt(x);
+                        float X = unsignedShortToInt(x);
+                        X *= 0.00003051757;
                         byte[] y = new byte[2];
                         y[0] = b[i + 2];
                         y[1] = b[i + 3];
-                        short Y = (short) unsignedShortToInt(y);
+                        float Y = unsignedShortToInt(y);
+                        Y *= 0.00003051757;
 
 
                         boolean bl = false;
@@ -329,15 +331,18 @@ public class IldaReader {
                         byte[] x = new byte[2];
                         x[0] = b[i];
                         x[1] = b[i + 1];
-                        short X = (short) unsignedShortToInt(x);
+                        float X = unsignedShortToInt(x);
+                        X *= 0.00003051757;
                         byte[] y = new byte[2];
                         y[0] = b[i + 2];
                         y[1] = b[i + 3];
-                        short Y = (short) unsignedShortToInt(y);
+                        float Y = unsignedShortToInt(y);
+                        Y *= 0.00003051757;
                         byte[] z = new byte[2];
                         z[0] = b[i + 4];
                         z[1] = b[i + 5];
-                        short Z = (short) unsignedShortToInt(z);
+                        float Z = unsignedShortToInt(z);
+                        Z *= 0.00003051757;
 
                         boolean bl = false;
                         if ((b[i + 6] & 0x40) == 64) bl = true;   //01000000 = 64 = 0x40
@@ -357,11 +362,14 @@ public class IldaReader {
                         byte[] x = new byte[2];
                         x[0] = b[i];
                         x[1] = b[i + 1];
-                        short X = (short) unsignedShortToInt(x);
+                        float X = unsignedShortToInt(x);
+                        X *= 0.00003051757;
                         byte[] y = new byte[2];
                         y[0] = b[i + 2];
                         y[1] = b[i + 3];
-                        short Y = (short) unsignedShortToInt(y);
+                        float Y = unsignedShortToInt(y);
+                        Y *= 0.00003051757;
+
 
                         boolean bl = false;
                         if ((b[i + 4] & 0x40) == 64) bl = true;
@@ -376,7 +384,7 @@ public class IldaReader {
         }
     }
 
-    public final int unsignedShortToInt(byte[] b) {
+    public static int unsignedShortToInt(byte[] b) {
 
 
         if (b.length != 2) {

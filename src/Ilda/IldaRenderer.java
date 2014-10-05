@@ -16,11 +16,25 @@ public class IldaRenderer extends PGraphics {
     protected IldaFrame currentFrame;
     protected Ilda ilda;
     protected int count = 0;
+    protected float invWidth, invHeight;
 
     protected IldaPoint currentPoint = new IldaPoint(0, 0, 0, 0, 0, 0, true);
 
-    public IldaRenderer() {
+    public IldaRenderer(Ilda ilda) {
+        this.ilda = ilda;
+        ilda.parent.println("attempting to create renderer");
+        width = ilda.parent.width;
+        height = ilda.parent.height;
 
+        if (width != 0 && height != 0) {
+
+
+            invWidth = 1f / width;
+            invHeight = 1f / height;
+
+        } else {
+            ilda.parent.println("Width or height were 0");
+        }
     }
 
     public void setPath(String path) {
@@ -37,11 +51,13 @@ public class IldaRenderer extends PGraphics {
     }
 
     public void beginDraw() {
+        ilda.parent.println("attempting to begin drawing");
         currentFrame = new IldaFrame();
         currentFrame.ildaVersion = 4;
         currentFrame.frameName = "P5Frame";
         currentFrame.companyName = "Ilda4P5";
         currentFrame.frameNumber = count;
+        ilda.parent.println("began drawing");
     }
 
     public void endDraw() {
@@ -59,11 +75,12 @@ public class IldaRenderer extends PGraphics {
     }
 
     public void vertex(float x, float y, float z) {
+        //ilda.parent.println("vertex " + x + " " + y + " " + z);
         float vertex[] = vertices[vertexCount];
 
-        vertex[X] = (float) ((x - width * 0.5) / width * 65536);
-        vertex[Y] = (float) ((y - width * 0.5) / width * 65536);
-        vertex[Z] = (float) ((z - width * 0.5) / width * 65536);
+        vertex[X] = x;
+        vertex[Y] = y;
+        vertex[Z] = z;
 
         vertex[SR] = strokeR;
         vertex[SG] = strokeG;
@@ -72,7 +89,7 @@ public class IldaRenderer extends PGraphics {
         vertex[SW] = strokeWeight;
         vertexCount++;
 
-        if ((shape == LINES) && vertexCount == 2) {
+        if (vertexCount == 2) {
             writeLine(0, 1);
             vertexCount = 0;
         } else if (shape == TRIANGLES && vertexCount == 3) {
@@ -87,9 +104,18 @@ public class IldaRenderer extends PGraphics {
     }
 
     protected void writeLine(int index1, int index2) {
-        currentFrame.points.add(new IldaPoint(vertices[index1][X], vertices[index1][Y], vertices[index1][Z], (int) vertices[index1][SR], (int) vertices[index1][SG], (int) vertices[index1][SB], true));
-        currentPoint = new IldaPoint(vertices[index2][X], vertices[index2][Y], vertices[index2][Z], (int) vertices[index2][SR], (int) vertices[index2][SG], (int) vertices[index2][SB], false);
+        float x = vertices[index1][X] * invWidth;
+        float y = -vertices[index1][Y] * invHeight;
+        float z = vertices[index1][Z] * (invHeight + invWidth) * 0.5f;
+        currentFrame.points.add(new IldaPoint(x, y, z, (int) (vertices[index1][SR] * 255), (int) (vertices[index1][SG] * 255), (int) (vertices[index1][SB] * 255), true));
+        ilda.parent.println("First point x: " + x + " original x: " + vertices[index1][X] + " y: " + y + " original y: " + vertices[index1][Y]);
+        ilda.parent.println("First point r: " + (int) (vertices[index1][SR] * 255));
+        x = vertices[index2][X] * invWidth;
+        y = -vertices[index2][Y] * invHeight;
+        z = vertices[index2][Z] * (invHeight + invWidth) * 0.5f;
+        currentPoint = new IldaPoint(x, y, z, (int) (vertices[index2][SR] * 255), (int) (vertices[index2][SG] * 255), (int) (vertices[index2][SB] * 255), false);
         currentFrame.points.add(currentPoint);
+        ilda.parent.println("Second point x: " + x + " original x: " + vertices[index2][X] + " y: " + y + " original y: " + vertices[index2][Y]);
 
     }
 
