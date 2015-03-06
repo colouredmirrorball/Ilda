@@ -21,10 +21,16 @@ public class IldaRenderer extends PGraphics {
     protected boolean shouldBlank = false;
     protected boolean closedShape = false;
     protected IldaPoint firstPoint = new IldaPoint(0, 0, 0, 0, 0, 0, true);
-    float depth;
+    protected float depth;
+    protected float ellipseDetail = 1f;
+    private float circleCorrection = 0f;
 
     protected IldaPoint currentPoint = new IldaPoint(0, 0, 0, 0, 0, 0, true);
     protected boolean overwrite = false;
+
+    Optimiser optimiser;
+    boolean optimise = true;
+
 
     public IldaRenderer(Ilda ilda) {
         this.ilda = ilda;
@@ -51,6 +57,8 @@ public class IldaRenderer extends PGraphics {
         } else {
 
         }
+
+        optimiser = new Optimiser(new OptimisationSettings(), ilda);
     }
 
     /**
@@ -102,6 +110,7 @@ public class IldaRenderer extends PGraphics {
     }
 
     public void endDraw() {
+        if (optimise) optimiser.optimiseSegment(currentFrame.points);
         currentFrame.pointCount = currentFrame.points.size();
         if (!overwrite) theFrames.add(currentFrame);
         count++;
@@ -209,6 +218,55 @@ public class IldaRenderer extends PGraphics {
         //currentFrame.points.add(currentPoint);
     }
 
+    protected void ellipseImpl(float x, float y, float w, float h) {
+        float m = (w + h) * ellipseDetail;
+        boolean first = true;
+        //ilda.parent.println("ellipse, detail: " + m);
+        for (float i = 0; i < m + 1 + circleCorrection; i++) {
+            float xpos = (float) (2 * ((x + w * Math.sin(TWO_PI * i / m) + originx) * invWidth - 0.5f));
+            float ypos = (float) (-2 * ((y + h * Math.cos(TWO_PI * i / m) + originy) * invHeight - 0.5f));
+            float zpos = 2 * ((0.5f * depth + originz) * invDepth - 0.5f);
+            int red = (int) (strokeR * 255);
+            int green = (int) (strokeG * 255);
+            int blue = (int) (strokeB * 255);
+            if (first) {
+                IldaPoint p = new IldaPoint(xpos, ypos, zpos, red, green, blue, true);
+                currentFrame.points.add(p);
+                first = false;
+            }
+            IldaPoint p = new IldaPoint(xpos, ypos, zpos, red, green, blue, false);
+            currentFrame.points.add(p);
+        }
+    }
+
+    /**
+     * Number reflecting the amount of points in an ellipse.
+     * The lower, the less points there are. The higher, the more.
+     * The default value is 1. Finding a good value is a bit arbitrary.
+     * This value is multiplied by the sum of the third and fourth arguments of the ellipse method
+     * (the width and height).
+     *
+     * @param detail gets multiplied with (width+height) of the ellipse arguments to get the total points
+     */
+
+    public void setEllipseDetail(float detail)
+    {
+        ellipseDetail = detail;
+    }
+
+    /**
+     * Sets the amount of points the ellipse should overshoot or continue drawing, to avoid a gap.
+     * Can be negative to leave a gap.
+     * Default is 0.
+     *
+     * @param correction how much extra the ellipse continues
+     */
+
+
+    public void setEllipseCorrection(float correction) {
+        circleCorrection = correction;
+    }
+
     protected void defaultFontOrDeath(String method, float size)
     {
         this.textFont = ilda.parent.createFont("Lucida Sans", size, true, null);
@@ -240,6 +298,7 @@ public class IldaRenderer extends PGraphics {
      */
 
     public ArrayList<IldaFrame> getFrames() {
+
         Ilda.fixHeaders(theFrames);
         return theFrames;
     }
@@ -273,5 +332,25 @@ public class IldaRenderer extends PGraphics {
     public void clearAllFrames()
     {
         theFrames.clear();
+    }
+
+    /**
+     * Should the frame be optimised for rendering?
+     * If set to false, as little points as possible are used to represent the art.
+     * If set to true, the frame will be optimised for display using this renderer's OptimisationSettings.
+     *
+     * @param shouldOptimise should the frame be optimised?
+     */
+
+    public void setOptimise(boolean shouldOptimise) {
+        optimise = shouldOptimise;
+    }
+
+    public void setOptimisationSettings(OptimisationSettings settings) {
+        this.optimiser.setSettings(settings);
+    }
+
+    public OptimisationSettings getOptimisationSettings() {
+        return this.optimiser.getSettings();
     }
 }
