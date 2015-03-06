@@ -1,5 +1,5 @@
 /**
- * Created by florian on 20/09/2014.
+ * Main class
  */
 
 package Ilda;

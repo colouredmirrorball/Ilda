@@ -132,28 +132,25 @@ public class IldaWriter {
             theBytes.add((byte) (frame.scannerHead));    //Byte 31 is scanner head
             theBytes.add((byte) (0));                    //Byte 32 is future
 
-            // Ilda V0: 3D, palette
+
 
             for (IldaPoint point : frame.points) {
-                int posx = (int) point.x;
-                posx *= 32768;
+                short posx = (short) ((point.x < -1 ? -1 : point.x > 1 ? 1 : point.x) * 32767);
                 theBytes.add((byte) ((posx >> 8) & 0xff));
                 theBytes.add((byte) (posx & 0xff));
 
-                int posy = (int) point.y;
-                posy *= 32768;
+                short posy = (short) ((point.y < -1 ? -1 : point.y > 1 ? 1 : point.y) * 32767);
                 theBytes.add((byte) ((posy >> 8) & 0xff));
                 theBytes.add((byte) (posy & 0xff));
 
                 if (ildaVersion == 0 || ildaVersion == 4) //a 3D frame
                 {
 
-                    int posz = (int) point.z;
-                    posz *= 32768;
+                    int posz = (int) ((point.z < -1 ? -1 : point.z > 1 ? 1 : point.z) * 32767);
                     theBytes.add((byte) ((posz >> 8) & 0xff));
                     theBytes.add((byte) (posz & 0xff));
                 }
-                ilda.parent.println(posx + " " + posy + " " + point.blanked);
+                //ilda.parent.println(posx + " " + posy + " " + point.blanked);
 
                 if (point.blanked) {
                     theBytes.add((byte) 0x40);

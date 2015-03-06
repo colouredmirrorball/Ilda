@@ -59,6 +59,7 @@ public class IldaFrame {
         return renderFrame(parent, true, sizex, sizey);
     }
 
+
     public PGraphics renderFrame(PGraphics pg, boolean showBlanking, int sizex, int sizey) {
         return renderFrame(pg, showBlanking, sizex, sizey, 0, 0, 0);
     }
@@ -143,7 +144,7 @@ public class IldaFrame {
             for (IldaPoint point : points) {
                 float pointx = (point.x + 1) * sizex * 0.5f;
                 float pointy = (point.y + 1) * sizey * 0.5f;
-                float pointz = (point.x + 1) * (sizex + sizey) * 0.25f;
+                float pointz = (point.z + 1) * (sizex + sizey) * 0.25f;
                 if (showBlanking || !point.blanked) {
                     pg.strokeWeight(3);
                     //pg.stroke(point.colour); //??? y u no work ლ(ಠ益ಠლ)
