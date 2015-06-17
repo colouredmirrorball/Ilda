@@ -139,4 +139,46 @@ public class IldaPoint {
         return index;
     }
 
+    /**
+     * Returns the point's position rescaled according to the frameWidth and frameHeight parameters
+     *
+     * @param frameWidth  the width of the target PGraphics
+     * @param frameHeight the height of the target PGraphics
+     * @param frameDepth  the depth of the target PGraphics
+     * @return a PVector with the position according to the received dimensions.
+     */
+
+    public PVector getPosition(float frameWidth, float frameHeight, float frameDepth)
+    {
+        return new PVector(frameWidth * (x * 0.5f + 0.5f), frameHeight * (y * 0.5f + 0.5f), frameDepth * (z * 0.5f + 0.5f));
+    }
+
+    public PVector getPosition() {
+        return new PVector(x, y, z);
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public float getZ() {
+        return z;
+    }
+
+    public int getColour() {
+        return colour;
+    }
+
+    public boolean isBlanked() {
+        return blanked;
+    }
+
+    public byte getPalIndex() {
+        return palIndex;
+    }
+
 }

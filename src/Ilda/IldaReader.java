@@ -132,7 +132,7 @@ public class IldaReader {
         for (int j = 0; j < b.length - 6; j++) {
             if ((char) b[j] == 'I' && (char) b[j + 1] == 'L' && (char) b[j + 2] == 'D' && (char) b[j + 3] == 'A' && b[j + 4] == 0 && b[j + 5] == 0 && b[j + 5] == 0) {
                 positions.add(j);
-                ilda.parent.println("Found ilda header at " + j);
+                //ilda.parent.println("Found ilda header at " + j);
             }
         }
         return positions;

@@ -43,8 +43,15 @@ public class Ilda {
     }
 
     public void writeFile(ArrayList<IldaFrame> frames, String location) {
+        writeFile(frames, location, 4);
+    }
+
+    public void writeFile(ArrayList<IldaFrame> frames, String location, int ildaVersion) {
         IldaWriter writer = new IldaWriter(this);
-        writer.writeFile(location, frames);
+        if (location.length() < 4) location += ".ild";
+        if (!location.substring(location.length() - 4).equalsIgnoreCase(".ild")) location += ".ild";
+
+        writer.writeFile(location, frames, ildaVersion);
     }
 
     /**

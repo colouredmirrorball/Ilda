@@ -14,6 +14,31 @@ public class IldaFrame {
 
 
     protected int ildaVersion = 4;    //Data retrieved from header
+
+    public void setFrameName(String frameName) {
+        this.frameName = frameName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public void setFrameNumber(int frameNumber) {
+        this.frameNumber = frameNumber;
+    }
+
+    public void setTotalFrames(int totalFrames) {
+        this.totalFrames = totalFrames;
+    }
+
+    public void setScannerHead(int scannerHead) {
+        this.scannerHead = scannerHead;
+    }
+
+    public void setPalette(boolean palette) {
+        this.palette = palette;
+    }
+
     protected String frameName = "";
     protected String companyName = "Processing";
     protected int pointCount;
@@ -185,9 +210,45 @@ public class IldaFrame {
         }
     }
 
+    public ArrayList<IldaPoint> getPoints() {
+        return points;
+    }
+
     @Override
     public String toString() {
         return "This frame has " + points.size() + " points.\nIt's called " + frameName + ".";
+    }
+
+    public int getIldaVersion() {
+        return ildaVersion;
+    }
+
+    public String getFrameName() {
+        return frameName;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public int getPointCount() {
+        return pointCount;
+    }
+
+    public int getFrameNumber() {
+        return frameNumber;
+    }
+
+    public int getTotalFrames() {
+        return totalFrames;
+    }
+
+    public int getScannerHead() {
+        return scannerHead;
+    }
+
+    public boolean isPalette() {
+        return palette;
     }
 
 

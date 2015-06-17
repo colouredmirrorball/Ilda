@@ -63,7 +63,8 @@ public class IldaRenderer extends PGraphics {
 
     /**
      * If set to true, no new frame will be added to the frame list when calling EndDraw().
-     * This is useful for drawing applications where you want to keep adding content to the same frame.
+     * Instead the renderer will keep writing on the same frame.
+     * This is useful for drawing applications where you want to keep adding content to the same frame instead of making an animation.
      * False by default.
      *
      * @param overwrite boolean - should the renderer keep writing on the same frame?

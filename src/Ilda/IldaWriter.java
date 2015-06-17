@@ -22,10 +22,10 @@ public class IldaWriter {
         this.frames = frames;
     }
 
-    public void writeFile(String location, ArrayList<IldaFrame> frames) {
+    public void writeFile(String location, ArrayList<IldaFrame> frames, int ildaVersion) {
         if (frames == null) return;
         ilda.status.add("frames size: " + frames.size());
-        byte[] b = getBytesFromFrames(frames);
+        byte[] b = getBytesFromFrames(frames, ildaVersion);
         if (b == null) return;
         ilda.status.add("b_length " + b.length);
         try {
