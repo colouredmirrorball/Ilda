@@ -1,6 +1,6 @@
 package Ilda;
 
-import processing.core.PGraphics;
+import processing.core.*;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -9,6 +9,9 @@ import java.util.ArrayList;
  * This class can be used to render Ilda files.
  * Well, it might be.
  * Sometime in the future.
+ *
+ * Some methods are inherited from PGraphics, see the PGraphics reference for their purpose.
+ * They "should" give a similar result...
  */
 public class IldaRenderer extends PGraphics {
     protected File file;
@@ -17,7 +20,6 @@ public class IldaRenderer extends PGraphics {
     protected Ilda ilda;
     protected int count = 0;
     protected float invWidth, invHeight, invDepth;
-    protected float originx, originy, originz;
     protected boolean shouldBlank = false;
     protected boolean closedShape = false;
     protected IldaPoint firstPoint = new IldaPoint(0, 0, 0, 0, 0, 0, true);
@@ -25,25 +27,32 @@ public class IldaRenderer extends PGraphics {
     protected float ellipseDetail = 1f;
     private float circleCorrection = 0f;
 
+    static protected final int MATRIX_STACK_DEPTH = 32;
+    protected PMatrix3D matrix = new PMatrix3D();
+
+    protected PMatrix3D[] matrixStack = new PMatrix3D[MATRIX_STACK_DEPTH];
+
+
     protected IldaPoint currentPoint = new IldaPoint(0, 0, 0, 0, 0, 0, true);
     protected boolean overwrite = false;
 
     Optimiser optimiser;
     boolean optimise = true;
-
+    private int matrixStackDepth;
 
     public IldaRenderer(Ilda ilda) {
+        this(ilda, ilda.parent.width, ilda.parent.height);
+    }
+
+
+    public IldaRenderer(Ilda ilda, int width, int height) {
         this.ilda = ilda;
 
-        width = ilda.parent.width;
-        height = ilda.parent.height;
+        this.width = width;
+        this.height = height;
         depth = width;//(float) Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2));
         invDepth = 1f / depth;
 
-
-        originx = 0;
-        originy = 0;
-        originz = 0;
 
         defaultSettings();
         textMode(SHAPE);
@@ -53,8 +62,6 @@ public class IldaRenderer extends PGraphics {
 
             invWidth = 1f / width;
             invHeight = 1f / height;
-
-        } else {
 
         }
 
@@ -84,6 +91,13 @@ public class IldaRenderer extends PGraphics {
         return overwrite;
     }
 
+    /**
+     * Currently saving is not implemented in the renderer,
+     * use writeFile() in the main Ilda class instead.
+     *
+     * @param path should be a path leading to a file
+     */
+
     public void setPath(String path) {
 
         this.path = path;
@@ -96,6 +110,10 @@ public class IldaRenderer extends PGraphics {
         }
 
     }
+
+    /**
+     * Always call this before drawing!
+     */
 
     public void beginDraw() {
         if (!overwrite || currentFrame == null) {
@@ -110,11 +128,16 @@ public class IldaRenderer extends PGraphics {
 
     }
 
+    /**
+     * Always call this after drawing!
+     */
+
     public void endDraw() {
         if (optimise) optimiser.optimiseSegment(currentFrame.points);
         currentFrame.pointCount = currentFrame.points.size();
         if (!overwrite) theFrames.add(currentFrame);
         count++;
+        resetMatrix();
     }
 
     public void beginShape(int kind) {
@@ -140,19 +163,84 @@ public class IldaRenderer extends PGraphics {
     }
 
     public void translate(float x, float y) {
-        translate(x, y, 0.5f * depth);
+        translate(x, y, 0);
     }
 
     public void translate(float x, float y, float z) {
-        originx = x;
-        originy = y;
-        originz = z;
+        matrix.translate(x, y, z);
     }
 
+
     public void resetMatrix() {
-        originx = 0;
-        originy = 0;
-        originz = 0;
+        matrix.reset();
+    }
+
+    public void rotate(float angle) {
+        rotate(angle, 0, 0, 1);
+    }
+
+    public void rotateX(float angle) {
+        rotate(angle, 1, 0, 0);
+    }
+
+    public void rotateY(float angle) {
+        rotate(angle, 0, 1, 0);
+    }
+
+    public void rotateZ(float angle) {
+        rotate(angle, 0, 0, 1);
+    }
+
+    public void rotate(float angle, float v0, float v1, float v2) {
+        float norm = v0 * v0 + v1 * v1 + v2 * v2;
+        if (norm < PConstants.EPSILON) {
+            return;
+        }
+        if (PApplet.abs(1f - norm) > PConstants.EPSILON) {
+            norm = PApplet.sqrt(norm);
+            v0 /= norm;
+            v1 /= norm;
+            v2 /= norm;
+        }
+        matrix.rotate(angle, v0, v1, v2);
+    }
+
+    public void scale(float x, float y, float z) {
+        matrix.scale(x, y, z);
+    }
+
+    public void pushMatrix() {
+        if (matrixStackDepth == MATRIX_STACK_DEPTH) {
+            throw new RuntimeException(ERROR_PUSHMATRIX_OVERFLOW);
+        }
+        if (matrixStack[matrixStackDepth] == null) {
+            matrixStack[matrixStackDepth] = new PMatrix3D(matrix);
+        } else matrixStack[matrixStackDepth].set(matrix);
+        matrixStackDepth++;
+    }
+
+    public void popMatrix() {
+        if (matrixStackDepth == 0) {
+            throw new RuntimeException(ERROR_PUSHMATRIX_UNDERFLOW);
+        }
+        matrixStackDepth--;
+        matrix.set(matrixStack[matrixStackDepth]);
+    }
+
+    /**
+     * Get the current translation vector
+     *
+     * @return the center of the origin relative to the sketch' origin
+     */
+
+    public PVector getTranslation() {
+        return new PVector(matrix.m03, matrix.m13, matrix.m23);
+    }
+
+    protected void setTranslation(float x, float y, float z) {
+        matrix.m03 = x;
+        matrix.m13 = y;
+        matrix.m23 = z;
     }
 
 
@@ -179,12 +267,18 @@ public class IldaRenderer extends PGraphics {
 
         //ilda.parent.println(shape, vertexCount);
 
-        float xpos = 2 * ((x + originx) * invWidth - 0.5f);
-        float ypos = -2 * ((y + originy) * invHeight - 0.5f);
-        float zpos = 2 * ((z + originz) * invDepth - 0.5f);
+        PVector pos = new PVector(x, y, z);
+
+        matrix.mult(pos, pos);
+
+
+        float xpos = 2 * ((pos.x) * invWidth - 0.5f);
+        float ypos = -2 * ((pos.y) * invHeight - 0.5f);
+        float zpos = 2 * ((pos.z) * invDepth - 0.5f);
         int red = (int) (strokeR * 255);
         int green = (int) (strokeG * 255);
         int blue = (int) (strokeB * 255);
+
 
         if ((shape == POINT) || shape == POINTS) {
             currentPoint = new IldaPoint(xpos, ypos, zpos, red, green, blue, true);
@@ -222,11 +316,11 @@ public class IldaRenderer extends PGraphics {
     protected void ellipseImpl(float x, float y, float w, float h) {
         float m = (w + h) * ellipseDetail;
         boolean first = true;
-        //ilda.parent.println("ellipse, detail: " + m);
+
         for (float i = 0; i < m + 1 + circleCorrection; i++) {
-            float xpos = (float) (2 * ((x + w * Math.sin(TWO_PI * i / m) + originx) * invWidth - 0.5f));
-            float ypos = (float) (-2 * ((y + h * Math.cos(TWO_PI * i / m) + originy) * invHeight - 0.5f));
-            float zpos = 2 * ((0.5f * depth + originz) * invDepth - 0.5f);
+            float xpos = (float) (2 * ((x + w * Math.sin(TWO_PI * i / m) + matrix.m03) * invWidth - 0.5f));
+            float ypos = (float) (-2 * ((y + h * Math.cos(TWO_PI * i / m) + matrix.m13) * invHeight - 0.5f));
+            float zpos = 2 * ((0.5f * depth + matrix.m23) * invDepth - 0.5f);
             int red = (int) (strokeR * 255);
             int green = (int) (strokeG * 255);
             int blue = (int) (strokeB * 255);
@@ -280,6 +374,8 @@ public class IldaRenderer extends PGraphics {
     }
 
 
+
+
     public void dispose() {
 
     }
@@ -304,6 +400,8 @@ public class IldaRenderer extends PGraphics {
         return theFrames;
     }
 
+
+
     /**
      * Get the current frame that's being drawn on
      *
@@ -315,10 +413,12 @@ public class IldaRenderer extends PGraphics {
     }
 
     /**
+     * How many frames are there?
+     *
      * @return how many frames are currently in the renderer
      */
 
-    public int framesAmount() {
+    public int getFramesAmount() {
         return theFrames.size();
     }
 
@@ -333,6 +433,10 @@ public class IldaRenderer extends PGraphics {
     public void clearAllFrames()
     {
         theFrames.clear();
+    }
+
+    public void background() {
+        clearFrame();
     }
 
     /**

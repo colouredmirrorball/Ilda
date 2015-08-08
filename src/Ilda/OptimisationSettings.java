@@ -63,5 +63,12 @@ public class OptimisationSettings {
         this.angleDwell = angleDwell;
     }
 
+    public String[] generateOptimisationFile()
+    {
+        String[] out = new String[8];
+        out[0] = "interpolateLit " + interpolateLit;
+        return out;
+    }
+
 
 }
