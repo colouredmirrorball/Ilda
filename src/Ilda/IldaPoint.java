@@ -157,6 +157,32 @@ public class IldaPoint {
         return new PVector(x, y, z);
     }
 
+    /**
+     * The position should be normalised so that x, y and z are between -1 and 1
+     *
+     * @param x new X position
+     * @param y new Y position
+     * @param z new Z position
+     */
+
+    public void setPosition(float x, float y, float z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+
+    /**
+     * The position should be normalised so that the fields x, y and z of the argument PVector are always in the interval -1..1
+     *
+     * @param position the new position
+     */
+
+    public void setPosition(PVector position) {
+        x = position.x;
+        y = position.y;
+        z = position.z;
+    }
+
     public float getX() {
         return x;
     }

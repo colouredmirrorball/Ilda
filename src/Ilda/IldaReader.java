@@ -26,7 +26,7 @@ import java.util.ArrayList;
 public class IldaReader {
     protected String location;
     protected byte[] b;
-    protected ArrayList<Integer> framePositions = new ArrayList<Integer>();
+    //protected ArrayList<Integer> framePositions = new ArrayList<Integer>();
     IldaPalette palette;
     Ilda ilda;
 
@@ -83,6 +83,11 @@ public class IldaReader {
             return null;
         }
 
+        int pointCount = (b[24] << 8) | (b[25] & 0xff);
+        loadIldaFrame(b, pointCount, 32, theFrames);
+        return theFrames;
+
+        /*
         //Retrieve where "ILDA" is found inside the file:
 
         framePositions = getFramePositions();
@@ -125,8 +130,122 @@ public class IldaReader {
         }
         ilda.status.add("Read " + theFrames.size() + " frames.");
         return theFrames;
+        */
     }
 
+    private void loadIldaFrame(byte[] b, int points, int offset, ArrayList<IldaFrame> f)
+    {
+        if (offset > b.length - 32) return;        //no complete header
+
+
+        char[] theHeader = new char[4];
+        for (int i = 0; i < 4; i++) {
+            theHeader[i] = (char) b[i];
+        }
+        String hdr = new String(theHeader);
+        if (!hdr.equals("ILDA")) {
+            ilda.status.add("Error: file not an Ilda file. Loading cancelled.");
+            ilda.status.add("Expected \"ILDA\", found \"" + hdr + "\" at position " + offset);
+            return;
+        }
+
+        //Bytes 8-15: frame name
+        char[] name = new char[8];
+        for (int i = 0; i < 8; i++) {
+            name[i] = (char) b[i + 8 + offset];
+        }
+
+        //Bytes 16-23: company name
+        char[] company = new char[8];
+        for (int i = 0; i < 8; i++) {
+            company[i] = (char) b[i + 16 + offset];
+        }
+
+        //Bytes 26-27: frame number in frames or palette number in palettes
+        int frameNumber = (b[26] << 8) | (b[27] & 0xff);
+
+        int pointCount = (b[24] << 8) | (b[25] & 0xff);
+
+        int ildaVersion = b[7 + offset];
+
+        if (ildaVersion == 2) {
+            ilda.status.add("Palette included");
+            palette = new IldaPalette();
+
+            palette.name = new String(name);
+            palette.companyName = new String(company);
+            palette.totalColors = pointCount;
+
+            //Byte 30: scanner head.
+            palette.scannerHead = (int) b[30 + offset];
+
+
+            // ILDA V2: Palette information
+
+            for (int i = 32 + offset; i < 3 * pointCount; i += 3) {
+                palette.addColour((int) b[i], (int) b[i + 1], (int) b[i + 2]);
+            }
+        } else {
+            IldaFrame frame = new IldaFrame();
+
+            frame.setIldaFormat(ildaVersion);
+            frame.setFrameName(new String(name));
+            frame.setCompanyName(new String(company));
+            frame.setFrameNumber(frameNumber);
+            frame.setPalette(ildaVersion == 0 || ildaVersion == 1);
+
+            boolean is3D = ildaVersion == 0 || ildaVersion == 4;
+            int length;
+            switch (ildaVersion) {
+                case 0:
+                case 5:
+                    length = 8;
+                    break;
+                case 1:
+                    length = 6;
+                    break;
+                case 4:
+                    length = 10;
+                    break;
+                default:
+                    length = 8;
+
+            }
+
+            for (int i = offset; i < (offset + points * length); i += length) {
+                float x = (b[i] << 8) | (b[i + 1] & 0xff);
+                float y = (b[i + 2] << 8) | (b[i + 3] & 0xff);
+                float z = 0;
+                if (is3D) z = (b[i + 4] << 8) | (b[i + 5] & 0xff);
+                boolean bl = false;
+                if ((b[i + 6] & 0x40) == 64) bl = true;
+                if (ildaVersion == 0 || ildaVersion == 1) {
+                    IldaPoint point = new IldaPoint(x * 0.00003051757f, y * 0.00003051757f, z * 0.00003051757f, b[i + 7], bl);
+                    frame.addPoint(point);
+                } else if (ildaVersion == 4 || ildaVersion == 5) {
+                    IldaPoint point = new IldaPoint(x * 0.00003051757f, y * 0.00003051757f, z * 0.00003051757f, (int) b[i + 9] & 0xFF, (int) b[i + 8] & 0xFF, (int) b[i + 7] & 0xFF, bl);
+                    frame.addPoint(point);
+                }
+
+
+            }
+
+            if (frame.isPalette()) {
+                if (palette == null) {
+                    palette = new IldaPalette();
+                    palette.setDefaultPalette();
+                }
+
+                frame.palettePaint(palette);
+            }
+            f.add(frame);
+
+            int nextCount = (b[offset + 8 * points + 24] << 8) | (b[offset + 8 * points + 25] & 0xff);
+            if (nextCount == 0 || offset + 8 * points + 32 > b.length) return;
+            else loadIldaFrame(b, nextCount, offset + 8 * points + 32, f);
+        }
+    }
+/*
     public ArrayList<Integer> getFramePositions() {
         ArrayList<Integer> positions = new ArrayList<Integer>();
         for (int j = 0; j < b.length - 6; j++) {
@@ -384,6 +503,7 @@ public class IldaReader {
         }
     }
 
+
     public static int unsignedShortToInt(byte[] b) {
 
 
@@ -396,4 +516,5 @@ public class IldaReader {
         i |= b[1] & 0xff;
         return i;
     }
+    */
 }

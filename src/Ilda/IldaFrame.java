@@ -114,6 +114,7 @@ public class IldaFrame {
      * Renders a PGraphics
      * The PGraphics should be 3D
      * a 2D version might get implemented
+     * beginDraw() and endDraw() should always have been called!
      *
      * @param pg           A reference to the PGraphics (it can't generate its own as this usually results in memory leaks)
      * @param showBlanking Should blanking lines be displayed?
@@ -128,7 +129,7 @@ public class IldaFrame {
     public PGraphics renderFrame(PGraphics pg, boolean showBlanking, int sizex, int sizey, float rotx, float roty, float rotz) {
 
 
-        pg.beginDraw();
+        //pg.beginDraw();
         //parent.println("Began drawing frame " + frameName);
 
 
@@ -200,7 +201,7 @@ public class IldaFrame {
         }
 
         pg.popMatrix();
-        pg.endDraw();
+        //pg.endDraw();
         return pg;
     }
 

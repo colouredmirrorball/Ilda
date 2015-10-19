@@ -23,10 +23,23 @@ public class IldaPalette {
         colours.add(((r & 0xFF) << 16) + ((g & 0xFF) << 8) + ((b & 0xFF)));
     }
 
+    /**
+     * Colors are stored as 32-bit integers, first eight bits are not used, next eight bits are red,
+     * following eight bits are green and last eight bits are blue
+     *
+     * @param index number referring to the palette
+     * @return the color in the aforementioned format
+     */
+
     public int getColour(int index) {
         if (index >= colours.size() || index < 0) return 0;
         else return colours.get(index);
     }
+
+    /**
+     * Converts the palette to bytes which can be added in front of an Ilda file or stored separately
+     * @return array of bytes with ilda-compliant palette
+     */
 
     public byte[] paletteToBytes() {
         ArrayList<Byte> theBytes;
@@ -103,6 +116,10 @@ public class IldaPalette {
 
         return bt;
     }
+
+    /**
+     * Converts this palette to the standard 64 color palette used in most programs
+     */
 
     public void setDefaultPalette() {
         name = "Ilda64";
