@@ -34,7 +34,7 @@ void draw()
   
   fill(255);
   stroke(255);
-  text("Frames: " + r.framesAmount(), 40, 40);
+  text("Frames: " + r.getFramesAmount(), 40, 40);
 }
 
 void mouseClicked()
