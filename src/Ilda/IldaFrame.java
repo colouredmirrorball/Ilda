@@ -68,7 +68,7 @@ public class IldaFrame {
 
 
         if (versionNumber != 0 && versionNumber != 1 && versionNumber != 4 && versionNumber != 5) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Unsupported ILDA format " + versionNumber);
         } else ildaVersion = versionNumber;
     }
 
@@ -152,7 +152,8 @@ public class IldaFrame {
         //pg.frustum(-sizex, sizex, sizey, -sizey, (sizex + sizey)*0.5f, 0);
 
         //Nop. You are getting orthogonal projection for now.
-        pg.ortho(0, sizex, sizey, 0, 0, sizex + sizey);
+       // pg.ortho(0, sizex, sizey, 0, 0, sizex + sizey);
+        pg.ortho();
         pg.pushMatrix();
 
         pg.translate((sizex * 0.5f), (float) (sizey * 0.5), (float) ((sizex + sizey) * 0.25));

@@ -83,8 +83,7 @@ public class IldaReader {
             return null;
         }
 
-        int pointCount = (b[24] << 8) | (b[25] & 0xff);
-        loadIldaFrame(b, pointCount, 32, theFrames);
+        loadIldaFrame(b, 0, theFrames);
         return theFrames;
 
         /*
@@ -116,7 +115,7 @@ public class IldaReader {
                 readFrame(0, b.length - 1);
             } else {
                 for (int i = 1; i < framePositions.size(); i++) {
-                    //Skip to next ILDA occurence when ILDA occurs in the header
+                    //Skip to next ILDA occurrence when ILDA occurs in the header
                     if (framePositions.get(i) - framePositions.get(i - 1) <= 32 && (i + 1) < framePositions.size()) {
                         frame = readFrame(framePositions.get(i - 1), framePositions.get(i + 1));
                         if (frame != null) theFrames.add(frame);
@@ -133,14 +132,21 @@ public class IldaReader {
         */
     }
 
-    private void loadIldaFrame(byte[] b, int points, int offset, ArrayList<IldaFrame> f)
+    /**
+     * Iterative method to load Ilda frames, the new frames are appended to an ArrayList.
+     * @param b the byte array which contains the original Ilda file
+     * @param offset offset index in the array where to start reading a frame
+     * @param f IldaFrame ArrayList where the new frame will be appended
+     */
+
+    private void loadIldaFrame(byte[] b, int offset, ArrayList<IldaFrame> f)
     {
-        if (offset > b.length - 32) return;        //no complete header
+        if (offset >= b.length - 32) return;        //no complete header
 
 
         char[] theHeader = new char[4];
         for (int i = 0; i < 4; i++) {
-            theHeader[i] = (char) b[i];
+            theHeader[i] = (char) b[i+offset];
         }
         String hdr = new String(theHeader);
         if (!hdr.equals("ILDA")) {
@@ -212,7 +218,7 @@ public class IldaReader {
 
             }
 
-            for (int i = offset; i < (offset + points * length); i += length) {
+            for (int i = offset+32; i < (offset + pointCount * length); i += length) {
                 float x = (b[i] << 8) | (b[i + 1] & 0xff);
                 float y = (b[i + 2] << 8) | (b[i + 3] & 0xff);
                 float z = 0;
@@ -240,9 +246,7 @@ public class IldaReader {
             }
             f.add(frame);
 
-            int nextCount = (b[offset + 8 * points + 24] << 8) | (b[offset + 8 * points + 25] & 0xff);
-            if (nextCount == 0 || offset + 8 * points + 32 > b.length) return;
-            else loadIldaFrame(b, nextCount, offset + 8 * points + 32, f);
+            loadIldaFrame(b,  offset + length * pointCount + 32, f);
         }
     }
 /*
