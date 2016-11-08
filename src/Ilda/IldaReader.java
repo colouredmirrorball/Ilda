@@ -5,6 +5,8 @@ import java.io.File;
 import java.nio.file.Files;
 import java.util.ArrayList;
 
+import static java.nio.file.Files.readAllBytes;
+
 /**
  * This class reads a file and passes the data to frames and points.
  * <p/>
@@ -27,14 +29,14 @@ public class IldaReader {
     protected String location;
     protected byte[] b;
     //protected ArrayList<Integer> framePositions = new ArrayList<Integer>();
-    IldaPalette palette;
+    public IldaPalette palette;
     Ilda ilda;
 
     public IldaReader(Ilda ilda, String location) {
         this.location = location;
         this.ilda = ilda;
         try {
-            b = Files.readAllBytes(new File(location).toPath());
+            b = readAllBytes(new File(location).toPath());
             ilda.status.add("Found bytes, length: " + b.length);
         } catch (Exception e) {
             ilda.status.clear();
@@ -249,6 +251,8 @@ public class IldaReader {
             loadIldaFrame(b,  offset + length * pointCount + 32, f);
         }
     }
+
+    //Point and laugh!
 /*
     public ArrayList<Integer> getFramePositions() {
         ArrayList<Integer> positions = new ArrayList<Integer>();

@@ -1,52 +1,91 @@
 package Ilda;
 
 
+import processing.core.PApplet;
+
 import java.io.File;
 import java.nio.file.Files;
 import java.util.ArrayList;
 
 
 /**
- * Writes an ilda file.
+ * Writes IldaFrames to an ilda file.
  * By default, Ilda v4 is used.
  */
 public class IldaWriter {
     ArrayList<IldaFrame> frames;
-    Ilda ilda;
 
-    public IldaWriter(Ilda ilda) {
-        this.ilda = ilda;
-    }
 
-    public IldaWriter(ArrayList<IldaFrame> frames) {
-        this.frames = frames;
-    }
 
-    public void writeFile(String location, ArrayList<IldaFrame> frames, int ildaVersion) {
+    /**
+     * Writes a valid Ilda file to a certain location with specified format.
+     * You should call fixHeaders() first before using this method! Otherwise the Ilda file might not be valid.
+     * This does not happen automatically for maximum flexibility (but is maybe a bad idea)
+     * @param location The path to where the ilda file should be exported
+     * @param frames All frames that should be included in the Ilda file
+     * @param ildaVersion Ilda format:
+     *                    0 = 3D, palette;
+     *                    1 = 2D, palette;
+     *                    (2 = palette header);
+     *                    (3 = deprecated);
+     *                    4 = 3D, RGB;
+     *                    5 = 2D, RGB
+     */
+
+    public static void writeFile(String location, ArrayList<IldaFrame> frames, int ildaVersion) {
         if (frames == null) return;
-        ilda.status.add("frames size: " + frames.size());
+
         byte[] b = getBytesFromFrames(frames, ildaVersion);
         if (b == null) return;
-        ilda.status.add("b_length " + b.length);
+
         try {
             File file = new File(location);
-            if (file.createNewFile()) ilda.status.add("Created a new file at " + location);
-            else ilda.status.add("Wrote file over " + location);
+
             Files.write(file.toPath(), b);
 
         } catch (Exception e) {
-            ilda.status.add("Error upon writing file to " + location);
-            ilda.status.add(e.toString());
+            PApplet.println("Error when exporting Ilda file: ", e);
+            e.printStackTrace();
         }
 
     }
 
-    public byte[] getBytesFromFrames(ArrayList<IldaFrame> frames) {
+    /**
+     * Writes a valid Ilda file to a certain location with specified format.
+     * It does not check if the specified location has a valid .ild extension.
+     * You should call fixHeaders() first before using this method! Otherwise the Ilda file might not be valid.
+     * This does not happen automatically for maximum flexibility (but is maybe a bad idea)
+     * @param location The path to where the ilda file should be exported
+     * @param frames All frames that should be included in the Ilda file
+     * @param palette An IldaPalette that will be appended in front of the Ilda file with a format 2 header
+     * @param ildaVersion Ilda format: should be 0 or 1 since only those two formats use a palette for their colour information
+     *                    but nobody is stopping you from appending a palette to a format 4/5 file, though that would be pointless
+     */
+
+    public static void writeFile(String location, ArrayList<IldaFrame> frames, IldaPalette palette, int ildaVersion) {
+        if (frames == null) return;
+
+        byte[] b = getBytesFromFrames(frames, palette, ildaVersion);
+        if (b == null) return;
+
+        try {
+            File file = new File(location);
+
+            Files.write(file.toPath(), b);
+
+        } catch (Exception e) {
+            PApplet.println("Error when exporting Ilda file: ", e);
+            e.printStackTrace();
+        }
+
+    }
+
+    public static byte[] getBytesFromFrames(ArrayList<IldaFrame> frames) {
         return getBytesFromFrames(frames, 4);
     }
 
     /**
-     * This method returns a byte array which can be exported directly as an Ilda file.
+     * This method returns a byte array which can be exported directly as an Ilda file from a palette and an ArrayList of IldaFrames.
      * It will insert the palette as a format 2 header before all frames.
      * It assumes the colours already have the correct colour index, no recolourisation happens.
      *
@@ -56,7 +95,7 @@ public class IldaWriter {
      * @return Ilda compliant byte array which can be directly exported as an ilda file
      */
 
-    public byte[] getBytesFromFrames(ArrayList<IldaFrame> frames, IldaPalette palette, int ildaVersion) {
+    public static byte[] getBytesFromFrames(ArrayList<IldaFrame> frames, IldaPalette palette, int ildaVersion) {
         byte[] pbytes = palette.paletteToBytes();
         byte[] fbytes = getBytesFromFrames(frames, ildaVersion);
         byte[] cbytes = new byte[pbytes.length + fbytes.length];
@@ -65,7 +104,14 @@ public class IldaWriter {
         return cbytes;
     }
 
-    public byte[] getBytesFromFrames(ArrayList<IldaFrame> frames, int ildaVersion) {
+    /**
+     * This method returns a byte array from only an ArrayList of IldaFrames. This array can be saved to disk directly as a valid Ilda file (binary file).
+     * @param frames The frames
+     * @param ildaVersion The Ilda format version, can be 0, 1, 4 or 5.
+     * @return Valid bytes that compose an Ilda file
+     */
+
+    public static byte[] getBytesFromFrames(ArrayList<IldaFrame> frames, int ildaVersion) {
         ArrayList<Byte> theBytes = new ArrayList<Byte>();
         int frameNum = 0;
 
@@ -83,8 +129,7 @@ public class IldaWriter {
             if (ildaVersion == 0 || ildaVersion == 1 || ildaVersion == 2 || ildaVersion == 4 || ildaVersion == 5)
                 theBytes.add((byte) ildaVersion);
             else {
-                ilda.status.clear();
-                ilda.status.add("Error: invalid ilda version when writing to file");
+
                 return null;
             }
 

@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="jar" build-on-make="true" name="Ilda">
-    <output-path>$USER_HOME$/Documents/Processing 2/libraries/Ilda/library</output-path>
+    <output-path>$PROJECT_DIR$/../LaserProgram</output-path>
     <root id="archive" name="Ilda.jar">
       <element id="module-output" name="Ilda" />
     </root>

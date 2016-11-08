@@ -6,7 +6,7 @@ import processing.core.PGraphics;
 import java.util.ArrayList;
 
 /**
- * A frame is essentially a collection of points.
+ * A frame is essentially a collection of points. It can render its geometry to a PGraphics.
  */
 public class IldaFrame {
     ArrayList<IldaPoint> points = new ArrayList<IldaPoint>();
@@ -111,10 +111,10 @@ public class IldaFrame {
 
 
     /**
-     * Renders a PGraphics
+     * Renders the frame to a PGraphics to be displayed in the sketch.
      * The PGraphics should be 3D
      * a 2D version might get implemented
-     * beginDraw() and endDraw() should always have been called!
+     * You must call beginDraw() and endDraw() yourself!
      *
      * @param pg           A reference to the PGraphics (it can't generate its own as this usually results in memory leaks)
      * @param showBlanking Should blanking lines be displayed?
@@ -133,7 +133,7 @@ public class IldaFrame {
         //parent.println("Began drawing frame " + frameName);
 
 
-        pg.background(0, 0);
+        //pg.background(0, 0);
 
         if (pg.is2D()) {
             //For now...

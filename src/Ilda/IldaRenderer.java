@@ -6,12 +6,26 @@ import java.io.File;
 import java.util.ArrayList;
 
 /**
- * This class can be used to render Ilda files.
+ * This class can be used to render Ilda files as a subclass of PGraphics.
  * Well, it might be.
  * Sometime in the future.
  *
- * Some methods are inherited from PGraphics, see the PGraphics reference for their purpose.
- * They "should" give a similar result...
+ * You can use this class in the same way as you would use another PGraphics.
+ * For example you can use most graphic calls on an instance of this class.
+ * Usage: as opposed to most PGraphic subclasses, you may use the constructor to create an instance of IldaRenderer.
+ * You must call beginDraw() and endDraw() around any graphic calls.
+ *
+ * Example:
+ * r = new IldaRenderer(ilda);
+ * r.beginDraw();
+ * r.stroke(255,0,0);
+ * r.line(50,100,25,60); //draws a red line
+ * r.endDraw();
+ *
+ * Then you can retrieve the frame(s) with r.getFrames() to export or display.
+ *
+ * It is ill advised to create a new IldaRenderer instance in draw(). Multiple frames can be created sequentially
+ * using the same instance of IldaRenderer.
  */
 public class IldaRenderer extends PGraphics {
     protected File file;
@@ -26,6 +40,10 @@ public class IldaRenderer extends PGraphics {
     protected float depth;
     protected float ellipseDetail = 1f;
     private float circleCorrection = 0f;
+
+    protected boolean renderingText = false;
+    protected double textDetail = 0.01;
+    protected PVector prevVector = new PVector();
 
     static protected final int MATRIX_STACK_DEPTH = 32;
     protected PMatrix3D matrix = new PMatrix3D();
@@ -82,7 +100,7 @@ public class IldaRenderer extends PGraphics {
     }
 
     /**
-     * Returns the overwrite setting, whether the renderer keeps drawing on the same frame or not.
+     * Returns the overwrite setting, whether the renderer keeps drawing on the same frame or if it creates a new frame each time beginDraw() is called.
      *
      * @return boolean - is false if a new IldaFrame is created upon each draw.
      */
@@ -126,6 +144,7 @@ public class IldaRenderer extends PGraphics {
             currentFrame.frameNumber = count;
         }
 
+
     }
 
     /**
@@ -160,6 +179,18 @@ public class IldaRenderer extends PGraphics {
 
                 break;
         }
+    }
+
+    public void beginContour()
+    {
+        shouldBlank = true;
+        PApplet.println("contour", shape, shouldBlank);
+    }
+
+    public void endContour()
+    {
+        if (closedShape) currentFrame.points.add(firstPoint);
+        PApplet.println("End contour");
     }
 
     public void translate(float x, float y) {
@@ -273,7 +304,7 @@ public class IldaRenderer extends PGraphics {
 
 
         float xpos = 2 * ((pos.x) * invWidth - 0.5f);
-        float ypos = -2 * ((pos.y) * invHeight - 0.5f);
+        float ypos = 2 * ((pos.y) * invHeight - 0.5f);
         float zpos = 2 * ((pos.z) * invDepth - 0.5f);
         int red = (int) (strokeR * 255);
         int green = (int) (strokeG * 255);
@@ -294,13 +325,32 @@ public class IldaRenderer extends PGraphics {
 
         if (closedShape && vertexCount == 1) {
             firstPoint = new IldaPoint(xpos, ypos, zpos, red, green, blue, false);
+            if(renderingText) closedShape = false;
         }
+
+
 
 
         //ilda.parent.println(x, y, z, 2*(x*invWidth-0.5f), -2*(y*invHeight-0.5f), z* (invHeight + invWidth) * 0.5f-1);
         currentPoint = new IldaPoint(xpos, ypos, zpos, red, green, blue, shouldBlank);
+        PApplet.println(xpos, ypos, zpos, red, green, blue, shouldBlank, " ----- shape: ", shape);
 
-        currentFrame.points.add(currentPoint);
+        if(renderingText)
+        {
+            PVector currPos = new PVector(x, y, z);
+            PApplet.println(PVector.dist(currPos, prevVector), textDetail * textSize, currPos, prevVector, PVector.dist(currPos, prevVector) > textDetail*textSize);
+            float dist= PVector.dist(currPos, prevVector);
+            if ( dist > textDetail*textSize && dist != 0)
+            {
+                currentFrame.points.add(currentPoint);  //blargh should probably look at angle as well
+                prevVector = currPos;
+            }
+            //else currentFrame.points.add(currentPoint);
+
+
+        }
+
+        else currentFrame.points.add(currentPoint);
 
         if (shouldBlank) shouldBlank = false;
 
@@ -332,6 +382,46 @@ public class IldaRenderer extends PGraphics {
             IldaPoint p = new IldaPoint(xpos, ypos, zpos, red, green, blue, false);
             currentFrame.points.add(p);
         }
+    }
+
+    /**
+     * Well wouldn't it be boss if this "just worked"!!!
+     * Should be automatically called by the several text() implementations of the parent PGraphics class
+     * @param ch the character
+     * @param x position x
+     * @param y position y
+     */
+
+    protected void textCharImpl(char ch, float x, float y) {
+
+        PShape glyph = this.textFont.getShape(ch);
+        //glyph.scale(1,-1);
+        PApplet.println("=== Printing char", ch, "family:", glyph.getFamily());
+        renderingText = true;   //for haxx
+        closedShape = true;
+        this.shape(glyph, x, y);
+        renderingText = false;
+
+    }
+
+    public void applyMatrix(float n00, float n01, float n02, float n10, float n11, float n12) {
+        this.applyMatrixImpl(n00, n01, 0.0F, n02, n10, n11, 0.0F, n12, 0.0F, 0.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.0F, 1.0F);
+    }
+
+    public void applyMatrix(float n00, float n01, float n02, float n03, float n10, float n11, float n12, float n13, float n20, float n21, float n22, float n23, float n30, float n31, float n32, float n33) {
+        this.applyMatrixImpl(n00, n01, n02, n03, n10, n11, n12, n13, n20, n21, n22, n23, n30, n31, n32, n33);
+    }
+
+    /**
+     * NOT interested in debugging this if it's even bugged maybe it magically works idk idc
+     *
+     */
+
+    protected void applyMatrixImpl(float n00, float n01, float n02, float n03, float n10, float n11, float n12, float n13, float n20, float n21, float n22, float n23, float n30, float n31, float n32, float n33) {
+        this.matrix.apply(n00, n01, n02, n03, n10, n11, n12, n13, n20, n21, n22, n23, n30, n31, n32, n33);
+        //this.modelviewInv.set(this.modelview);
+        //this.modelviewInv.invert();
+        //this.projmodelview.apply(n00, n01, n02, n03, n10, n11, n12, n13, n20, n21, n22, n23, n30, n31, n32, n33);
     }
 
     /**
@@ -367,11 +457,6 @@ public class IldaRenderer extends PGraphics {
         this.textFont = ilda.parent.createFont("Lucida Sans", size, true, null);
     }
 
-    @Override
-    protected void textCharImpl(char ch, float x, float y)
-    {
-        this.rect(x, y, 10, 10);
-    }
 
 
 
@@ -457,5 +542,21 @@ public class IldaRenderer extends PGraphics {
 
     public OptimisationSettings getOptimisationSettings() {
         return this.optimiser.getSettings();
+    }
+
+    public double getTextDetail()
+    {
+        return textDetail;
+    }
+
+    /**
+     * Defines a minimal distance, in terms of fraction of the size of the font, in which no points are generated.
+     * Necessary to reduce point count in curved letters.
+     * @param textDetail  minimal distance between two points in text characters
+     */
+
+    public void setTextDetail(double textDetail)
+    {
+        this.textDetail = textDetail;
     }
 }
