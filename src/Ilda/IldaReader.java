@@ -10,7 +10,7 @@ import static java.nio.file.Files.readAllBytes;
 /**
  * This class reads a file and passes the data to frames and points.
  * <p/>
- * Ilda files are explained here: http://www.laserist.org/StandardsDocs/IDTF05-finaldraft.pdf
+ * Ilda files are explained here: http://www.ilda.com/resources/StandardsDocs/ILDA_IDTF14_rev011.pdf
  * This document only mentions Ilda V0, 1, 2 and 3, no V4 and V5 so here's a breakdown:
  * ILDA V0 is 3D and uses palettes
  * ILDA V1 is 2D and uses palettes

@@ -3,9 +3,10 @@ package Ilda;
 import processing.core.PVector;
 
 /**
- * A point of an ilda frame. Location is stored in three shorts (xyz) ranging from -1 to 1.
+ * A point of an ilda frame. Location is stored in three floats (xyz) ranging from -1 to 1.
  * Colour is stored in an integer which is a 32 bit number: the first eight bits are not used,
  * the second eight bits are red (0-255), the next eight represent green and the last eight bits are blue.
+ * This corresponds to a "color" data type in Processing.
  * This is the "official" colour representation: points also store a palIndex but this is only used to set
  * the colour of a palette, never to render it to a screen.
  * A point also has a blanked flag which determines if the point is off or on.
