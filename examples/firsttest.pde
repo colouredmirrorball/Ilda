@@ -1,42 +1,65 @@
 import Ilda.*;
 
+
 Ilda ilda;
 ArrayList<IldaFrame> frames = new ArrayList();
+boolean showBlanking = true;
+
+//The Ilda frame will be rendered to this PGraphics
+PGraphics renderedFrame;
+
 
 void setup()
 {
-  size(600, 600);
+  size(600, 600, OPENGL);
   ilda = new Ilda(this);
+
   try
   {
-    //Insert a path here
+    // Insert file path to Ilda file here
     frames = ilda.readFile("");
   }
   catch(Exception e)
   {
-    println("error");
-    println(e);
+    // what did I screw up now
+    println("error upon reading");
+    e.printStackTrace();
+  }
+  try
+  {
+    if (frames.size() > 0) 
+    {
+      renderedFrame = createGraphics((int) (width*0.5), (int) (height*0.5), OPENGL);
+      //It is now necessary to use beginDraw() and endDraw() on the PGraphics buffer used to draw the Ilda frame to
+      renderedFrame.beginDraw();
+      renderedFrame = frames.get(0).renderFrame(renderedFrame, showBlanking);
+      renderedFrame.endDraw();
+    }
+  }
+  catch(Exception e)
+  {
+    println("Error on drawing: " + e.toString());
+    e.printStackTrace();
   }
 }
 
 void draw()
 {
   background(0);
-  ArrayList<String> status = ilda.status;
-  try
-  {
-    if (frames.size() > 0) image(frames.get(0).renderFrame(width, height), 0, 0);
-  }
-  catch(Exception e)
-  {
-    status.add("Error on drawing");
-  }
   fill(255);
   textAlign(LEFT);
+  ArrayList<String> status = ilda.status;
+
+
+  if (renderedFrame != null) 
+  {
+    frames.get(0).renderFrame(this, showBlanking, 0f, map(mouseX, 0, height, 0, TWO_PI), map(mouseY, 0, width, 0, TWO_PI));
+    text("Rendering frame", width-100, 50);
+    text("Pixels: " + renderedFrame.pixels.length, width-100, 75);
+  }
 
   for (int i = 0; i < status.size (); i++)
   {
-    fill(255);
     if (textWidth(status.get(i)) > width-10) 
     {
       String[] brokenText = splitTokens(status.get(i));
@@ -67,7 +90,13 @@ void keyPressed()
   if (key == 's')
   {
     println(frames.size() + " " + (frames == null));
-    //Insert a path here
-    ilda.writeFile(frames, "");
+    ilda.writeFile(frames, ""); //Insert a path here where to export the Ilda file to
   }
+
+  if (key == 'i')
+  {
+    frames.get(0).renderFrame(this, width, height).save(""); //Insert a path here where to export an image
+  }
+
+  if (key == 'b') showBlanking = !showBlanking;
 }
