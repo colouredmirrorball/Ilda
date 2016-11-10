@@ -9,16 +9,18 @@ import static java.nio.file.Files.readAllBytes;
 
 /**
  * This class reads a file and passes the data to frames and points.
- * <p/>
+ *
  * Ilda files are explained <a href=http://www.ilda.com/resources/StandardsDocs/ILDA_IDTF14_rev011.pdf>here</a>.
- * Here's a quick breakdown:
- * ILDA V0 is 3D and uses palettes
- * ILDA V1 is 2D and uses palettes
- * ILDA V2 is a palette
- * ILDA V3 is a 24-bit palette, but was discontinued and is not a part of the official standard anymore
- * ILDA V4 is 3D with true-colour information in BGR format
- * ILDA V5 is 2D with true-colour information in BGR format
- * <p/>
+ * Here's a quick breakdown:<br>
+ *     <ul>
+ * <li>ILDA V0 is 3D and uses palettes</li>
+ * <li>ILDA V1 is 2D and uses palettes</li>
+ * <li>ILDA V2 is a palette</li>
+ * <li>ILDA V3 is a 24-bit palette, but was discontinued and is not a part of the official standard anymore</li>
+ * <li>ILDA V4 is 3D with true-colour information in BGR format</li>
+ * <li>ILDA V5 is 2D with true-colour information in BGR format</li>
+ * </ul>
+ *
  * An Ilda file is composed of headers that always start with "ILDA", followed by three zeros and the version number.
  * A complete header is 32 bytes.
  * After the header, the data follows. In case of a palette (V2), each data point has three bytes: R, G and B.
