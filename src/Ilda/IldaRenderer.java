@@ -462,7 +462,7 @@ public class IldaRenderer extends PGraphics {
 
 
     public void dispose() {
-
+        theFrames.clear();
     }
 
     public boolean is2D() {
