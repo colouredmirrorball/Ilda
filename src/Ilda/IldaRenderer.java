@@ -9,23 +9,24 @@ import java.util.ArrayList;
  * This class can be used to render Ilda files as a subclass of PGraphics.
  * Well, it might be.
  * Sometime in the future.
- *
+ *<p>
  * You can use this class in the same way as you would use another PGraphics.
  * For example you can use most graphic calls on an instance of this class.
  * Usage: as opposed to most PGraphic subclasses, you may use the constructor to create an instance of IldaRenderer.
- * You must call beginDraw() and endDraw() around any graphic calls.
- *
+ * You must call beginDraw() and endDraw() around any graphic calls.</p>
+ *<p>
  * Example:
- * r = new IldaRenderer(ilda);
- * r.beginDraw();
- * r.stroke(255,0,0);
- * r.line(50,100,25,60); //draws a red line
- * r.endDraw();
- *
+ * r = new IldaRenderer(ilda);<br>
+ * r.beginDraw();<br>
+ * r.stroke(255,0,0);<br>
+ * r.line(50,100,25,60); //draws a red line<br>
+ * r.endDraw();<br>
+ *</p>
  * Then you can retrieve the frame(s) with r.getFrames() to export or display.
- *
+ * <p>
  * It is ill advised to create a new IldaRenderer instance in draw(). Multiple frames can be created sequentially
  * using the same instance of IldaRenderer.
+ * </p>
  */
 public class IldaRenderer extends PGraphics {
     protected File file;
@@ -127,6 +128,12 @@ public class IldaRenderer extends PGraphics {
             throw new RuntimeException("Something went wrong creating an output file for the Ilda renderer.");
         }
 
+    }
+
+    public void resize(int newWidth, int newHeight)
+    {
+        this.width = newWidth;
+        this.height = newHeight;
     }
 
     /**

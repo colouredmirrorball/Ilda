@@ -61,7 +61,7 @@ public class IldaFrame {
      * Internally, all frames are 3D and use RGB.
      *
      * @param versionNumber integer, can be 0, 1, 4 or 5
-     * @throws IllegalArgumentException
+     * @throws IllegalArgumentException when using invalid version number
      */
 
     public void setIldaFormat(int versionNumber) throws IllegalArgumentException {

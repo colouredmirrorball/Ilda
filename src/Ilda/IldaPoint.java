@@ -106,7 +106,18 @@ public class IldaPoint {
      */
 
     public void setColour(int paletteIndex, IldaPalette palette) {
+        colour = palette.colours.get(paletteIndex);
+    }
 
+    /**
+     * Set the blanked flag of a point
+     * Blanked means the lasers will not turn on at this point but the scanners will move to this position
+     * @param blanked   should the point be blanked?
+     */
+
+    public void setBlanked(boolean blanked)
+    {
+        this.blanked = blanked;
     }
 
     /**

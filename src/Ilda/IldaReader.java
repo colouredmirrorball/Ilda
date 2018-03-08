@@ -27,25 +27,25 @@ import static java.nio.file.Files.readAllBytes;
  * In case of a frame (V0/1/4/5), the X, Y and Z (for 3D frames) values are spread out over two bytes
  * Then either two status bytes follow with a blanking bit and palette colour number, or BGR values.
  */
-public class IldaReader {
-    protected String location;
-    protected byte[] b;
+public class IldaReader  extends FileParser
+{
+
     //protected ArrayList<Integer> framePositions = new ArrayList<Integer>();
     public IldaPalette palette;
     Ilda ilda;
 
-    public IldaReader(Ilda ilda, String location) {
-        this.location = location;
+    public IldaReader(Ilda ilda, String location)
+    {
+        super(location);
         this.ilda = ilda;
-        try {
-            b = readAllBytes(new File(location).toPath());
-            ilda.status.add("Found bytes, length: " + b.length);
-        } catch (Exception e) {
-            ilda.status.clear();
-            ilda.status.add("Could not read file");
-
+        if (b == null)
+        {
+            ilda.status.add("Could not read the file.");
         }
-        ilda.status.add("Successfully read file " + location);
+        else
+        {
+            ilda.status.add("Successfully read file " + location);
+        }
     }
 
     public IldaReader(Ilda ilda, File file) {

@@ -37,9 +37,21 @@ public class Ilda {
         return status;
     }
 
+    /**
+     * Parse an Ilda file from disk
+     * @param location path to the Ilda file
+     * @return list of all loaded frames
+     */
+
     public ArrayList<IldaFrame> readFile(String location) {
         IldaReader reader = new IldaReader(this, location);
         return reader.getFramesFromBytes();
+    }
+
+    public IldaFrame readPicFile(String location)
+    {
+        PicReader reader = new PicReader(location);
+        return reader.getFrame();
     }
 
     /**
@@ -52,7 +64,7 @@ public class Ilda {
      * @param frames All frames that should be included in the Ilda file
      */
 
-    public void writeFile(ArrayList<IldaFrame> frames, String location) {
+    public static void writeFile(ArrayList<IldaFrame> frames, String location) {
         writeFile(frames, location, 4);
     }
 
@@ -73,7 +85,7 @@ public class Ilda {
      *                    5 = 2D, RGB
      */
 
-    public void writeFile(ArrayList<IldaFrame> frames, String location, int ildaVersion) {
+    public static void writeFile(ArrayList<IldaFrame> frames, String location, int ildaVersion) {
 
         if (location.length() < 4) location += ".ild";
         if (!location.substring(location.length() - 4).equalsIgnoreCase(".ild")) location += ".ild";
