@@ -5,6 +5,8 @@ import processing.core.*;
 import java.io.File;
 import java.util.ArrayList;
 
+import static processing.core.PApplet.map;
+
 /**
  * This class can be used to render Ilda files as a subclass of PGraphics.
  * Well, it might be.
@@ -191,13 +193,13 @@ public class IldaRenderer extends PGraphics {
     public void beginContour()
     {
         shouldBlank = true;
-        PApplet.println("contour", shape, shouldBlank);
+        //PApplet.println("contour", shape, shouldBlank);
     }
 
     public void endContour()
     {
         if (closedShape) currentFrame.points.add(firstPoint);
-        PApplet.println("End contour");
+        //PApplet.println("End contour");
     }
 
     public void translate(float x, float y) {
@@ -340,12 +342,12 @@ public class IldaRenderer extends PGraphics {
 
         //ilda.parent.println(x, y, z, 2*(x*invWidth-0.5f), -2*(y*invHeight-0.5f), z* (invHeight + invWidth) * 0.5f-1);
         currentPoint = new IldaPoint(xpos, ypos, zpos, red, green, blue, shouldBlank);
-        PApplet.println(xpos, ypos, zpos, red, green, blue, shouldBlank, " ----- shape: ", shape);
+        //PApplet.println(xpos, ypos, zpos, red, green, blue, shouldBlank, " ----- shape: ", shape);
 
         if(renderingText)
         {
             PVector currPos = new PVector(x, y, z);
-            PApplet.println(PVector.dist(currPos, prevVector), textDetail * textSize, currPos, prevVector, PVector.dist(currPos, prevVector) > textDetail*textSize);
+            //PApplet.println(PVector.dist(currPos, prevVector), textDetail * textSize, currPos, prevVector, PVector.dist(currPos, prevVector) > textDetail*textSize);
             float dist= PVector.dist(currPos, prevVector);
             if ( dist > textDetail*textSize && dist != 0)
             {
@@ -403,7 +405,7 @@ public class IldaRenderer extends PGraphics {
 
         PShape glyph = this.textFont.getShape(ch);
         //glyph.scale(1,-1);
-        PApplet.println("=== Printing char", ch, "family:", glyph.getFamily());
+        //PApplet.println("=== Printing char", ch, "family:", glyph.getFamily());
         renderingText = true;   //for haxx
         closedShape = true;
         this.shape(glyph, x, y);
@@ -462,6 +464,37 @@ public class IldaRenderer extends PGraphics {
     protected void defaultFontOrDeath(String method, float size)
     {
         this.textFont = ilda.parent.createFont("Lucida Sans", size, true, null);
+    }
+
+    /**
+     * Draw an existing Ilda frame inside the renderer
+     * @param frame frame to be drawn
+     * @param x x position offset
+     * @param y y position offset
+     * @param w width (rescaling)
+     * @param h height (rescaling)
+     */
+
+    public void drawIldaFrame(IldaFrame frame, int x, int y, int w, int h)
+    {
+        for (IldaPoint p : frame.points)
+        {
+            IldaPoint newPoint = new IldaPoint(p.clone());
+            PVector position = newPoint.getPosition();
+            position.x = map(position.x, 0, width, x, x+w);
+            position.y = map(position.y, 0,height,y,y+w);
+            currentFrame.addPoint(newPoint);
+        }
+    }
+
+    public void drawIldaFrame(IldaFrame frame, int x, int y)
+    {
+        drawIldaFrame(frame, x, y, width, height);
+    }
+
+    public void drawIldaFrame(IldaFrame frame)
+    {
+        drawIldaFrame(frame, 0,0,width, height);
     }
 
 

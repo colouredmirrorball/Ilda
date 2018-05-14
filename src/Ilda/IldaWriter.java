@@ -38,6 +38,12 @@ public class IldaWriter {
         byte[] b = getBytesFromFrames(frames, ildaVersion);
         if (b == null) return;
 
+        writeFile(location, b);
+
+    }
+
+    private static void writeFile(String location, byte[] b)
+    {
         try {
             File file = new File(location);
 
@@ -47,7 +53,6 @@ public class IldaWriter {
             PApplet.println("Error when exporting Ilda file: ", e);
             e.printStackTrace();
         }
-
     }
 
     /**
@@ -68,15 +73,7 @@ public class IldaWriter {
         byte[] b = getBytesFromFrames(frames, palette, ildaVersion);
         if (b == null) return;
 
-        try {
-            File file = new File(location);
-
-            Files.write(file.toPath(), b);
-
-        } catch (Exception e) {
-            PApplet.println("Error when exporting Ilda file: ", e);
-            e.printStackTrace();
-        }
+        writeFile(location, b);
 
     }
 
@@ -184,7 +181,7 @@ public class IldaWriter {
                 theBytes.add((byte) ((posx >> 8) & 0xff));
                 theBytes.add((byte) (posx & 0xff));
 
-                short posy = (short) ((point.y < -1 ? -1 : point.y > 1 ? 1 : point.y) * 32767);
+                short posy = (short) ((point.y < -1 ? -1 : point.y > 1 ? 1 : point.y) * -32767);
                 theBytes.add((byte) ((posy >> 8) & 0xff));
                 theBytes.add((byte) (posy & 0xff));
 

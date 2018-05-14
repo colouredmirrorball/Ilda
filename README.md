@@ -19,3 +19,22 @@ How to install:
  * Unzip Ilda.jar in this directory
  * Should now look like this: *Sketchpath*\libraries\Ilda\library\Ilda.jar
  * Open an exampleor get coding! Good luck!
+ 
+ 
+ Functionality:
+ 
+  * Load Ilda file
+  * Write Ilda file
+  * Load LSX PIC file
+  * Get Ilda file properties as Processing datatypes (PVector, color)
+  * Display Ilda file on screen
+  * Render Ilda frame as if it were a PGraphics, supported operations (tested):
+      * line()
+      * point()
+      * ellipse()
+      * rect()
+      * fill()
+      * text() (wonky)
+      * shape() (includes SVG files)
+      * vertex() 
+  
