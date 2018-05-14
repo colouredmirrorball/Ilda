@@ -3,6 +3,8 @@
     <output-path>$PROJECT_DIR$/Output/Ilda/library</output-path>
     <root id="archive" name="Ilda.jar">
       <element id="module-output" name="Ilda" />
+      <element id="dir-copy" path="$USER_HOME$/Documents/Processing 2/libraries/Ilda/examples" />
+      <element id="dir-copy" path="$PROJECT_DIR$/docs" />
     </root>
   </artifact>
 </component>
