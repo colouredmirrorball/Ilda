@@ -25,18 +25,18 @@ public class Ilda {
         if (beta) parent.println("Ilda for Processing version " + version + " started up successfully.");
     }
 
-    /**
+    /*
      * Any error, quirk, remark, success and such is stored within the class.
      * Use this method to retrieve it for eg a console-like text box.
      * This is for testing purposes and will get eliminated when stuff gets more mature.
      *
      * @return The status
      */
-
+/*
     public ArrayList<String> getStatus() {
         return status;
     }
-
+*/
     /**
      * Parse an Ilda file from disk
      * @param location path to the Ilda file

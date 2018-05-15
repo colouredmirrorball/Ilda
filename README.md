@@ -10,7 +10,7 @@ Manual install: unzip the above file in the Processing libraries folder
 Javadoc: http://colouredmirrorball.github.io/Ilda/
 
 
-First time Usage:
+First time usage:
 
  * Download Processing from processing.org if you haven't already (latest version should work, if not file an issue)
  * Unzip and run it at least once

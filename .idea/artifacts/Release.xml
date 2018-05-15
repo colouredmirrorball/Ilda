@@ -19,6 +19,7 @@
           </element>
         </element>
       </element>
+      <element id="file-copy" path="$PROJECT_DIR$/library.properties" output-file-name="Ilda.txt" />
     </root>
   </artifact>
 </component>

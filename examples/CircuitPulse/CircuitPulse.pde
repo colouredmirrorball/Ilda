@@ -1,3 +1,8 @@
+/*
+Modified sketch from https://github.com/BarneyWhiteman/CodingChallenges/tree/master/cc5_pulse/pulse
+*/
+
+
 import netP5.*;
 import oscP5.*;
 
