@@ -173,6 +173,7 @@ public class IldaRenderer extends PGraphics {
         //ilda.parent.println("begin shape");
         shouldBlank = true;
         vertexCount = 0;
+        closedShape = false;
 
         switch (kind) {
             case TRIANGLE:
@@ -286,7 +287,7 @@ public class IldaRenderer extends PGraphics {
 
 
     public void vertex(float x, float y) {
-        vertex(x, y, 0.5f * depth);
+        vertex(x, y, 0);
     }
 
     public void vertex(float x, float y, float z) {
@@ -319,7 +320,7 @@ public class IldaRenderer extends PGraphics {
         int green = (int) (strokeG * 255);
         int blue = (int) (strokeB * 255);
 
-
+        //when drawing points, add a blanked point before every point
         if ((shape == POINT) || shape == POINTS) {
             currentPoint = new IldaPoint(xpos, ypos, zpos, red, green, blue, true);
             currentFrame.points.add(currentPoint);
@@ -368,7 +369,7 @@ public class IldaRenderer extends PGraphics {
 
     public void endShape() {
         if (closedShape) currentFrame.points.add(firstPoint);
-        //ilda.parent.println("end shape");
+        //ilda.parent.println(closedShape);
         //currentFrame.points.add(currentPoint);
     }
 

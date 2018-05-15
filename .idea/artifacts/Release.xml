@@ -1,0 +1,24 @@
+<component name="ArtifactManager">
+  <artifact name="Release">
+    <output-path>$PROJECT_DIR$/out/artifacts/Release</output-path>
+    <root id="root">
+      <element id="archive" name="Ilda.zip">
+        <element id="directory" name="Ilda">
+          <element id="directory" name="library">
+            <element id="artifact" artifact-name="Ilda" />
+          </element>
+          <element id="directory" name="reference">
+            <element id="dir-copy" path="$PROJECT_DIR$/docs" />
+          </element>
+          <element id="directory" name="examples">
+            <element id="dir-copy" path="$PROJECT_DIR$/examples" />
+          </element>
+          <element id="file-copy" path="$PROJECT_DIR$/library.properties" />
+          <element id="directory" name="src">
+            <element id="dir-copy" path="$PROJECT_DIR$/src" />
+          </element>
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>

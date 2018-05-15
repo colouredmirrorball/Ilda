@@ -230,10 +230,10 @@ public class IldaReader  extends FileParser
                 boolean bl = false;
                 if ((b[i + 6] & 0x40) == 64) bl = true;
                 if (ildaVersion == 0 || ildaVersion == 1) {
-                    IldaPoint point = new IldaPoint(x * 0.00003051757f, y * 0.00003051757f, z * 0.00003051757f, b[i + 7], bl);
+                    IldaPoint point = new IldaPoint(x * 0.00003051757f, y * -0.00003051757f, z * 0.00003051757f, b[i + 7], bl);
                     frame.addPoint(point);
                 } else if (ildaVersion == 4 || ildaVersion == 5) {
-                    IldaPoint point = new IldaPoint(x * 0.00003051757f, y * 0.00003051757f, z * 0.00003051757f, (int) b[i + 9] & 0xFF, (int) b[i + 8] & 0xFF, (int) b[i + 7] & 0xFF, bl);
+                    IldaPoint point = new IldaPoint(x * 0.00003051757f, y * -0.00003051757f, z * 0.00003051757f, (int) b[i + 9] & 0xFF, (int) b[i + 8] & 0xFF, (int) b[i + 7] & 0xFF, bl);
                     frame.addPoint(point);
                 }
 
