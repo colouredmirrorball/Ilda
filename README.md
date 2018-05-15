@@ -18,7 +18,7 @@ How to install:
  * Create or open the folder "libraries"
  * Unzip Ilda.jar in this directory
  * Should now look like this: *Sketchpath*\libraries\Ilda\library\Ilda.jar
- * Open an exampleor get coding! Good luck!
+ * Open an example or get coding! Good luck!
  
  
  Functionality:

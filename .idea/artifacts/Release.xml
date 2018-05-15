@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact name="Release">
-    <output-path>$PROJECT_DIR$/out/artifacts/Release</output-path>
+    <output-path>$PROJECT_DIR$/</output-path>
     <root id="root">
       <element id="archive" name="Ilda.zip">
         <element id="directory" name="Ilda">
