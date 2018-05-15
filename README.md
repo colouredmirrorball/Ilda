@@ -1,22 +1,23 @@
 Ilda
 ====
 
-A Processing library which renders Ilda files.
-Work in progress. As of right now you can do some simple things.
+A Processing library that allows the import, creation, editing and export of Ilda-compliant files for laser show use.
 
-Alpha release (largely works but has some bugs): https://github.com/colouredmirrorball/Ilda/releases/tag/v0.0.3-alpha
+Download: https://github.com/colouredmirrorball/Ilda/raw/master/Ilda.zip
+
+Manual install: unzip the above file in the Processing libraries folder
 
 Javadoc: http://colouredmirrorball.github.io/Ilda/
 
 
-How to install:
+First time Usage:
 
  * Download Processing from processing.org if you haven't already (latest version should work, if not file an issue)
  * Unzip and run it at least once
  * Find the sketch path: File >> Settings >> Sketchpath
  * Use a file browser and open this path
  * Create or open the folder "libraries"
- * Unzip Ilda.jar in this directory
+ * Unzip Ilda.zip in this directory
  * Should now look like this: *Sketchpath*\libraries\Ilda\library\Ilda.jar
  * Open an example or get coding! Good luck!
  
