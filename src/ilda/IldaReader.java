@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
-import static processing.core.PApplet.println;
+
 
 /**
  * This class reads a file and passes the data to frames and points.

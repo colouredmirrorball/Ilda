@@ -4,7 +4,7 @@ import java.io.File;
 
 import static java.nio.file.Files.readAllBytes;
 
-public class FileParser
+class FileParser
 {
     protected String location;
     protected byte[] b;
