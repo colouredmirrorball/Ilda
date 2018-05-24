@@ -51,6 +51,7 @@ public class IldaReader  extends FileParser
 
     /**
      * Parse an ilda file from disk
+     * Normally only this static method should be required to retrieve all IldaFrames from a file
      * @param location path to the ilda file
      * @return list of all loaded frames
      */

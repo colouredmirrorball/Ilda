@@ -1,6 +1,6 @@
 import ilda.*;
 
-Ilda ilda;
+
 IldaRenderer r;
 
 ArrayList<Rectangle> rects = new ArrayList<Rectangle>();
@@ -8,8 +8,8 @@ ArrayList<Rectangle> rects = new ArrayList<Rectangle>();
 void setup()
 {
   size(600, 600, P3D);
-  ilda = new Ilda(this);
-  r = new IldaRenderer(ilda);
+
+  r = new IldaRenderer(this);
 
   for (int i =0; i < 5; i++)
   {
@@ -46,7 +46,7 @@ void keyPressed()
 {
   if (key == 'c') rects.clear();
   if (key == 'd') r.clearAllFrames();
-  if (key == 's') ilda.writeFile(r.getFrames(), "C:/Users/florian/Desktop/Florian/licht&laser/ILDA/animtest.ild");
+  if (key == 's') IldaWriter.writeFile(r.getFrames(), "C:/Users/florian/Desktop/Florian/licht&laser/ILDA/animtest.ild");
 }
 
 class Rectangle
@@ -95,4 +95,3 @@ class Rectangle
     }
   }
 }
-

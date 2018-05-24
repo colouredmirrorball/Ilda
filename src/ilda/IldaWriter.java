@@ -19,8 +19,6 @@ public class IldaWriter {
 
     /**
      * Writes a valid ilda file to a certain location with specified format.
-     * You should call fixHeaders() first before using this method! Otherwise the ilda file might not be valid.
-     * This does not happen automatically for maximum flexibility (but is maybe a bad idea)
      * @param location The path to where the ilda file should be exported
      * @param frames All frames that should be included in the ilda file
      * @param ildaVersion ilda format:
@@ -34,6 +32,8 @@ public class IldaWriter {
 
     public static void writeFile(String location, ArrayList<IldaFrame> frames, int ildaVersion) {
         if (frames == null) return;
+
+        IldaFrame.fixHeaders(frames);
 
         byte[] b = getBytesFromFrames(frames, ildaVersion);
         if (b == null) return;
@@ -58,8 +58,6 @@ public class IldaWriter {
     /**
      * Writes a valid ilda file to a certain location with specified format.
      * It does not check if the specified location has a valid .ild extension.
-     * You should call fixHeaders() first before using this method! Otherwise the ilda file might not be valid.
-     * This does not happen automatically for maximum flexibility (but is maybe a bad idea)
      * @param location The path to where the ilda file should be exported
      * @param frames All frames that should be included in the ilda file
      * @param palette An IldaPalette that will be appended in front of the ilda file with a format 2 header
@@ -69,12 +67,24 @@ public class IldaWriter {
 
     public static void writeFile(String location, ArrayList<IldaFrame> frames, IldaPalette palette, int ildaVersion) {
         if (frames == null) return;
+        IldaFrame.fixHeaders(frames);
 
         byte[] b = getBytesFromFrames(frames, palette, ildaVersion);
         if (b == null) return;
 
         writeFile(location, b);
 
+    }
+
+    /**
+     * Writes a valid ILDA file to the specified location in format 4
+     * @param location Where to write the file to
+     * @param frames Frames that will go into the file
+     */
+
+    public static void writeFile(String location, ArrayList<IldaFrame> frames)
+    {
+        writeFile(location, frames, 4);
     }
 
     public static byte[] getBytesFromFrames(ArrayList<IldaFrame> frames) {

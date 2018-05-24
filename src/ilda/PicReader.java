@@ -7,6 +7,18 @@ public class PicReader extends FileParser
         super(location);
     }
 
+    /**
+     * Returns the frame in a .PIC file
+     * @param location String that contains the path to the file on disk
+     * @return
+     */
+
+    public static IldaFrame getFrame(String location)
+    {
+        PicReader parser = new PicReader(location);
+        return parser.getFrame();
+    }
+
     public IldaFrame getFrame()
     {
         int version = b[0];
