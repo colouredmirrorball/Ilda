@@ -1,14 +1,18 @@
 import ilda.*;
 
-
+//The IldaRenderer can be used as a PGraphics to render Ilda files
 IldaRenderer r;
 
+//Some rectangles that bounce around
 ArrayList<Rectangle> rects = new ArrayList<Rectangle>();
+
+boolean hideText = false;
 
 void setup()
 {
   size(600, 600, P3D);
 
+  //Default constructor of the IldaRenderer
   r = new IldaRenderer(this);
 
   for (int i =0; i < 5; i++)
@@ -20,21 +24,37 @@ void setup()
 void draw()
 {
   background(0);
+
+  //Just like any PGraphics, beginDraw() needs to be called before any graphical operation begins
   r.beginDraw();
+
   for (Rectangle rect : rects)
   {
     rect.update();
+
+    //Updates colour
     r.stroke(rect.colour);
+
+    //Draws rectangle
     r.rect(rect.x, rect.y, 20, 20);
   }
+
+  //And endDraw needs to be called as well
   r.endDraw();
 
-
+  //Displays the current IldaFrame on the Processing canvas
   r.getCurrentFrame().renderFrame(this, false);  
 
-  fill(255);
-  stroke(255);
-  text("Frames: " + r.getFramesAmount(), 40, 40);
+  if (!hideText)
+  {
+    fill(255);
+    stroke(255);
+    text("Frames: " + r.getFramesAmount(), 40, 40);
+    text("C - clear all rectangles", 40, 65);
+    text("D - empty frame buffer", 40, 90);
+    text("S - save frames to ILDA file", 40, 115);
+    text("H - hide help text", 40, 140);
+  }
 }
 
 void mouseClicked()
@@ -46,7 +66,8 @@ void keyPressed()
 {
   if (key == 'c') rects.clear();
   if (key == 'd') r.clearAllFrames();
-  if (key == 's') IldaWriter.writeFile(r.getFrames(), "C:/Users/florian/Desktop/Florian/licht&laser/ILDA/animtest.ild");
+  if (key == 's') IldaWriter.writeFile( sketchPath()+"/Rectangles.ild", r.getFrames());
+  if (key == 'h') hideText = !hideText;
 }
 
 class Rectangle
