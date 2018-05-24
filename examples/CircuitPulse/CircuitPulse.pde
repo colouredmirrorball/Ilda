@@ -6,7 +6,7 @@ Modified sketch from https://github.com/BarneyWhiteman/CodingChallenges/tree/mas
 import netP5.*;
 import oscP5.*;
 
-import Ilda.*;
+import ilda.*;
 
 OscP5 osc;
 NetAddress target = new NetAddress("127.0.0.1", 10000);

@@ -2,14 +2,14 @@
  * Main class
  */
 
-package Ilda;
+package ilda;
 
 import processing.core.PApplet;
 
 import java.util.ArrayList;
 
 /**
- * This package allows you to render Ilda files straight from Processing!
+ * This package allows you to render ilda files straight from Processing!
  */
 
 public class Ilda {
@@ -22,7 +22,7 @@ public class Ilda {
     public Ilda(PApplet parent) {
 
         this.parent = parent;
-        if (beta) parent.println("Ilda for Processing version " + version + " started up successfully.");
+        if (beta) parent.println("ilda for Processing version " + version + " started up successfully.");
     }
 
     /*
@@ -32,14 +32,14 @@ public class Ilda {
      *
      * @return The status
      */
-/*
+
     public ArrayList<String> getStatus() {
         return status;
     }
-*/
+
     /**
-     * Parse an Ilda file from disk
-     * @param location path to the Ilda file
+     * Parse an ilda file from disk
+     * @param location path to the ilda file
      * @return list of all loaded frames
      */
 
@@ -56,12 +56,12 @@ public class Ilda {
 
     /**
      * <b>You should call fixHeaders() first before using this method!</b>
-     * Writes a valid Ilda file to a certain location in format 4 (3D, RGB).
+     * Writes a valid ilda file to a certain location in format 4 (3D, RGB).
      * Checks if the specified location has a valid .ild extension.
-     * You should call fixHeaders() first before using this method! Otherwise the Ilda file will not be valid.
+     * You should call fixHeaders() first before using this method! Otherwise the ilda file will not be valid.
      * This does not happen automatically for maximum flexibility (but is maybe a bad idea)
      * @param location The path to where the ilda file should be exported
-     * @param frames All frames that should be included in the Ilda file
+     * @param frames All frames that should be included in the ilda file
      */
 
     public static void writeFile(ArrayList<IldaFrame> frames, String location) {
@@ -70,13 +70,13 @@ public class Ilda {
 
     /**
      * <b>You should call fixHeaders() first before using this method!</b>
-     * Writes a valid Ilda file to a certain location with specified format.
+     * Writes a valid ilda file to a certain location with specified format.
      * Checks if the specified location has a valid .ild extension.
-     * You should call fixHeaders() first before using this method! Otherwise the Ilda file will not be valid.
+     * You should call fixHeaders() first before using this method! Otherwise the ilda file will not be valid.
      * This does not happen automatically for maximum flexibility (but is maybe a bad idea)
      * @param location The path to where the ilda file should be exported
-     * @param frames All frames that should be included in the Ilda file
-     * @param ildaVersion Ilda format:
+     * @param frames All frames that should be included in the ilda file
+     * @param ildaVersion ilda format:
      *                    0 = 3D, palette;
      *                    1 = 2D, palette;
      *                    (2 = palette header);
@@ -95,14 +95,14 @@ public class Ilda {
 
     /**
      * <b>You should call fixHeaders() first before using this method!</b>
-     * Writes a valid Ilda file to a certain location with specified format including a palette.
+     * Writes a valid ilda file to a certain location with specified format including a palette.
      * Checks if the specified location has a valid .ild extension.
-     * You should call fixHeaders() first before using this method! Otherwise the Ilda file will not be valid.
+     * You should call fixHeaders() first before using this method! Otherwise the ilda file will not be valid.
      * This does not happen automatically for maximum flexibility (but is maybe a bad idea)
      * @param location The path to where the ilda file should be exported
-     * @param frames All frames that should be included in the Ilda file
-     * @param palette An IldaPalette that will be appended in front of the Ilda file with a format 2 header
-     * @param ildaVersion Ilda format: should be 0 or 1 since only those two formats use a palette for their colour information
+     * @param frames All frames that should be included in the ilda file
+     * @param palette An IldaPalette that will be appended in front of the ilda file with a format 2 header
+     * @param ildaVersion ilda format: should be 0 or 1 since only those two formats use a palette for their colour information
      *                    but nobody is stopping you from appending a palette to a format 4/5 file, though that would be pointless
      */
 
@@ -137,7 +137,7 @@ public class Ilda {
      * eg.updates point count, frame number, total frames
      * It sets the frame name and company name to the arguments you gave it.
      * It assumes the frames form a complete sequence (for the total frame entry).
-     * Call this before writing to an Ilda file
+     * Call this before writing to an ilda file
      *
      * @param frames      A reference to the frames whose headers need to get fixed.
      * @param frameName   A name you want to give the frame

@@ -1,4 +1,4 @@
-package Ilda;
+package ilda;
 
 public class PicReader extends FileParser
 {

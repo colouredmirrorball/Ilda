@@ -1,6 +1,6 @@
-import Ilda.*;
+import ilda.*;
 
-Ilda ilda;
+ilda ilda;
 IldaRenderer r;
 
 ArrayList<Rectangle> rects = new ArrayList<Rectangle>();
@@ -8,7 +8,7 @@ ArrayList<Rectangle> rects = new ArrayList<Rectangle>();
 void setup()
 {
   size(600, 600, P3D);
-  ilda = new Ilda(this);
+  ilda = new ilda(this);
   r = new IldaRenderer(ilda);
 
   for (int i =0; i < 5; i++)

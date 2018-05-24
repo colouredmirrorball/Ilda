@@ -1,22 +1,22 @@
-import Ilda.*;
+import ilda.*;
 
 
-Ilda ilda;
+ilda ilda;
 ArrayList<IldaFrame> frames = new ArrayList();
 boolean showBlanking = true;
 
-//The Ilda frame will be rendered to this PGraphics
+//The ilda frame will be rendered to this PGraphics
 PGraphics renderedFrame;
 
 
 void setup()
 {
   size(600, 600, OPENGL);
-  ilda = new Ilda(this);
+  ilda = new ilda(this);
 
   try
   {
-    // Insert file path to Ilda file here
+    // Insert file path to ilda file here
     frames = ilda.readFile("");
   }
   catch(Exception e)
@@ -30,7 +30,7 @@ void setup()
     if (frames.size() > 0) 
     {
       renderedFrame = createGraphics((int) (width*0.5), (int) (height*0.5), OPENGL);
-      //It is now necessary to use beginDraw() and endDraw() on the PGraphics buffer used to draw the Ilda frame to
+      //It is now necessary to use beginDraw() and endDraw() on the PGraphics buffer used to draw the ilda frame to
       renderedFrame.beginDraw();
       renderedFrame = frames.get(0).renderFrame(renderedFrame, showBlanking);
       renderedFrame.endDraw();
@@ -90,7 +90,7 @@ void keyPressed()
   if (key == 's')
   {
     println(frames.size() + " " + (frames == null));
-    ilda.writeFile(frames, ""); //Insert a path here where to export the Ilda file to
+    ilda.writeFile(frames, ""); //Insert a path here where to export the ilda file to
   }
 
   if (key == 'i')

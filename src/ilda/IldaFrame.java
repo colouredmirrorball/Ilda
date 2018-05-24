@@ -1,4 +1,4 @@
-package Ilda;
+package ilda;
 
 import processing.core.PApplet;
 import processing.core.PGraphics;
@@ -48,12 +48,12 @@ public class IldaFrame {
     protected boolean palette = false;
 
 
-    /*Ilda frame*/
+    /*ilda frame*/
     public IldaFrame() {
     }
 
     /**
-     * Set the Ilda version this frame uses.
+     * Set the ilda version this frame uses.
      * 0 = 3D, palette
      * 1 = 2D, palette
      * 4 = 3D, RGB

@@ -1,6 +1,6 @@
-import Ilda.*;
+import ilda.*;
 
-Ilda ilda;
+ilda ilda;
 int s = 200;  //size of the window
 
 void settings()
@@ -11,7 +11,7 @@ void settings()
 void setup()
 {
 
-  ilda = new Ilda(this);
+  ilda = new ilda(this);
 
   PFont someFont = createFont("Arial", s);  //Specify font and size
 
@@ -31,5 +31,5 @@ void setup()
 
   noLoop();
 
-  ilda.writeFile(r.getFrames(), sketchPath() + "\\text.ild");   //Write the frame to an Ilda file
+  ilda.writeFile(r.getFrames(), sketchPath() + "\\text.ild");   //Write the frame to an ilda file
 }

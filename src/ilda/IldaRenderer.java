@@ -1,4 +1,4 @@
-package Ilda;
+package ilda;
 
 import processing.core.*;
 
@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import static processing.core.PApplet.map;
 
 /**
- * This class can be used to render Ilda files as a subclass of PGraphics.
+ * This class can be used to render ilda files as a subclass of PGraphics.
  * Well, it might be.
  * Sometime in the future.
  *<p>
@@ -114,7 +114,7 @@ public class IldaRenderer extends PGraphics {
 
     /**
      * Currently saving is not implemented in the renderer,
-     * use writeFile() in the main Ilda class instead.
+     * use writeFile() in the main ilda class instead.
      *
      * @param path should be a path leading to a file
      */
@@ -127,7 +127,7 @@ public class IldaRenderer extends PGraphics {
             if (!file.isAbsolute()) file = null;
         }
         if (file == null) {
-            throw new RuntimeException("Something went wrong creating an output file for the Ilda renderer.");
+            throw new RuntimeException("Something went wrong creating an output file for the ilda renderer.");
         }
 
     }
@@ -468,7 +468,7 @@ public class IldaRenderer extends PGraphics {
     }
 
     /**
-     * Draw an existing Ilda frame inside the renderer
+     * Draw an existing ilda frame inside the renderer
      * @param frame frame to be drawn
      * @param x x position offset
      * @param y y position offset

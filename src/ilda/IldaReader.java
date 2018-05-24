@@ -1,16 +1,13 @@
-package Ilda;
+package ilda;
 
 
 import java.io.File;
-import java.nio.file.Files;
 import java.util.ArrayList;
-
-import static java.nio.file.Files.readAllBytes;
 
 /**
  * This class reads a file and passes the data to frames and points.
  *
- * Ilda files are explained <a href=http://www.ilda.com/resources/StandardsDocs/ILDA_IDTF14_rev011.pdf>here</a>.
+ * ilda files are explained <a href=http://www.ilda.com/resources/StandardsDocs/ILDA_IDTF14_rev011.pdf>here</a>.
  * Here's a quick breakdown:<br>
  *     <ul>
  * <li>ILDA V0 is 3D and uses palettes</li>
@@ -21,7 +18,7 @@ import static java.nio.file.Files.readAllBytes;
  * <li>ILDA V5 is 2D with true-colour information in BGR format</li>
  * </ul>
  *
- * An Ilda file is composed of headers that always start with "ILDA", followed by three zeros and the version number.
+ * An ilda file is composed of headers that always start with "ILDA", followed by three zeros and the version number.
  * A complete header is 32 bytes.
  * After the header, the data follows. In case of a palette (V2), each data point has three bytes: R, G and B.
  * In case of a frame (V0/1/4/5), the X, Y and Z (for 3D frames) values are spread out over two bytes
@@ -82,7 +79,7 @@ public class IldaReader  extends FileParser
         }
         String hdr = new String(theHeader);
         if (!hdr.equals("ILDA")) {
-            ilda.status.add("Error: file not an Ilda file. Loading cancelled.");
+            ilda.status.add("Error: file not an ilda file. Loading cancelled.");
             ilda.status.add("Expected \"ILDA\", found \"" + hdr + "\"");
             return null;
         }
@@ -97,7 +94,7 @@ public class IldaReader  extends FileParser
         //This actually returns the number of headers, and is normally one more than the real number of frames
 
 
-        //This should never be true, because there was already a check if the file starts with an Ilda string
+        //This should never be true, because there was already a check if the file starts with an ilda string
         if (framePositions == null) {
             ilda.status.add("No frames found.");
             return null;
@@ -137,8 +134,8 @@ public class IldaReader  extends FileParser
     }
 
     /**
-     * Iterative method to load Ilda frames, the new frames are appended to an ArrayList.
-     * @param b the byte array which contains the original Ilda file
+     * Iterative method to load ilda frames, the new frames are appended to an ArrayList.
+     * @param b the byte array which contains the original ilda file
      * @param offset offset index in the array where to start reading a frame
      * @param f IldaFrame ArrayList where the new frame will be appended
      */
@@ -154,7 +151,7 @@ public class IldaReader  extends FileParser
         }
         String hdr = new String(theHeader);
         if (!hdr.equals("ILDA")) {
-            ilda.status.add("Error: file not an Ilda file. Loading cancelled.");
+            ilda.status.add("Error: file not an ilda file. Loading cancelled.");
             ilda.status.add("Expected \"ILDA\", found \"" + hdr + "\" at position " + offset);
             return;
         }
@@ -288,7 +285,7 @@ public class IldaReader  extends FileParser
         }
         String hdr = new String(theHeader);
         if (!hdr.equals("ILDA")) {
-            ilda.status.add("Error: file not an Ilda file. Loading cancelled.");
+            ilda.status.add("Error: file not an ilda file. Loading cancelled.");
             ilda.status.add("Expected \"ILDA\", found \"" + hdr + "\"");
             return null;
         }
@@ -355,7 +352,7 @@ public class IldaReader  extends FileParser
         } else {
             IldaFrame frame = new IldaFrame();  //Frame(this);      <- remains here as a symbol of how not to program
 
-            //Byte 7 = Ilda file version
+            //Byte 7 = ilda file version
             frame.ildaVersion = ildaVersion;
 
             //Information previously read out (because palettes also have them):

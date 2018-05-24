@@ -1,4 +1,4 @@
-package Ilda;
+package ilda;
 
 import java.util.ArrayList;
 

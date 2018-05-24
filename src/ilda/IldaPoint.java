@@ -1,4 +1,4 @@
-package Ilda;
+package ilda;
 
 import processing.core.PVector;
 

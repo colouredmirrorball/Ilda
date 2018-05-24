@@ -1,4 +1,4 @@
-package Ilda;
+package ilda;
 
 import java.util.ArrayList;
 
@@ -37,7 +37,7 @@ public class IldaPalette {
     }
 
     /**
-     * Converts the palette to bytes which can be added in front of an Ilda file or stored separately
+     * Converts the palette to bytes which can be added in front of an ilda file or stored separately
      * @return array of bytes with ilda-compliant palette
      */
 

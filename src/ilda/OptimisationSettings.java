@@ -1,4 +1,4 @@
-package Ilda;
+package ilda;
 
 /**
  * Bundles all optimisation settings so they are easily shared across the package and easily transported to other projects.

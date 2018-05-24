@@ -1,4 +1,4 @@
-package Ilda;
+package ilda;
 
 
 import processing.core.PApplet;
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 /**
  * Writes IldaFrames to an ilda file.
- * By default, Ilda v4 is used.
+ * By default, ilda v4 is used.
  */
 public class IldaWriter {
     ArrayList<IldaFrame> frames;
@@ -18,12 +18,12 @@ public class IldaWriter {
 
 
     /**
-     * Writes a valid Ilda file to a certain location with specified format.
-     * You should call fixHeaders() first before using this method! Otherwise the Ilda file might not be valid.
+     * Writes a valid ilda file to a certain location with specified format.
+     * You should call fixHeaders() first before using this method! Otherwise the ilda file might not be valid.
      * This does not happen automatically for maximum flexibility (but is maybe a bad idea)
      * @param location The path to where the ilda file should be exported
-     * @param frames All frames that should be included in the Ilda file
-     * @param ildaVersion Ilda format:
+     * @param frames All frames that should be included in the ilda file
+     * @param ildaVersion ilda format:
      *                    0 = 3D, palette;
      *                    1 = 2D, palette;
      *                    (2 = palette header);
@@ -50,20 +50,20 @@ public class IldaWriter {
             Files.write(file.toPath(), b);
 
         } catch (Exception e) {
-            PApplet.println("Error when exporting Ilda file: ", e);
+            PApplet.println("Error when exporting ilda file: ", e);
             e.printStackTrace();
         }
     }
 
     /**
-     * Writes a valid Ilda file to a certain location with specified format.
+     * Writes a valid ilda file to a certain location with specified format.
      * It does not check if the specified location has a valid .ild extension.
-     * You should call fixHeaders() first before using this method! Otherwise the Ilda file might not be valid.
+     * You should call fixHeaders() first before using this method! Otherwise the ilda file might not be valid.
      * This does not happen automatically for maximum flexibility (but is maybe a bad idea)
      * @param location The path to where the ilda file should be exported
-     * @param frames All frames that should be included in the Ilda file
-     * @param palette An IldaPalette that will be appended in front of the Ilda file with a format 2 header
-     * @param ildaVersion Ilda format: should be 0 or 1 since only those two formats use a palette for their colour information
+     * @param frames All frames that should be included in the ilda file
+     * @param palette An IldaPalette that will be appended in front of the ilda file with a format 2 header
+     * @param ildaVersion ilda format: should be 0 or 1 since only those two formats use a palette for their colour information
      *                    but nobody is stopping you from appending a palette to a format 4/5 file, though that would be pointless
      */
 
@@ -82,14 +82,14 @@ public class IldaWriter {
     }
 
     /**
-     * This method returns a byte array which can be exported directly as an Ilda file from a palette and an ArrayList of IldaFrames.
+     * This method returns a byte array which can be exported directly as an ilda file from a palette and an ArrayList of IldaFrames.
      * It will insert the palette as a format 2 header before all frames.
      * It assumes the colours already have the correct colour index, no recolourisation happens.
      *
      * @param frames      an ArrayList of IldaFrames which get converted to ilda-compliant bytes
      * @param palette     an IldaPalette which gets appended before the laser art in the ilda file
      * @param ildaVersion the ilda format the frames get saved as, can be 0, 1, 4 or 5 but only 0 and 1 use a palette. It makes no sense to export as format 4 or 5 with a palette included.
-     * @return Ilda compliant byte array which can be directly exported as an ilda file
+     * @return ilda compliant byte array which can be directly exported as an ilda file
      */
 
     public static byte[] getBytesFromFrames(ArrayList<IldaFrame> frames, IldaPalette palette, int ildaVersion) {
@@ -102,10 +102,10 @@ public class IldaWriter {
     }
 
     /**
-     * This method returns a byte array from only an ArrayList of IldaFrames. This array can be saved to disk directly as a valid Ilda file (binary file).
+     * This method returns a byte array from only an ArrayList of IldaFrames. This array can be saved to disk directly as a valid ilda file (binary file).
      * @param frames The frames
-     * @param ildaVersion The Ilda format version, can be 0, 1, 4 or 5.
-     * @return Valid bytes that compose an Ilda file
+     * @param ildaVersion The ilda format version, can be 0, 1, 4 or 5.
+     * @return Valid bytes that compose an ilda file
      */
 
     public static byte[] getBytesFromFrames(ArrayList<IldaFrame> frames, int ildaVersion) {

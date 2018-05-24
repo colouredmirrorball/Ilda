@@ -47,11 +47,11 @@ var activeTableTab = "activeTableTab";
 </div>
 <div class="subNav">
 <ul class="navList">
-<li><a href="../Ilda/IldaPoint.html" title="class in Ilda"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
-<li><a href="../Ilda/IldaRenderer.html" title="class in Ilda"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
+<li><a href="../Ilda/IldaPoint.html" title="class in ilda"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
+<li><a href="../Ilda/IldaRenderer.html" title="class in ilda"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
 </ul>
 <ul class="navList">
-<li><a href="../index.html?Ilda/IldaReader.html" target="_top">Frames</a></li>
+<li><a href="../index.html?ilda/IldaReader.html" target="_top">Frames</a></li>
 <li><a href="IldaReader.html" target="_top">No&nbsp;Frames</a></li>
 </ul>
 <ul class="navList" id="allclasses_navbar_top">
@@ -90,7 +90,7 @@ var activeTableTab = "activeTableTab";
 <!-- ========= END OF TOP NAVBAR ========= -->
 <!-- ======== START OF CLASS DATA ======== -->
 <div class="header">
-<div class="subTitle">Ilda</div>
+<div class="subTitle">ilda</div>
 <h2 title="Class IldaReader" class="title">Class IldaReader</h2>
 </div>
 <div class="contentContainer">
@@ -98,10 +98,10 @@ var activeTableTab = "activeTableTab";
 <li>java.lang.Object</li>
 <li>
 <ul class="inheritance">
-<li><a href="../Ilda/FileParser.html" title="class in Ilda">Ilda.FileParser</a></li>
+<li><a href="../Ilda/FileParser.html" title="class in ilda">ilda.FileParser</a></li>
 <li>
 <ul class="inheritance">
-<li>Ilda.IldaReader</li>
+<li>ilda.IldaReader</li>
 </ul>
 </li>
 </ul>
@@ -113,10 +113,10 @@ var activeTableTab = "activeTableTab";
 <hr>
 <br>
 <pre>public class <span class="typeNameLabel">IldaReader</span>
-extends <a href="../Ilda/FileParser.html" title="class in Ilda">FileParser</a></pre>
+extends <a href="../Ilda/FileParser.html" title="class in ilda">FileParser</a></pre>
 <div class="block">This class reads a file and passes the data to frames and points.
 
- Ilda files are explained <a href=http://www.ilda.com/resources/StandardsDocs/ILDA_IDTF14_rev011.pdf>here</a>.
+ ilda files are explained <a href=http://www.ilda.com/resources/StandardsDocs/ILDA_IDTF14_rev011.pdf>here</a>.
  Here's a quick breakdown:<br>
      <ul>
  <li>ILDA V0 is 3D and uses palettes</li>
@@ -127,7 +127,7 @@ extends <a href="../Ilda/FileParser.html" title="class in Ilda">FileParser</a></
  <li>ILDA V5 is 2D with true-colour information in BGR format</li>
  </ul>
 
- An Ilda file is composed of headers that always start with "ILDA", followed by three zeros and the version number.
+ An ilda file is composed of headers that always start with "ILDA", followed by three zeros and the version number.
  A complete header is 32 bytes.
  After the header, the data follows. In case of a palette (V2), each data point has three bytes: R, G and B.
  In case of a frame (V0/1/4/5), the X, Y and Z (for 3D frames) values are spread out over two bytes
@@ -151,7 +151,7 @@ extends <a href="../Ilda/FileParser.html" title="class in Ilda">FileParser</a></
 <th class="colLast" scope="col">Field and Description</th>
 </tr>
 <tr class="altColor">
-<td class="colFirst"><code><a href="../Ilda/IldaPalette.html" title="class in Ilda">IldaPalette</a></code></td>
+<td class="colFirst"><code><a href="../Ilda/IldaPalette.html" title="class in ilda">IldaPalette</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../Ilda/IldaReader.html#palette">palette</a></span></code>&nbsp;</td>
 </tr>
 </table>
@@ -169,11 +169,11 @@ extends <a href="../Ilda/FileParser.html" title="class in Ilda">FileParser</a></
 <th class="colOne" scope="col">Constructor and Description</th>
 </tr>
 <tr class="altColor">
-<td class="colOne"><code><span class="memberNameLink"><a href="../Ilda/IldaReader.html#IldaReader-Ilda.Ilda-java.io.File-">IldaReader</a></span>(<a href="../Ilda/Ilda.html" title="class in Ilda">Ilda</a>&nbsp;ilda,
+<td class="colOne"><code><span class="memberNameLink"><a href="../Ilda/IldaReader.html#IldaReader-Ilda.Ilda-java.io.File-">IldaReader</a></span>(<a href="../Ilda/Ilda.html" title="class in ilda">ilda</a>&nbsp;ilda,
           java.io.File&nbsp;file)</code>&nbsp;</td>
 </tr>
 <tr class="rowColor">
-<td class="colOne"><code><span class="memberNameLink"><a href="../Ilda/IldaReader.html#IldaReader-Ilda.Ilda-java.lang.String-">IldaReader</a></span>(<a href="../Ilda/Ilda.html" title="class in Ilda">Ilda</a>&nbsp;ilda,
+<td class="colOne"><code><span class="memberNameLink"><a href="../Ilda/IldaReader.html#IldaReader-Ilda.Ilda-java.lang.String-">IldaReader</a></span>(<a href="../Ilda/Ilda.html" title="class in ilda">ilda</a>&nbsp;ilda,
           java.lang.String&nbsp;location)</code>&nbsp;</td>
 </tr>
 </table>
@@ -192,16 +192,16 @@ extends <a href="../Ilda/FileParser.html" title="class in Ilda">FileParser</a></
 <th class="colLast" scope="col">Method and Description</th>
 </tr>
 <tr id="i0" class="altColor">
-<td class="colFirst"><code>java.util.ArrayList&lt;<a href="../Ilda/IldaFrame.html" title="class in Ilda">IldaFrame</a>&gt;</code></td>
+<td class="colFirst"><code>java.util.ArrayList&lt;<a href="../Ilda/IldaFrame.html" title="class in ilda">IldaFrame</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../Ilda/IldaReader.html#getFramesFromBytes--">getFramesFromBytes</a></span>()</code>&nbsp;</td>
 </tr>
 <tr id="i1" class="rowColor">
-<td class="colFirst"><code>java.util.ArrayList&lt;<a href="../Ilda/IldaFrame.html" title="class in Ilda">IldaFrame</a>&gt;</code></td>
+<td class="colFirst"><code>java.util.ArrayList&lt;<a href="../Ilda/IldaFrame.html" title="class in ilda">IldaFrame</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../Ilda/IldaReader.html#getFramesFromBytes-byte:A-">getFramesFromBytes</a></span>(byte[]&nbsp;b)</code>&nbsp;</td>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../Ilda/IldaReader.html#setPalette-Ilda.IldaPalette-">setPalette</a></span>(<a href="../Ilda/IldaPalette.html" title="class in Ilda">IldaPalette</a>&nbsp;palette)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../Ilda/IldaReader.html#setPalette-Ilda.IldaPalette-">setPalette</a></span>(<a href="../Ilda/IldaPalette.html" title="class in ilda">IldaPalette</a>&nbsp;palette)</code>&nbsp;</td>
 </tr>
 </table>
 <ul class="blockList">
@@ -231,7 +231,7 @@ extends <a href="../Ilda/FileParser.html" title="class in Ilda">FileParser</a></
 <ul class="blockListLast">
 <li class="blockList">
 <h4>palette</h4>
-<pre>public&nbsp;<a href="../Ilda/IldaPalette.html" title="class in Ilda">IldaPalette</a> palette</pre>
+<pre>public&nbsp;<a href="../Ilda/IldaPalette.html" title="class in ilda">IldaPalette</a> palette</pre>
 </li>
 </ul>
 </li>
@@ -248,7 +248,7 @@ extends <a href="../Ilda/FileParser.html" title="class in Ilda">FileParser</a></
 <ul class="blockList">
 <li class="blockList">
 <h4>IldaReader</h4>
-<pre>public&nbsp;IldaReader(<a href="../Ilda/Ilda.html" title="class in Ilda">Ilda</a>&nbsp;ilda,
+<pre>public&nbsp;IldaReader(<a href="../Ilda/Ilda.html" title="class in ilda">ilda</a>&nbsp;ilda,
                   java.lang.String&nbsp;location)</pre>
 </li>
 </ul>
@@ -258,7 +258,7 @@ extends <a href="../Ilda/FileParser.html" title="class in Ilda">FileParser</a></
 <ul class="blockListLast">
 <li class="blockList">
 <h4>IldaReader</h4>
-<pre>public&nbsp;IldaReader(<a href="../Ilda/Ilda.html" title="class in Ilda">Ilda</a>&nbsp;ilda,
+<pre>public&nbsp;IldaReader(<a href="../Ilda/Ilda.html" title="class in ilda">ilda</a>&nbsp;ilda,
                   java.io.File&nbsp;file)</pre>
 </li>
 </ul>
@@ -276,7 +276,7 @@ extends <a href="../Ilda/FileParser.html" title="class in Ilda">FileParser</a></
 <ul class="blockList">
 <li class="blockList">
 <h4>getFramesFromBytes</h4>
-<pre>public&nbsp;java.util.ArrayList&lt;<a href="../Ilda/IldaFrame.html" title="class in Ilda">IldaFrame</a>&gt;&nbsp;getFramesFromBytes()</pre>
+<pre>public&nbsp;java.util.ArrayList&lt;<a href="../Ilda/IldaFrame.html" title="class in ilda">IldaFrame</a>&gt;&nbsp;getFramesFromBytes()</pre>
 </li>
 </ul>
 <a name="setPalette-Ilda.IldaPalette-">
@@ -285,7 +285,7 @@ extends <a href="../Ilda/FileParser.html" title="class in Ilda">FileParser</a></
 <ul class="blockList">
 <li class="blockList">
 <h4>setPalette</h4>
-<pre>public&nbsp;void&nbsp;setPalette(<a href="../Ilda/IldaPalette.html" title="class in Ilda">IldaPalette</a>&nbsp;palette)</pre>
+<pre>public&nbsp;void&nbsp;setPalette(<a href="../Ilda/IldaPalette.html" title="class in ilda">IldaPalette</a>&nbsp;palette)</pre>
 </li>
 </ul>
 <a name="getFramesFromBytes-byte:A-">
@@ -294,7 +294,7 @@ extends <a href="../Ilda/FileParser.html" title="class in Ilda">FileParser</a></
 <ul class="blockListLast">
 <li class="blockList">
 <h4>getFramesFromBytes</h4>
-<pre>public&nbsp;java.util.ArrayList&lt;<a href="../Ilda/IldaFrame.html" title="class in Ilda">IldaFrame</a>&gt;&nbsp;getFramesFromBytes(byte[]&nbsp;b)</pre>
+<pre>public&nbsp;java.util.ArrayList&lt;<a href="../Ilda/IldaFrame.html" title="class in ilda">IldaFrame</a>&gt;&nbsp;getFramesFromBytes(byte[]&nbsp;b)</pre>
 </li>
 </ul>
 </li>
@@ -323,11 +323,11 @@ extends <a href="../Ilda/FileParser.html" title="class in Ilda">FileParser</a></
 </div>
 <div class="subNav">
 <ul class="navList">
-<li><a href="../Ilda/IldaPoint.html" title="class in Ilda"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
-<li><a href="../Ilda/IldaRenderer.html" title="class in Ilda"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
+<li><a href="../Ilda/IldaPoint.html" title="class in ilda"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
+<li><a href="../Ilda/IldaRenderer.html" title="class in ilda"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
 </ul>
 <ul class="navList">
-<li><a href="../index.html?Ilda/IldaReader.html" target="_top">Frames</a></li>
+<li><a href="../index.html?ilda/IldaReader.html" target="_top">Frames</a></li>
 <li><a href="IldaReader.html" target="_top">No&nbsp;Frames</a></li>
 </ul>
 <ul class="navList" id="allclasses_navbar_bottom">

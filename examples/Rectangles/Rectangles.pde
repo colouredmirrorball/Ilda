@@ -1,4 +1,4 @@
-import Ilda.*;
+import ilda.*;
 
 Ilda ilda;
 IldaRenderer r;
