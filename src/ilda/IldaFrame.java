@@ -253,5 +253,69 @@ public class IldaFrame {
         return palette;
     }
 
+    /**
+     * Fix the header of the current frame
+     * @param frameNumber index of the frame in the animation
+     * @param totalFrames total frames in the animation
+     * @param frameName name of the frame
+     * @param companyName name of the owner/program/company that owns or created the frame
+     */
 
+    public void fixHeader(int frameNumber, int totalFrames, String frameName, String companyName)
+    {
+        fixHeader(this, frameNumber,totalFrames,frameName,companyName);
+    }
+
+    /**
+     * Static version of fixHeader()
+     * See documentation there
+     *
+     */
+
+    public static void fixHeader(IldaFrame frame, int frameNumber, int totalFrames, String frameName, String companyName)
+    {
+        frame.frameNumber = frameNumber;
+        frame.totalFrames = totalFrames;
+        frame.pointCount = frame.points.size();
+        frame.frameName = frameName;
+        frame.companyName = companyName;
+    }
+
+    /**
+     * Fixes the frame headers
+     * eg. updates point count, frame number, total frames, ...
+     * It leaves the frame name and company name untouched.
+     * It assumes the frames form a complete sequence.
+     *
+     * @param frames A reference to the frames whose headers need to get fixed.
+     */
+
+    public static void fixHeaders(ArrayList<IldaFrame> frames) {
+        int i = 1;
+        for (IldaFrame frame : frames)
+        {
+            fixHeader(frame, i++, frames.size(), frame.frameName, frame.companyName);
+        }
+    }
+
+    /**
+     * Fixes the frame headers
+     * eg.updates point count, frame number, total frames
+     * It sets the frame name and company name to the arguments you gave it.
+     * It assumes the frames form a complete sequence (for the total frame entry).
+     * Call this before writing to an ilda file
+     *
+     * @param frames      A reference to the frames whose headers need to get fixed.
+     * @param frameName   A name you want to give the frame
+     * @param companyName Another name
+     */
+
+    public static void fixHeaders(ArrayList<IldaFrame> frames, String frameName, String companyName) {
+        int i = 1;
+        for (IldaFrame frame : frames)
+        {
+
+            fixHeader(frame, i++, frames.size(), frameName, companyName);
+        }
+    }
 }

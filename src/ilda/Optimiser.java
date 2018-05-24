@@ -7,13 +7,11 @@ import java.util.ArrayList;
  */
 public class Optimiser {
 
-    Ilda ilda;
 
     private OptimisationSettings settings;
 
-    public Optimiser(OptimisationSettings settings, Ilda ilda) {
+    public Optimiser(OptimisationSettings settings) {
         this.settings = settings;
-        this.ilda = ilda;
     }
 
     public OptimisationSettings getSettings() {

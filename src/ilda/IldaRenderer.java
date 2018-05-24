@@ -34,7 +34,6 @@ public class IldaRenderer extends PGraphics {
     protected File file;
     protected ArrayList<IldaFrame> theFrames = new ArrayList<IldaFrame>();
     protected IldaFrame currentFrame;
-    protected Ilda ilda;
     protected int count = 0;
     protected float invWidth, invHeight, invDepth;
     protected boolean shouldBlank = false;
@@ -61,14 +60,16 @@ public class IldaRenderer extends PGraphics {
     boolean optimise = true;
     private int matrixStackDepth;
 
-    public IldaRenderer(Ilda ilda) {
-        this(ilda, ilda.parent.width, ilda.parent.height);
+    PApplet parent;
+
+    public IldaRenderer(PApplet parent) {
+
+        this(parent, parent.width, parent.height);
     }
 
 
-    public IldaRenderer(Ilda ilda, int width, int height) {
-        this.ilda = ilda;
-
+    public IldaRenderer(PApplet parent, int width, int height) {
+        this.parent= parent;
         this.width = width;
         this.height = height;
         depth = width;//(float) Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2));
@@ -86,7 +87,7 @@ public class IldaRenderer extends PGraphics {
 
         }
 
-        optimiser = new Optimiser(new OptimisationSettings(), ilda);
+        optimiser = new Optimiser(new OptimisationSettings());
     }
 
     /**
@@ -464,7 +465,7 @@ public class IldaRenderer extends PGraphics {
 
     protected void defaultFontOrDeath(String method, float size)
     {
-        this.textFont = ilda.parent.createFont("Lucida Sans", size, true, null);
+        this.textFont = parent.createFont("Lucida Sans", size, true, null);
     }
 
     /**
@@ -522,7 +523,7 @@ public class IldaRenderer extends PGraphics {
 
     public ArrayList<IldaFrame> getFrames() {
 
-        Ilda.fixHeaders(theFrames);
+        IldaFrame.fixHeaders(theFrames);
         return theFrames;
     }
 

@@ -1,7 +1,10 @@
 package ilda;
 
 
+import com.sun.javaws.exceptions.InvalidArgumentException;
+
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 /**
@@ -29,27 +32,37 @@ public class IldaReader  extends FileParser
 
     //protected ArrayList<Integer> framePositions = new ArrayList<Integer>();
     public IldaPalette palette;
-    Ilda ilda;
 
-    public IldaReader(Ilda ilda, String location)
+    public IldaReader(String location) throws FileNotFoundException
     {
         super(location);
-        this.ilda = ilda;
+
         if (b == null)
         {
-            ilda.status.add("Could not read the file.");
+            throw new FileNotFoundException("Error: could not read file at " + location);
         }
-        else
-        {
-            ilda.status.add("Successfully read file " + location);
-        }
+
     }
 
-    public IldaReader(Ilda ilda, File file) {
-        this(ilda, file.getAbsolutePath());
+    public IldaReader(File file) throws FileNotFoundException
+    {
+        this(file.getAbsolutePath());
     }
 
-    public ArrayList<IldaFrame> getFramesFromBytes() {
+    /**
+     * Parse an ilda file from disk
+     * @param location path to the ilda file
+     * @return list of all loaded frames
+     */
+
+    public static ArrayList<IldaFrame> readFile(String location) throws FileNotFoundException, InvalidArgumentException
+    {
+        IldaReader reader = new IldaReader(location);
+        return reader.getFramesFromBytes();
+    }
+
+    public ArrayList<IldaFrame> getFramesFromBytes() throws InvalidArgumentException
+    {
         return getFramesFromBytes(b);
     }
 
@@ -57,18 +70,18 @@ public class IldaReader  extends FileParser
         this.palette = palette;
     }
 
-    public ArrayList<IldaFrame> getFramesFromBytes(byte[] b) {
+    public ArrayList<IldaFrame> getFramesFromBytes(byte[] b) throws InvalidArgumentException
+    {
 
         ArrayList<IldaFrame> theFrames = new ArrayList<IldaFrame>();
         if (b == null) {
-            ilda.status.add("Found no bytes to parse as frames");
+            //This should have been caught before
             return null;
         }
 
         if (b.length < 32) {
             //There isn't even a complete header here!
-            ilda.status.add("File too short");
-            return null;
+            throw new InvalidArgumentException(new String[]{"Error: file is not long enough to be a valid ILDA file!"});
         }
 
         //Check if the first four bytes read ILDA:
@@ -79,9 +92,7 @@ public class IldaReader  extends FileParser
         }
         String hdr = new String(theHeader);
         if (!hdr.equals("ILDA")) {
-            ilda.status.add("Error: file not an ilda file. Loading cancelled.");
-            ilda.status.add("Expected \"ILDA\", found \"" + hdr + "\"");
-            return null;
+            throw new InvalidArgumentException(new String[]{"Error: invalid ILDA file, found " + hdr + ", expected ILDA instead"});
         }
 
         loadIldaFrame(b, 0, theFrames);
@@ -151,8 +162,7 @@ public class IldaReader  extends FileParser
         }
         String hdr = new String(theHeader);
         if (!hdr.equals("ILDA")) {
-            ilda.status.add("Error: file not an ilda file. Loading cancelled.");
-            ilda.status.add("Expected \"ILDA\", found \"" + hdr + "\" at position " + offset);
+
             return;
         }
 
@@ -176,7 +186,7 @@ public class IldaReader  extends FileParser
         int ildaVersion = b[7 + offset];
 
         if (ildaVersion == 2) {
-            ilda.status.add("Palette included");
+
             palette = new IldaPalette();
 
             palette.name = new String(name);
