@@ -3,11 +3,11 @@ ilda
 
 A Processing library that allows the import, creation, editing and export of ilda-compliant files for laser show use.
 
-Download: https://github.com/colouredmirrorball/ilda/raw/master/ilda.zip
+Download: https://github.com/colouredmirrorball/Ilda/raw/master/Ilda.zip
 
 Manual install: unzip the above file in the Processing libraries folder
 
-Javadoc: http://colouredmirrorball.github.io/ilda/
+Javadoc: http://colouredmirrorball.github.io/Ilda/
 
 
 First time usage:
