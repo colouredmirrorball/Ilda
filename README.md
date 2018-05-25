@@ -19,6 +19,7 @@ First time usage:
  * Create or open the folder "libraries"
  * Unzip ilda.zip in this directory
  * Should now look like this: *Sketchpath*\libraries\ilda\library\ilda.jar
+ * Restart Processing
  * Open an example or get coding! Good luck!
  
  

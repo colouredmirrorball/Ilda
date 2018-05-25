@@ -14,7 +14,7 @@ class FileParser
 
 
 
-    public FileParser(String location)
+    FileParser(String location)
     {
         this.location = location;
         try {
@@ -30,17 +30,17 @@ class FileParser
         this(file.getAbsolutePath());
     }
 
-    public byte parseByte()
+    byte parseByte()
     {
         return (byte) (b[position++] & 0xff);
     }
 
-    public short parseShort()
+    short parseShort()
     {
         return (short) (b[position++] << 8 | (b[position++] & 0xff));
     }
 
-    public String parseString(int length)
+    String parseString(int length)
     {
         StringBuilder out = new StringBuilder();
         for(int i = 0; i < length; i++)
@@ -50,7 +50,7 @@ class FileParser
         return out.toString();
     }
 
-    public void skip(int times)
+    void skip(int times)
     {
         for(int i = 0;i <times;i++)
         {
@@ -58,7 +58,7 @@ class FileParser
         }
     }
 
-    public void reset()
+    void reset()
     {
         position = 0;
     }

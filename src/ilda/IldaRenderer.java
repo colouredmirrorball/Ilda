@@ -6,6 +6,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import static processing.core.PApplet.map;
+import static processing.core.PApplet.println;
 
 /**
  * This class can be used to render ilda files as a subclass of PGraphics.
@@ -30,6 +31,12 @@ import static processing.core.PApplet.map;
  * using the same instance of IldaRenderer.
  * </p>
  */
+
+//TODO stroke(r, g, b) not working
+
+
+
+
 public class IldaRenderer extends PGraphics {
     protected File file;
     protected ArrayList<IldaFrame> theFrames = new ArrayList<IldaFrame>();
@@ -169,14 +176,16 @@ public class IldaRenderer extends PGraphics {
         resetMatrix();
     }
 
-    public void beginShape(int kind) {
+    public void beginShape(int kind)
+    {
         shape = kind;
-        //ilda.parent.println("begin shape");
+
         shouldBlank = true;
         vertexCount = 0;
         closedShape = false;
 
-        switch (kind) {
+        switch (kind)
+        {
             case TRIANGLE:
             case TRIANGLES:
             case QUAD:
@@ -189,6 +198,10 @@ public class IldaRenderer extends PGraphics {
                 closedShape = true;
 
                 break;
+            default:
+                closedShape = false;
+                break;
+
         }
     }
 

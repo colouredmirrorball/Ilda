@@ -41,16 +41,17 @@ class Particle {
     }
   }
 
-  void show(PGraphics r) {
-
-    r.stroke(c, 255, 255);
-    r.point(x, y, 0);
-    if (old.size() > 1) {
-      for (int i = 0; i < old.size(); i ++) {
+  void show(PGraphics r) 
+  {
+    r.beginShape(LINE);
+    if (old.size() > 1) 
+    {
+      for (int i = 0; i < old.size(); i ++) 
+      {
         r.stroke(c, 255, 255, map(i, 0, old.size() - 1, 0, 255));
-        r.point(old.get(i).x, old.get(i).y, 0);
+        r.vertex(old.get(i).x, old.get(i).y, 0);
       }
     }
-
+    r.endShape();
   }
 }

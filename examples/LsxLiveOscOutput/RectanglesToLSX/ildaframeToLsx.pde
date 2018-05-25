@@ -14,7 +14,7 @@ public void ildaframeToLsx(IldaFrame frame, int timeline, int destinationFrame, 
 
   //HEADER
 
-  b.add((byte) 1);  //type: 0=XYRGB; 1=XYZRGB; 2=XYZPRRGB
+  b.add((byte) 2);  //type: 0=XYRGB; 1=XYZRGB; 2=XYZPRRGB
   b.add((byte) 1);  //store: 0 = buffer, 1 = store in frame
   b.add((byte) timeline);  //scanner/timeline
   b.add((byte) 0);         //future
@@ -64,6 +64,9 @@ public void ildaframeToLsx(IldaFrame frame, int timeline, int destinationFrame, 
     b.add((byte) (z & 0xff));
     b.add((byte) ((z >> 8) & 0xff));
 
+    b.add((byte) (1<<7 |(p.isBlanked() ?  1 << 6 :  0)));
+    b.add((byte)0);
+
 
     int red = (p.getColour() >> 16) & 0xFF;  
     int green = (p.getColour() >> 8) & 0xFF;
@@ -75,6 +78,8 @@ public void ildaframeToLsx(IldaFrame frame, int timeline, int destinationFrame, 
       green = 0;
       blue = 0;
     }
+
+
 
     b.add((byte) red);
     b.add((byte) green);

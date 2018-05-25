@@ -55,7 +55,7 @@ void draw()
   {
     rect.update();    //update the rectangle's position
     r.stroke(rect.colour);  
-    r.rect(rect.x, rect.y, 20, 20);    //draw the rectangle on the IldaRenderer, previous line specifies colour
+    r.rect(rect.x, rect.y, 40, 40);    //draw the rectangle on the IldaRenderer, previous line specifies colour
   }
 
   //Don't forget to call endDraw()!
@@ -110,20 +110,20 @@ class Rectangle
       velx = -velx;
       x = 0;
     }
-    if (x > width-20)
+    if (x > width-40)
     {
       velx = - velx;
-      x = width-20;
+      x = width-40;
     }
     if (y < 0)
     {
       vely = - vely;
       y = 0;
     }
-    if (y > height-20)
+    if (y > height-40)
     {
       vely = - vely;
-      y = height-20;
+      y = height-40;
     }
   }
 }
