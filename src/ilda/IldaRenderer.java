@@ -392,9 +392,9 @@ public class IldaRenderer extends PGraphics {
         boolean first = true;
 
         for (float i = 0; i < m + 1 + circleCorrection; i++) {
-            float xpos = (float) (1 * ((x + w * Math.sin(TWO_PI * i / m) + matrix.m03) * invWidth ));
-            float ypos = (float) (-1 * ((y + h * Math.cos(TWO_PI * i / m) + matrix.m13) * invHeight ));
-            float zpos = 2 * ((0.5f * depth + matrix.m23) * invDepth - 0.5f);
+            float xpos = (float) (2 * (((x + w/2 * (Math.sin(TWO_PI * i / m) +1)+ matrix.m03) * invWidth )-0.5f));
+            float ypos = (float) (2 * (((y + h/2 * (Math.cos(TWO_PI * i / m) +1)+ matrix.m13) * invHeight )-0.5f));
+            float zpos = 0;
             int red = (int) (strokeR * 255);
             int green = (int) (strokeG * 255);
             int blue = (int) (strokeB * 255);
