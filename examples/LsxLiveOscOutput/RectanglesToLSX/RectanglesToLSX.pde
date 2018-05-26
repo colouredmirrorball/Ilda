@@ -51,12 +51,15 @@ void draw()
   //To begin creating laser frames, use beginDraw() on the IldaRenderer
   r.beginDraw();
   r.background();    //this line removes the points from the previous frame
+  
   for (Rectangle rect : rects)
   {
     rect.update();    //update the rectangle's position
     r.stroke(rect.colour);  
     r.rect(rect.x, rect.y, 40, 40);    //draw the rectangle on the IldaRenderer, previous line specifies colour
   }
+  
+
 
   //Don't forget to call endDraw()!
   r.endDraw();

@@ -392,8 +392,8 @@ public class IldaRenderer extends PGraphics {
         boolean first = true;
 
         for (float i = 0; i < m + 1 + circleCorrection; i++) {
-            float xpos = (float) (2 * ((x + w * Math.sin(TWO_PI * i / m) + matrix.m03) * invWidth - 0.5f));
-            float ypos = (float) (-2 * ((y + h * Math.cos(TWO_PI * i / m) + matrix.m13) * invHeight - 0.5f));
+            float xpos = (float) (1 * ((x + w * Math.sin(TWO_PI * i / m) + matrix.m03) * invWidth ));
+            float ypos = (float) (-1 * ((y + h * Math.cos(TWO_PI * i / m) + matrix.m13) * invHeight ));
             float zpos = 2 * ((0.5f * depth + matrix.m23) * invDepth - 0.5f);
             int red = (int) (strokeR * 255);
             int green = (int) (strokeG * 255);
@@ -468,11 +468,11 @@ public class IldaRenderer extends PGraphics {
      * Can be negative to leave a gap.
      * Default is 0.
      *
-     * @param correction how much extra the ellipse continues
+     * @param correction for how much extra points the ellipse continues
      */
 
 
-    public void setEllipseCorrection(float correction) {
+    public void setEllipseCorrection(int correction) {
         circleCorrection = correction;
     }
 

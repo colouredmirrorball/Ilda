@@ -14,7 +14,7 @@ public void ildaframeToLsx(IldaFrame frame, int timeline, int destinationFrame, 
 
   //HEADER
 
-  b.add((byte) 2);  //type: 0=XYRGB; 1=XYZRGB; 2=XYZPRRGB
+  b.add((byte) 2);  //type: 0=XYRGB; 1=XYZRGB; 2=XYZPPrRGB
   b.add((byte) 1);  //store: 0 = buffer, 1 = store in frame
   b.add((byte) timeline);  //scanner/timeline
   b.add((byte) 0);         //future
@@ -64,7 +64,15 @@ public void ildaframeToLsx(IldaFrame frame, int timeline, int destinationFrame, 
     b.add((byte) (z & 0xff));
     b.add((byte) ((z >> 8) & 0xff));
 
+    // Palette byte: 
+    //    First bit: normal vector    1 = regular point    0 = normal vector
+    //    Second bit: blanking        1 = blanked          0 = unblanked
+    //    Third to eighth bit: palette idx (0-63)
     b.add((byte) (1<<7 |(p.isBlanked() ?  1 << 6 :  0)));
+
+    // Parts-Repeats byte
+    //    First to fourth bit: parts (0-15)
+    //    Fifth to eighth bit: repeats (0-15)
     b.add((byte)0);
 
 
