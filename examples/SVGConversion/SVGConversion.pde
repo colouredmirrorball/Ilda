@@ -1,24 +1,32 @@
-import ilda.*; //<>// //<>// //<>// //<>// //<>//
+import ilda.*;
 
 IldaRenderer r;
 PShape s;
 
 String error = "";
 boolean errorHappened = false;
-boolean rerender = false;
+
+
+
 void setup()
 {
   size(800, 800, P3D);
 
+  //r is the IldaRenderer object where the SVG will be drawn onto
   r = new IldaRenderer(this);
   r.setOverwrite(true);
+
   textSize(20);
 }
 
 void draw()
 {
   background(0);
+
+  //Draw the frame on the canvas
   if (r.getFramesAmount() > 0) r.getCurrentFrame().renderFrame(this, true, 0, 0);
+
+  //Display text
   fill(255);
   text("Hit O to open an SVG file", 10, 20);
   text("Hit S to save as Ilda file", 10, 45);
@@ -27,10 +35,7 @@ void draw()
     fill(255, 0, 0);
     text("An error occurred: " + error, 10, 70);
   }
-  if (s != null)
-  {
-    shape(s, 0, 0);
-  }
+
 }
 
 void keyPressed()
@@ -58,14 +63,18 @@ void svgSelected(File file)
     error = "No file found.";
     return;
   }
+
+  //Reset the IldaRenderer object
   r.clearAllFrames();
   r.beginDraw();
   r.background();
 
-
   try
   {
+    //Retrieve the SVG from disk
     s = loadShape(file.getAbsolutePath());
+
+    //Render the SVG to the IldaRenderer (which acts as a PGraphics)
     r.shape(s, 0, 0);
   }
   catch(Exception e)
@@ -75,9 +84,9 @@ void svgSelected(File file)
     error = "Something went wrong when trying to render SVG (" + e.getMessage() + ")";
   }
 
+  //Don't forget
   r.endDraw();
 
-  rerender = true;
 }
 
 void ildaSelected(File file)
@@ -88,5 +97,7 @@ void ildaSelected(File file)
     error = "No valid output file specified, please try again.";
     return;
   }
+
+  //Writing an Ilda file is as simple as that
   IldaWriter.writeFile(file.getAbsolutePath(), r.getFrames(), 4);
 }
