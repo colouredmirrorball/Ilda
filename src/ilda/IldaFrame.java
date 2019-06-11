@@ -5,6 +5,9 @@ import processing.core.PGraphics;
 
 import java.util.ArrayList;
 
+import static processing.core.PApplet.binary;
+import static processing.core.PApplet.println;
+
 /**
  * A frame is essentially a collection of points. It can render its geometry to a PGraphics.
  */
@@ -128,7 +131,6 @@ public class IldaFrame {
 
     public PGraphics renderFrame(PGraphics pg, boolean showBlanking, int sizex, int sizey, float rotx, float roty, float rotz) {
 
-
         //pg.beginDraw();
         //parent.println("Began drawing frame " + frameName);
 
@@ -163,21 +165,24 @@ public class IldaFrame {
         pg.translate((float) (-sizex * 0.5), (float) (-sizey * 0.5), (float) (-(sizex + sizey) * 0.25));
 
 
-        if (points.size() > 0) {
+        if (points.size() > 0)
+        {
             boolean firstPoint = true;
             float oldpositionx = 0;
             float oldpositiony = 0;
             float oldpositionz = 0;
-            for (IldaPoint point : points) {
+            for (IldaPoint point : points)
+            {
                 float pointx = (point.x + 1) * sizex * 0.5f;
                 float pointy = (point.y + 1) * sizey * 0.5f;
                 float pointz = (point.z + 1) * (sizex + sizey) * 0.25f;
-                if (showBlanking || !point.blanked) {
+                if (showBlanking || !point.blanked)
+                {
                     pg.strokeWeight(3);
                     //pg.stroke(point.colour); //??? y u no work ლ(ಠ益ಠლ)
-                    pg.stroke((point.colour >> 16) & 0xFF, (point.colour >> 8) & 0xFF, point.colour & 0xFF);
+                    pg.stroke((point.colour >> 16) & 0xFF, (point.colour >> 8) & 0xFF, point.colour & 0xFF,255);
                     if (point.blanked) {
-                        pg.stroke(75);
+                        pg.stroke(75, 255);
                     }
                     pg.point(pointx, pointy, pointz);
                 }
@@ -185,7 +190,7 @@ public class IldaFrame {
 
                 if (!firstPoint) {
                     pg.strokeWeight(1);
-                    if (!showBlanking && point.blanked) pg.stroke(0);
+                    if (!showBlanking && point.blanked) pg.stroke(0, 255);
                     else {
                         pg.line(pointx, pointy, pointz, oldpositionx, oldpositiony, oldpositionz);
                     }
@@ -295,6 +300,15 @@ public class IldaFrame {
         for (IldaFrame frame : frames)
         {
             fixHeader(frame, i++, frames.size(), frame.frameName, frame.companyName);
+        }
+    }
+
+    public static void fixHeaders(IldaFrame[] frames)
+    {
+        int i = 1;
+        for (IldaFrame frame : frames)
+        {
+            fixHeader(frame, i++, frames.length, frame.frameName, frame.companyName);
         }
     }
 

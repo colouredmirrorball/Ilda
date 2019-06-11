@@ -42,6 +42,18 @@ public class IldaWriter {
 
     }
 
+    public static void writeFile(String location, IldaFrame[] frames, int ildaVersion) {
+        if (frames == null) return;
+
+        IldaFrame.fixHeaders(frames);
+
+        byte[] b = getBytesFromFrames(frames, ildaVersion);
+        if (b == null) return;
+
+        writeFile(location, b);
+
+    }
+
     private static void writeFile(String location, byte[] b)
     {
         try {
@@ -65,7 +77,8 @@ public class IldaWriter {
      *                    but nobody is stopping you from appending a palette to a format 4/5 file, though that would be pointless
      */
 
-    public static void writeFile(String location, ArrayList<IldaFrame> frames, IldaPalette palette, int ildaVersion) {
+    public static void writeFile(String location, ArrayList<IldaFrame> frames, IldaPalette palette, int ildaVersion)
+    {
         if (frames == null) return;
         IldaFrame.fixHeaders(frames);
 
@@ -75,6 +88,24 @@ public class IldaWriter {
         writeFile(location, b);
 
     }
+
+    public static void writeFile(String location, IldaFrame[] frames, IldaPalette palette, int ildaVersion)
+    {
+        if (frames == null) return;
+        IldaFrame.fixHeaders(frames);
+
+        byte[] b = getBytesFromFrames(frames, palette, ildaVersion);
+        if (b == null) return;
+
+        writeFile(location, b);
+
+    }
+
+    public static void writeFile(String location, IldaFrame[] frames)
+    {
+        writeFile(location, frames, 4);
+    }
+
 
     /**
      * Writes a valid ILDA file to the specified location in format 4
@@ -88,7 +119,13 @@ public class IldaWriter {
     }
 
     public static byte[] getBytesFromFrames(ArrayList<IldaFrame> frames) {
-        return getBytesFromFrames(frames, 4);
+        return getBytesFromFrames(frames.toArray(new IldaFrame[frames.size()]), 4);
+    }
+
+
+    public static byte[] getBytesFromFrames(ArrayList<IldaFrame> frames, int ildaVersion)
+    {
+        return getBytesFromFrames(frames.toArray(new IldaFrame[frames.size()]),ildaVersion);
     }
 
     /**
@@ -103,6 +140,11 @@ public class IldaWriter {
      */
 
     public static byte[] getBytesFromFrames(ArrayList<IldaFrame> frames, IldaPalette palette, int ildaVersion) {
+        return getBytesFromFrames(frames.toArray(new IldaFrame[frames.size()]), palette, ildaVersion);
+    }
+
+    public static byte[] getBytesFromFrames(IldaFrame[] frames, IldaPalette palette, int ildaVersion)
+    {
         byte[] pbytes = palette.paletteToBytes();
         byte[] fbytes = getBytesFromFrames(frames, ildaVersion);
         byte[] cbytes = new byte[pbytes.length + fbytes.length];
@@ -118,11 +160,11 @@ public class IldaWriter {
      * @return Valid bytes that compose an ilda file
      */
 
-    public static byte[] getBytesFromFrames(ArrayList<IldaFrame> frames, int ildaVersion) {
+    public static byte[] getBytesFromFrames(IldaFrame[] frames, int ildaVersion) {
         ArrayList<Byte> theBytes = new ArrayList<Byte>();
         int frameNum = 0;
 
-        if (frames.isEmpty()) return null;
+        if (frames.length == 0) return null;
 
         for (IldaFrame frame : frames) {
             theBytes.add((byte) 'I');
@@ -178,8 +220,8 @@ public class IldaWriter {
 
 
             //Bytes 29-30: Number of frames
-            theBytes.add((byte) ((frames.size() >> 8) & 0xff));    //This better be correct
-            theBytes.add((byte) (frames.size() & 0xff));
+            theBytes.add((byte) ((frames.length >> 8) & 0xff));    //This better be correct
+            theBytes.add((byte) (frames.length & 0xff));
 
             theBytes.add((byte) (frame.scannerHead));    //Byte 31 is scanner head
             theBytes.add((byte) (0));                    //Byte 32 is future

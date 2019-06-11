@@ -21,7 +21,15 @@ void setup() {
   osc = new OscP5(this, 12000);
 
   r = new IldaRenderer(this);
+  
+  //In the overwrite mode, the renderer will keep on drawing to the same frame instead of storing a frame array.
+  //Since we're sending the generated frames straight to LSX there's no need to store them in the renderer
+  //so it can keep on reusing the same frame for better memory management.
+  //If we were saving the animation to an ILDA file this line should be removed.
   r.setOverwrite(true);
+  
+  //By default, optimisation is turned on
+  //r.setOptimise(false);
   r.colorMode(HSB);
 
   surface.setLocation(20, 20);
@@ -29,14 +37,23 @@ void setup() {
 
 void draw() {
   background(0);
+  
+  //Always call beginDraw() on the renderer
   r.beginDraw();
+  
+  //Remove the contents of the frame to start with a blank canvas
   r.background();
-  for (int i = p.size() - 1; i >= 1; i --) {
+  
+  //Loops over all particles
+  for (int i = p.size() - 1; i >= 0; i --) 
+  {
     p.get(i).update();
-    if (p.get(i).dead) {
+    if (p.get(i).dead) 
+    {
       p.remove(i);
       continue;
     }
+    //Displays the particle on the IldaRenderer object
     p.get(i).show(r);
   }
   r.endDraw();
