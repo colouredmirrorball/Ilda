@@ -46,6 +46,7 @@ Todo:
       * blank transition dwell points
       * angle dwell
    * Clip points outside of canvas
+   * Make library official
   
 Compatibility:
 

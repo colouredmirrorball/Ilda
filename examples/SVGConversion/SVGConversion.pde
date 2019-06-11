@@ -14,7 +14,6 @@ void setup()
 
   //r is the IldaRenderer object where the SVG will be drawn onto
   r = new IldaRenderer(this);
-  r.setOverwrite(true);
 
   textSize(20);
 }
@@ -35,7 +34,6 @@ void draw()
     fill(255, 0, 0);
     text("An error occurred: " + error, 10, 70);
   }
-
 }
 
 void keyPressed()
@@ -86,7 +84,8 @@ void svgSelected(File file)
 
   //Don't forget
   r.endDraw();
-
+  println(r.getCurrentFrame().getPoints().size());
+  println(r.getFramesAmount());
 }
 
 void ildaSelected(File file)
@@ -97,6 +96,8 @@ void ildaSelected(File file)
     error = "No valid output file specified, please try again.";
     return;
   }
+
+  println(r.getFrames().size());
 
   //Writing an Ilda file is as simple as that
   IldaWriter.writeFile(file.getAbsolutePath(), r.getFrames(), 4);
