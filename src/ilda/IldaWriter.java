@@ -1,12 +1,10 @@
 package ilda;
 
-
-import processing.core.PApplet;
-
 import java.io.File;
 import java.nio.file.Files;
 import java.util.ArrayList;
 
+import processing.core.PApplet;
 
 /**
  * Writes IldaFrames to an ilda file.

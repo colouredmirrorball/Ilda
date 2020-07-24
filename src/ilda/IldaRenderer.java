@@ -1,12 +1,16 @@
 package ilda;
 
-import processing.core.*;
-
 import java.io.File;
 import java.util.ArrayList;
 
+import processing.core.PApplet;
+import processing.core.PConstants;
+import processing.core.PGraphics;
+import processing.core.PMatrix3D;
+import processing.core.PShape;
+import processing.core.PVector;
+
 import static processing.core.PApplet.map;
-import static processing.core.PApplet.println;
 
 /**
  * This class can be used to render ilda files as a subclass of PGraphics.
