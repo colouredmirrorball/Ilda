@@ -12,6 +12,10 @@ import processing.core.PApplet;
  * By default, ilda v4 is used.
  */
 public class IldaWriter {
+
+    private IldaWriter() {
+    }
+
     /**
      * Writes a valid ilda file to a certain location with specified format.
      * @param location The path to where the ilda file should be exported
