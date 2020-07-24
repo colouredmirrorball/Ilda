@@ -3,6 +3,7 @@ package ilda;
 import java.io.File;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.List;
 
 import processing.core.PApplet;
 
@@ -11,10 +12,6 @@ import processing.core.PApplet;
  * By default, ilda v4 is used.
  */
 public class IldaWriter {
-    ArrayList<IldaFrame> frames;
-
-
-
     /**
      * Writes a valid ilda file to a certain location with specified format.
      * @param location The path to where the ilda file should be exported
@@ -28,25 +25,29 @@ public class IldaWriter {
      *                    5 = 2D, RGB
      */
 
-    public static void writeFile(String location, ArrayList<IldaFrame> frames, int ildaVersion) {
-        if (frames == null) return;
+    public static void writeFile(String location, List<IldaFrame> frames, int ildaVersion) {
+        if (frames == null)
+            return;
 
         IldaFrame.fixHeaders(frames);
 
         byte[] b = getBytesFromFrames(frames, ildaVersion);
-        if (b == null) return;
+        if (b.length < 32)
+            return;
 
         writeFile(location, b);
 
     }
 
     public static void writeFile(String location, IldaFrame[] frames, int ildaVersion) {
-        if (frames == null) return;
+        if (frames == null)
+            return;
 
         IldaFrame.fixHeaders(frames);
 
         byte[] b = getBytesFromFrames(frames, ildaVersion);
-        if (b == null) return;
+        if (b.length < 32)
+            return;
 
         writeFile(location, b);
 
@@ -68,20 +69,23 @@ public class IldaWriter {
     /**
      * Writes a valid ilda file to a certain location with specified format.
      * It does not check if the specified location has a valid .ild extension.
-     * @param location The path to where the ilda file should be exported
-     * @param frames All frames that should be included in the ilda file
-     * @param palette An IldaPalette that will be appended in front of the ilda file with a format 2 header
+     *
+     * @param location    The path to where the ilda file should be exported
+     * @param frames      All frames that should be included in the ilda file
+     * @param palette     An IldaPalette that will be appended in front of the ilda file with a format 2 header
      * @param ildaVersion ilda format: should be 0 or 1 since only those two formats use a palette for their colour information
      *                    but nobody is stopping you from appending a palette to a format 4/5 file, though that would be pointless
      */
 
-    public static void writeFile(String location, ArrayList<IldaFrame> frames, IldaPalette palette, int ildaVersion)
-    {
-        if (frames == null) return;
+    public static void writeFile(String location, List<IldaFrame> frames, IldaPalette palette,
+        int ildaVersion) {
+        if (frames == null)
+            return;
         IldaFrame.fixHeaders(frames);
 
         byte[] b = getBytesFromFrames(frames, palette, ildaVersion);
-        if (b == null) return;
+        if (b.length < 32)
+            return;
 
         writeFile(location, b);
 
@@ -93,7 +97,8 @@ public class IldaWriter {
         IldaFrame.fixHeaders(frames);
 
         byte[] b = getBytesFromFrames(frames, palette, ildaVersion);
-        if (b == null) return;
+        if (b.length < 32)
+            return;
 
         writeFile(location, b);
 
@@ -104,26 +109,23 @@ public class IldaWriter {
         writeFile(location, frames, 4);
     }
 
-
     /**
      * Writes a valid ILDA file to the specified location in format 4
+     *
      * @param location Where to write the file to
-     * @param frames Frames that will go into the file
+     * @param frames   Frames that will go into the file
      */
 
-    public static void writeFile(String location, ArrayList<IldaFrame> frames)
-    {
+    public static void writeFile(String location, List<IldaFrame> frames) {
         writeFile(location, frames, 4);
     }
 
-    public static byte[] getBytesFromFrames(ArrayList<IldaFrame> frames) {
-        return getBytesFromFrames(frames.toArray(new IldaFrame[frames.size()]), 4);
+    public static byte[] getBytesFromFrames(List<IldaFrame> frames) {
+        return getBytesFromFrames(frames.toArray(new IldaFrame[0]), 4);
     }
 
-
-    public static byte[] getBytesFromFrames(ArrayList<IldaFrame> frames, int ildaVersion)
-    {
-        return getBytesFromFrames(frames.toArray(new IldaFrame[frames.size()]),ildaVersion);
+    public static byte[] getBytesFromFrames(List<IldaFrame> frames, int ildaVersion) {
+        return getBytesFromFrames(frames.toArray(new IldaFrame[0]), ildaVersion);
     }
 
     /**
@@ -137,8 +139,9 @@ public class IldaWriter {
      * @return ilda compliant byte array which can be directly exported as an ilda file
      */
 
-    public static byte[] getBytesFromFrames(ArrayList<IldaFrame> frames, IldaPalette palette, int ildaVersion) {
-        return getBytesFromFrames(frames.toArray(new IldaFrame[frames.size()]), palette, ildaVersion);
+    public static byte[] getBytesFromFrames(List<IldaFrame> frames, IldaPalette palette,
+        int ildaVersion) {
+        return getBytesFromFrames(frames.toArray(new IldaFrame[0]), palette, ildaVersion);
     }
 
     public static byte[] getBytesFromFrames(IldaFrame[] frames, IldaPalette palette, int ildaVersion)
@@ -159,25 +162,19 @@ public class IldaWriter {
      */
 
     public static byte[] getBytesFromFrames(IldaFrame[] frames, int ildaVersion) {
-        ArrayList<Byte> theBytes = new ArrayList<Byte>();
+        ArrayList<Byte> theBytes = new ArrayList<>();
         int frameNum = 0;
 
-        if (frames.length == 0) return null;
+        if (frames.length == 0)
+            return new byte[0];
 
         for (IldaFrame frame : frames) {
-            theBytes.add((byte) 'I');
-            theBytes.add((byte) 'L');
-            theBytes.add((byte) 'D');
-            theBytes.add((byte) 'A');
-            theBytes.add((byte) 0);
-            theBytes.add((byte) 0);
-            theBytes.add((byte) 0);
+            writeCommonIldaHeader(theBytes);
 
             if (ildaVersion == 0 || ildaVersion == 1 || ildaVersion == 2 || ildaVersion == 4 || ildaVersion == 5)
                 theBytes.add((byte) ildaVersion);
             else {
-
-                return null;
+                return new byte[0];
             }
 
             for (int i = 0; i < 8; i++)    //Bytes 9-16: Name
@@ -190,14 +187,7 @@ public class IldaWriter {
 
             if (frame.companyName.length() == 0)   //Bytes 17-24: Company Name
             {
-                theBytes.add((byte) 'I');     //If empty: call it "Ilda4P5"
-                theBytes.add((byte) 'l');
-                theBytes.add((byte) 'd');
-                theBytes.add((byte) 'a');
-                theBytes.add((byte) '4');
-                theBytes.add((byte) 'P');
-                theBytes.add((byte) '5');
-                theBytes.add((byte) ' ');
+                writeCustomCompanyName(theBytes);
             } else {
                 for (int i = 0; i < 8; i++) {
                     char letter;
@@ -211,11 +201,9 @@ public class IldaWriter {
             theBytes.add((byte) ((frame.points.size() >> 8) & 0xff));    //This better be correct
             theBytes.add((byte) (frame.points.size() & 0xff));
 
-
             //Bytes 27-28: Frame number (automatically increment each frame)
             theBytes.add((byte) ((++frameNum >> 8) & 0xff));    //This better be correct
             theBytes.add((byte) (frameNum & 0xff));
-
 
             //Bytes 29-30: Number of frames
             theBytes.add((byte) ((frames.length >> 8) & 0xff));    //This better be correct
@@ -224,25 +212,25 @@ public class IldaWriter {
             theBytes.add((byte) (frame.scannerHead));    //Byte 31 is scanner head
             theBytes.add((byte) (0));                    //Byte 32 is future
 
-
-
             for (IldaPoint point : frame.points) {
-                short posx = (short) ((point.x < -1 ? -1 : point.x > 1 ? 1 : point.x) * 32767);
+                short posx = (short) (((point.getX() < -1) ? -1 :
+                    ((point.getX() > 1) ? 1 : point.getX())) * 32767);
                 theBytes.add((byte) ((posx >> 8) & 0xff));
                 theBytes.add((byte) (posx & 0xff));
 
-                short posy = (short) ((point.y < -1 ? -1 : point.y > 1 ? 1 : point.y) * -32767);
+                short posy = (short) (((point.getY() < -1) ? -1 :
+                    ((point.getY() > 1) ? 1 : point.getY())) * 32767);
                 theBytes.add((byte) ((posy >> 8) & 0xff));
                 theBytes.add((byte) (posy & 0xff));
 
                 if (ildaVersion == 0 || ildaVersion == 4) //a 3D frame
                 {
 
-                    int posz = (int) ((point.z < -1 ? -1 : point.z > 1 ? 1 : point.z) * 32767);
+                    int posz = (int) (((point.getZ() < -1) ? -1 :
+                        ((point.getZ() > 1) ? 1 : point.getZ())) * 32767);
                     theBytes.add((byte) ((posz >> 8) & 0xff));
                     theBytes.add((byte) (posz & 0xff));
                 }
-                //ilda.parent.println(posx + " " + posy + " " + point.blanked);
 
                 if (point.blanked) {
                     theBytes.add((byte) 0x40);
@@ -260,27 +248,17 @@ public class IldaWriter {
                     int green = ((c >> 8) & 0xFF);   // Faster way of getting green(argb)
                     int blue = (c & 0xFF);          // Faster way of getting blue(argb)
 
-
                     theBytes.add((byte) (blue));
                     theBytes.add((byte) (green));
                     theBytes.add((byte) (red));
                 }
 
-
             }
-
 
         }
 
         //File should always end with a header
-
-        theBytes.add((byte) 'I');
-        theBytes.add((byte) 'L');
-        theBytes.add((byte) 'D');
-        theBytes.add((byte) 'A');
-        theBytes.add((byte) 0);
-        theBytes.add((byte) 0);
-        theBytes.add((byte) 0);
+        writeCommonIldaHeader(theBytes);
         theBytes.add((byte) ildaVersion);
 
         theBytes.add((byte) 'L');
@@ -292,7 +270,31 @@ public class IldaWriter {
         theBytes.add((byte) 'N');
         theBytes.add((byte) 'E');
 
-        theBytes.add((byte) 'I');
+        writeCustomCompanyName(theBytes);
+
+        theBytes.add((byte) 0);
+        theBytes.add((byte) 0);
+
+        theBytes.add((byte) 0);
+        theBytes.add((byte) 0);
+
+        theBytes.add((byte) 0);
+        theBytes.add((byte) 0);
+
+        theBytes.add((byte) 0);
+
+        theBytes.add((byte) 0);
+
+        byte[] bt = new byte[theBytes.size()]; //Ugh! Get your shit fixed, Java!
+        for (int i = 0; i < theBytes.size(); i++) {
+            bt[i] = theBytes.get(i);
+        }
+
+        return bt;
+    }
+
+    static void writeCustomCompanyName(ArrayList<Byte> theBytes) {
+        theBytes.add((byte) 'I');     //If empty: call it "Ilda4P5"
         theBytes.add((byte) 'l');
         theBytes.add((byte) 'd');
         theBytes.add((byte) 'a');
@@ -300,27 +302,15 @@ public class IldaWriter {
         theBytes.add((byte) 'P');
         theBytes.add((byte) '5');
         theBytes.add((byte) ' ');
+    }
 
+    static void writeCommonIldaHeader(List<Byte> theBytes) {
+        theBytes.add((byte) 'I');       //Bytes 1-4: "ILDA"
+        theBytes.add((byte) 'L');
+        theBytes.add((byte) 'D');
+        theBytes.add((byte) 'A');
+        theBytes.add((byte) 0);         //Bytes 5-8: Format Code 2
         theBytes.add((byte) 0);
         theBytes.add((byte) 0);
-
-        theBytes.add((byte) 0);
-        theBytes.add((byte) 0);
-
-        theBytes.add((byte) 0);
-        theBytes.add((byte) 0);
-
-        theBytes.add((byte) 0);
-
-        theBytes.add((byte) 0);
-
-
-        byte[] bt = new byte[theBytes.size()]; //Ugh! Get your shit fixed, Java!
-        for (int i = 0; i < theBytes.size(); i++) {
-            bt[i] = theBytes.get(i);
-        }
-
-
-        return bt;
     }
 }

@@ -3,16 +3,15 @@ package ilda;
 import processing.core.PVector;
 
 /**
- * A point of an ilda frame. Location is stored in three floats (xyz) ranging from -1 to 1.
+ * A point of an ilda frame. Location is stored in three shorts (xyz) ranging from -1 to 1.
  * Colour is stored in an integer which is a 32 bit number: the first eight bits are not used,
  * the second eight bits are red (0-255), the next eight represent green and the last eight bits are blue.
- * This corresponds to a "color" data type in Processing.
  * This is the "official" colour representation: points also store a palIndex but this is only used to set
  * the colour of a palette, never to render it to a screen.
  * A point also has a blanked flag which determines if the point is off or on.
  */
 public class IldaPoint {
-    protected float x, y, z;
+    protected PVector position;
     protected int colour;
     protected boolean blanked;
     protected byte palIndex;
@@ -20,7 +19,8 @@ public class IldaPoint {
     /**
      * Constructor for an IldaPoint.
      *
-     * @param position a Processing PVector with the position of the newly created point: rescale the coordinates so they're in [-1,1]! (0 = center)
+     * @param position a Processing PVector with the position of the newly created point: rescale the coordinates so
+     *                 they're in [-1,1]! (0 = center)
      * @param red      Integer between 0-255
      * @param green
      * @param blue
@@ -39,7 +39,6 @@ public class IldaPoint {
         this.blanked = blanked;
     }
 
-
     /**
      * @param paletteIndex A number corresponding to a colour in a palette, should be 0-255.
      */
@@ -51,26 +50,15 @@ public class IldaPoint {
 
     }
 
-
     public IldaPoint(IldaPoint point) {
-        x = point.x;
-        y = point.y;
-        z = point.z;
+        position = new PVector();
         colour = point.colour;
         blanked = point.blanked;
         palIndex = point.palIndex;
     }
 
-    @Override
-    public IldaPoint clone() {
-        IldaPoint point = new IldaPoint(this);
-        return point;
-    }
-
     private void floatsToXYZ(float x, float y, float z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
+        this.position = new PVector(x, y, z);
     }
 
     /**
@@ -78,46 +66,20 @@ public class IldaPoint {
      */
 
     public void setColour(int red, int green, int blue) {
-        if (red > 255) red = 255;
-        if (green > 255) green = 255;
-        if (blue > 255) blue = 255;
-        if (red < 0) red = 0;
-        if (green < 0) green = 0;
-        if (blue < 0) blue = 0;
+        if (red > 255)
+            red = 255;
+        if (green > 255)
+            green = 255;
+        if (blue > 255)
+            blue = 255;
+        if (red < 0)
+            red = 0;
+        if (green < 0)
+            green = 0;
+        if (blue < 0)
+            blue = 0;
 
-        colour = ((red & 0xFF) << 16) + ((green & 0xFF) << 8) + ((blue & 0xFF));
-    }
-
-    /**
-     * Change this point's colour using a palette and its palette index
-     *
-     * @param palette The palette the point should use to change its colour
-     */
-
-    public void setColour(IldaPalette palette) {
-        colour = palette.colours.get(palIndex);
-    }
-
-    /**
-     * Change this point's colour using a palette and a palette index
-     *
-     * @param paletteIndex The position of the colour in the palette this point should change to
-     * @param palette      The palette in which this colour is
-     */
-
-    public void setColour(int paletteIndex, IldaPalette palette) {
-        colour = palette.colours.get(paletteIndex);
-    }
-
-    /**
-     * Set the blanked flag of a point
-     * Blanked means the lasers will not turn on at this point but the scanners will move to this position
-     * @param blanked   should the point be blanked?
-     */
-
-    public void setBlanked(boolean blanked)
-    {
-        this.blanked = blanked;
+        colour = ((red & 0xFF) << 16) + ((green & 0xFF) << 8) + (blue & 0xFF);
     }
 
     /**
@@ -140,7 +102,8 @@ public class IldaPoint {
             byte cred = (byte) ((c >> 16) & 0xFF);
             byte cgreen = (byte) ((c >> 8) & 0xFF);
             byte cblue = (byte) (c & 0xFF);
-            double d = Math.pow(cred - red, 2) + Math.pow(cgreen - green, 2) + Math.pow(cblue - blue, 2);
+            double d = Math.pow(cred - red, 2) + Math.pow(cgreen - green, 2) + Math
+                .pow(cblue - blue, 2);
             if (d < distance) {
                 distance = d;
                 index = i;
@@ -152,6 +115,28 @@ public class IldaPoint {
     }
 
     /**
+     * Change this point's colour using a palette and a palette index
+     *
+     * @param paletteIndex The position of the colour in the palette this point should change to
+     * @param palette      The palette in which this colour is
+     */
+
+    public void setColour(int paletteIndex, IldaPalette palette) {
+        colour = palette.colours.get(paletteIndex);
+    }
+
+    /**
+     * Set the blanked flag of a point
+     * Blanked means the lasers will not turn on at this point but the scanners will move to this position
+     *
+     * @param blanked should the point be blanked?
+     */
+
+    public void setBlanked(boolean blanked) {
+        this.blanked = blanked;
+    }
+
+    /**
      * Returns the point's position rescaled according to the frameWidth and frameHeight parameters
      *
      * @param frameWidth  the width of the target PGraphics
@@ -160,13 +145,24 @@ public class IldaPoint {
      * @return a PVector with the position according to the received dimensions.
      */
 
-    public PVector getPosition(float frameWidth, float frameHeight, float frameDepth)
-    {
-        return new PVector(frameWidth * (x * 0.5f + 0.5f), frameHeight * (y * 0.5f + 0.5f), frameDepth * (z * 0.5f + 0.5f));
+    public PVector getPosition(float frameWidth, float frameHeight, float frameDepth) {
+        return new PVector(frameWidth * (position.x * 0.5f + 0.5f),
+            frameHeight * (position.y * 0.5f + 0.5f), frameDepth * (position.z * 0.5f + 0.5f));
     }
 
     public PVector getPosition() {
-        return new PVector(x, y, z);
+        return position;
+    }
+
+    /**
+     * The position should be normalised so that the fields x, y and z of the argument PVector are always in the
+     * interval -1..1
+     *
+     * @param position the new position
+     */
+
+    public void setPosition(PVector position) {
+        this.position = position;
     }
 
     /**
@@ -178,37 +174,33 @@ public class IldaPoint {
      */
 
     public void setPosition(float x, float y, float z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-    }
-
-    /**
-     * The position should be normalised so that the fields x, y and z of the argument PVector are always in the interval -1..1
-     *
-     * @param position the new position
-     */
-
-    public void setPosition(PVector position) {
-        x = position.x;
-        y = position.y;
-        z = position.z;
+        position.set(x, y, z);
     }
 
     public float getX() {
-        return x;
+        return position.x;
     }
 
     public float getY() {
-        return y;
+        return position.y;
     }
 
     public float getZ() {
-        return z;
+        return position.z;
     }
 
     public int getColour() {
         return colour;
+    }
+
+    /**
+     * Change this point's colour using a palette and its palette index
+     *
+     * @param palette The palette the point should use to change its colour
+     */
+
+    public void setColour(IldaPalette palette) {
+        colour = palette.colours.get(palIndex);
     }
 
     public boolean isBlanked() {

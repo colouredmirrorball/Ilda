@@ -4,41 +4,35 @@ package ilda;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-
-
+import java.util.Collections;
+import java.util.List;
 
 /**
  * This class reads a file and passes the data to frames and points.
- *
- * ilda files are explained <a href=http://www.ilda.com/resources/StandardsDocs/ILDA_IDTF14_rev011.pdf>here</a>.
- * Here's a quick breakdown:<br>
- *     <ul>
- * <li>ILDA V0 is 3D and uses palettes</li>
- * <li>ILDA V1 is 2D and uses palettes</li>
- * <li>ILDA V2 is a palette</li>
- * <li>ILDA V3 is a 24-bit palette, but was discontinued and is not a part of the official standard anymore</li>
- * <li>ILDA V4 is 3D with true-colour information in BGR format</li>
- * <li>ILDA V5 is 2D with true-colour information in BGR format</li>
- * </ul>
- *
- * An ilda file is composed of headers that always start with "ILDA", followed by three zeros and the version number.
+ * <p/>
+ * Ilda files are explained here: http://www.laserist.org/StandardsDocs/IDTF05-finaldraft.pdf
+ * This document only mentions Ilda V0, 1, 2 and 3, no V4 and V5 so here's a breakdown:
+ * ILDA V0 is 3D and uses palettes
+ * ILDA V1 is 2D and uses palettes
+ * ILDA V2 is a palette
+ * ILDA V3 is a 24-bit palette, but was discontinued and is not a part of the official standard anymore
+ * ILDA V4 is 3D with true-colour information in BGR format
+ * ILDA V5 is 2D with true-colour information in BGR format
+ * <p/>
+ * An Ilda file is composed of headers that always start with "ILDA", followed by three zeros and the version number.
  * A complete header is 32 bytes.
  * After the header, the data follows. In case of a palette (V2), each data point has three bytes: R, G and B.
  * In case of a frame (V0/1/4/5), the X, Y and Z (for 3D frames) values are spread out over two bytes
  * Then either two status bytes follow with a blanking bit and palette colour number, or BGR values.
  */
-public class IldaReader  extends FileParser
-{
+public class IldaReader extends FileParser {
 
-    //protected ArrayList<Integer> framePositions = new ArrayList<Integer>();
-    public IldaPalette palette;
+    private IldaPalette palette;
 
-    public IldaReader(String location) throws FileNotFoundException
-    {
+    public IldaReader(String location) throws FileNotFoundException {
         super(location);
 
-        if (b == null)
-        {
+        if (b == null) {
             throw new FileNotFoundException("Error: could not read file at " + location);
         }
 
@@ -52,12 +46,12 @@ public class IldaReader  extends FileParser
     /**
      * Parse an ilda file from disk
      * Normally only this static method should be required to retrieve all IldaFrames from a file
+     *
      * @param location path to the ilda file
      * @return list of all loaded frames
      */
 
-    public static ArrayList<IldaFrame> readFile(String location) throws FileNotFoundException
-    {
+    public static List<IldaFrame> readFile(String location) throws FileNotFoundException {
         IldaReader reader = new IldaReader(location);
         return reader.getFramesFromBytes();
     }
@@ -68,13 +62,12 @@ public class IldaReader  extends FileParser
         this.palette = palette;
     }
 
-    private ArrayList<IldaFrame> getFramesFromBytes()
-    {
+    private List<IldaFrame> getFramesFromBytes() {
         reset();
-        ArrayList<IldaFrame> theFrames = new ArrayList<IldaFrame>();
+        ArrayList<IldaFrame> theFrames = new ArrayList<>();
         if (b == null) {
             //This should have been caught before
-            return null;
+            return Collections.emptyList();
         }
 
         if (b.length < 32) {
@@ -109,8 +102,6 @@ public class IldaReader  extends FileParser
         {
             return;        //no complete header
         }
-
-
 
         //Bytes 0-3: ILDA
         String hdr = parseString(4);

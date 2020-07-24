@@ -2,6 +2,7 @@ package ilda;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import processing.core.PApplet;
 import processing.core.PConstants;
@@ -36,17 +37,14 @@ import static processing.core.PApplet.map;
  * </p>
  */
 
-//TODO stroke(r, g, b) not working
-
-
-
-
 public class IldaRenderer extends PGraphics {
     protected File file;
-    protected ArrayList<IldaFrame> theFrames = new ArrayList<IldaFrame>();
+    private final PApplet parentPApplet;
     protected IldaFrame currentFrame;
     protected int count = 0;
-    protected float invWidth, invHeight, invDepth;
+    protected ArrayList<IldaFrame> theFrames = new ArrayList<>();
+    protected float invWidth;
+    protected float invHeight;
     protected boolean shouldBlank = false;
     protected boolean closedShape = false;
     protected IldaPoint firstPoint = new IldaPoint(0, 0, 0, 0, 0, 0, true);
@@ -70,32 +68,26 @@ public class IldaRenderer extends PGraphics {
     Optimiser optimiser;
     boolean optimise = true;
     private int matrixStackDepth;
-
-    PApplet parent;
+    protected float invDepth;
 
     public IldaRenderer(PApplet parent) {
-
         this(parent, parent.width, parent.height);
     }
 
 
     public IldaRenderer(PApplet parent, int width, int height) {
-        this.parent= parent;
+        this.parentPApplet = parent;
         this.width = width;
         this.height = height;
-        depth = width;//(float) Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2));
-        invDepth = 1f / depth;
-
+        depth = width;
 
         defaultSettings();
         textMode(SHAPE);
 
         if (width != 0 && height != 0) {
-
-
             invWidth = 1f / width;
             invHeight = 1f / height;
-
+            invDepth = 1f / depth;
         }
 
         optimiser = new Optimiser(new OptimisationSettings());
@@ -131,21 +123,24 @@ public class IldaRenderer extends PGraphics {
      * @param path should be a path leading to a file
      */
 
+    @Override
     public void setPath(String path) {
 
         this.path = path;
         if (path != null) {
             file = new File(path);
-            if (!file.isAbsolute()) file = null;
+            if (!file.isAbsolute())
+                file = null;
         }
         if (file == null) {
-            throw new RuntimeException("Something went wrong creating an output file for the ilda renderer.");
+            throw new RuntimeException(
+                "Something went wrong creating an output file for the ilda renderer.");
         }
 
     }
 
-    public void resize(int newWidth, int newHeight)
-    {
+    @Override
+    public void resize(int newWidth, int newHeight) {
         this.width = newWidth;
         this.height = newHeight;
     }
@@ -154,9 +149,9 @@ public class IldaRenderer extends PGraphics {
      * Always call this before drawing!
      */
 
+    @Override
     public void beginDraw() {
         if (!overwrite || currentFrame == null) {
-
 
             currentFrame = new IldaFrame();
             currentFrame.ildaVersion = 4;
@@ -165,91 +160,95 @@ public class IldaRenderer extends PGraphics {
             currentFrame.frameNumber = count;
         }
 
-
     }
 
     /**
      * Always call this after drawing!
      */
 
+    @Override
     public void endDraw() {
-        if (optimise) optimiser.optimiseSegment(currentFrame.points);
+        if (optimise)
+            optimiser.optimiseSegment(currentFrame.points);
         currentFrame.pointCount = currentFrame.points.size();
-        if (!overwrite) theFrames.add(currentFrame);
+        if (!overwrite)
+            theFrames.add(currentFrame);
         count++;
         resetMatrix();
     }
 
-    public void beginShape(int kind)
-    {
+    @Override
+    public void beginShape(int kind) {
         shape = kind;
-
         shouldBlank = true;
         vertexCount = 0;
         closedShape = false;
 
-        switch (kind)
-        {
-            case TRIANGLE:
-            case TRIANGLES:
-            case QUAD:
-            case QUADS:
-            case POLYGON:
-            case RECT:
-            case ELLIPSE:
-            case SPHERE:
-            case BOX:
-                closedShape = true;
-
-                break;
-            default:
-                closedShape = false;
-                break;
+        switch (kind) {
+        case TRIANGLE:
+        case TRIANGLES:
+        case QUAD:
+        case QUADS:
+        case POLYGON:
+        case RECT:
+        case ELLIPSE:
+        case SPHERE:
+        case BOX:
+            closedShape = true;
+            break;
+        default:
+            break;
 
         }
     }
 
-    public void beginContour()
-    {
+    @Override
+    public void beginContour() {
         shouldBlank = true;
-        //PApplet.println("contour", shape, shouldBlank);
     }
 
-    public void endContour()
-    {
-        if (closedShape) currentFrame.points.add(firstPoint);
-        //PApplet.println("End contour");
+    @Override
+    public void endContour() {
+        if (closedShape)
+            currentFrame.points.add(firstPoint);
     }
 
+    @Override
     public void translate(float x, float y) {
         translate(x, y, 0);
     }
 
+    @Override
     public void translate(float x, float y, float z) {
         matrix.translate(x, y, z);
     }
 
-
+    @Override
     public void resetMatrix() {
         matrix.reset();
     }
 
+    @Override
     public void rotate(float angle) {
         rotate(angle, 0, 0, 1);
     }
 
+    @Override
     public void rotateX(float angle) {
         rotate(angle, 1, 0, 0);
     }
 
+    @Override
     public void rotateY(float angle) {
         rotate(angle, 0, 1, 0);
     }
 
+    @Override
     public void rotateZ(float angle) {
         rotate(angle, 0, 0, 1);
     }
 
+    @Override
     public void rotate(float angle, float v0, float v1, float v2) {
         float norm = v0 * v0 + v1 * v1 + v2 * v2;
         if (norm < PConstants.EPSILON) {
@@ -264,10 +263,12 @@ public class IldaRenderer extends PGraphics {
         matrix.rotate(angle, v0, v1, v2);
     }
 
+    @Override
     public void scale(float x, float y, float z) {
         matrix.scale(x, y, z);
     }
 
+    @Override
     public void pushMatrix() {
         if (matrixStackDepth == MATRIX_STACK_DEPTH) {
             throw new RuntimeException(ERROR_PUSHMATRIX_OVERFLOW);
@@ -278,6 +279,7 @@ public class IldaRenderer extends PGraphics {
         matrixStackDepth++;
     }
 
+    @Override
     public void popMatrix() {
         if (matrixStackDepth == 0) {
             throw new RuntimeException(ERROR_PUSHMATRIX_UNDERFLOW);
@@ -302,16 +304,16 @@ public class IldaRenderer extends PGraphics {
         matrix.m23 = z;
     }
 
-
-
+    @Override
     public void vertex(float x, float y) {
         vertex(x, y, 0);
     }
 
+    @Override
     public void vertex(float x, float y, float z) {
         if (vertexCount >= 512) vertexCount = 0;
 
-        float vertex[] = vertices[vertexCount];
+        float[] vertex = vertices[vertexCount];
 
         vertex[X] = x;
         vertex[Y] = y;
@@ -324,12 +326,9 @@ public class IldaRenderer extends PGraphics {
         vertex[SW] = strokeWeight;
         vertexCount++;
 
-        //ilda.parent.println(shape, vertexCount);
-
         PVector pos = new PVector(x, y, z);
 
         matrix.mult(pos, pos);
-
 
         float xpos = 2 * ((pos.x) * invWidth - 0.5f);
         float ypos = 2 * ((pos.y) * invHeight - 0.5f);
@@ -347,7 +346,6 @@ public class IldaRenderer extends PGraphics {
         }
 
         if ((shape == LINES) && vertexCount == 2) {
-            //shouldBlank = !shouldBlank;
             vertexCount = 0;
         }
 
@@ -356,41 +354,30 @@ public class IldaRenderer extends PGraphics {
             if(renderingText) closedShape = false;
         }
 
-
-
-
-        //ilda.parent.println(x, y, z, 2*(x*invWidth-0.5f), -2*(y*invHeight-0.5f), z* (invHeight + invWidth) * 0.5f-1);
         currentPoint = new IldaPoint(xpos, ypos, zpos, red, green, blue, shouldBlank);
-        //PApplet.println(xpos, ypos, zpos, red, green, blue, shouldBlank, " ----- shape: ", shape);
 
-        if(renderingText)
-        {
+        if (renderingText) {
             PVector currPos = new PVector(x, y, z);
-            //PApplet.println(PVector.dist(currPos, prevVector), textDetail * textSize, currPos, prevVector, PVector.dist(currPos, prevVector) > textDetail*textSize);
-            float dist= PVector.dist(currPos, prevVector);
-            if ( dist > textDetail*textSize && dist != 0)
-            {
-                currentFrame.points.add(currentPoint);  //blargh should probably look at angle as well
+            float dist = PVector.dist(currPos, prevVector);
+            if (dist > textDetail * textSize && dist != 0) {
+                currentFrame.points
+                    .add(currentPoint);  //blargh should probably look at angle as well
                 prevVector = currPos;
             }
-            //else currentFrame.points.add(currentPoint);
 
-
-        }
-
-        else currentFrame.points.add(currentPoint);
+        } else
+            currentFrame.points.add(currentPoint);
 
         if (shouldBlank) shouldBlank = false;
 
-
     }
 
+    @Override
     public void endShape() {
         if (closedShape) currentFrame.points.add(firstPoint);
-        //ilda.parent.println(closedShape);
-        //currentFrame.points.add(currentPoint);
     }
 
+    @Override
     protected void ellipseImpl(float x, float y, float w, float h) {
         float m = (w + h) * ellipseDetail;
         boolean first = true;
@@ -420,11 +407,10 @@ public class IldaRenderer extends PGraphics {
      * @param y position y
      */
 
+    @Override
     protected void textCharImpl(char ch, float x, float y) {
 
         PShape glyph = this.textFont.getShape(ch);
-        //glyph.scale(1,-1);
-        //PApplet.println("=== Printing char", ch, "family:", glyph.getFamily());
         renderingText = true;   //for haxx
         closedShape = true;
         this.shape(glyph, x, y);
@@ -432,10 +418,12 @@ public class IldaRenderer extends PGraphics {
 
     }
 
+    @Override
     public void applyMatrix(float n00, float n01, float n02, float n10, float n11, float n12) {
         this.applyMatrixImpl(n00, n01, 0.0F, n02, n10, n11, 0.0F, n12, 0.0F, 0.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.0F, 1.0F);
     }
 
+    @Override
     public void applyMatrix(float n00, float n01, float n02, float n03, float n10, float n11, float n12, float n13, float n20, float n21, float n22, float n23, float n30, float n31, float n32, float n33) {
         this.applyMatrixImpl(n00, n01, n02, n03, n10, n11, n12, n13, n20, n21, n22, n23, n30, n31, n32, n33);
     }
@@ -475,30 +463,29 @@ public class IldaRenderer extends PGraphics {
      * @param correction for how much extra points the ellipse continues
      */
 
-
     public void setEllipseCorrection(int correction) {
         circleCorrection = correction;
     }
 
-    protected void defaultFontOrDeath(String method, float size)
-    {
-        this.textFont = parent.createFont("Lucida Sans", size, true, null);
+    @Override
+    protected void defaultFontOrDeath(String method, float size) {
+        this.textFont = parentPApplet.createFont("Lucida Sans", size, true, null);
     }
 
     /**
      * Draw an existing ilda frame inside the renderer
+     *
      * @param frame frame to be drawn
-     * @param x x position offset
-     * @param y y position offset
-     * @param w width (rescaling)
-     * @param h height (rescaling)
+     * @param x     x position offset
+     * @param y     y position offset
+     * @param w     width (rescaling)
+     * @param h     height (rescaling)
      */
 
     public void drawIldaFrame(IldaFrame frame, int x, int y, int w, int h)
     {
-        for (IldaPoint p : frame.points)
-        {
-            IldaPoint newPoint = new IldaPoint(p.clone());
+        for (IldaPoint p : frame.points) {
+            IldaPoint newPoint = new IldaPoint(p);
             PVector position = newPoint.getPosition();
             position.x = map(position.x, 0, width, x, x+w);
             position.y = map(position.y, 0,height,y,y+w);
@@ -516,18 +503,17 @@ public class IldaRenderer extends PGraphics {
         drawIldaFrame(frame, 0,0,width, height);
     }
 
-
-
-
-
+    @Override
     public void dispose() {
         theFrames.clear();
     }
 
+    @Override
     public boolean is2D() {
         return false;
     }
 
+    @Override
     public boolean is3D() {
         return true;
     }
@@ -538,8 +524,7 @@ public class IldaRenderer extends PGraphics {
      * @return all frames in the renderer
      */
 
-    public ArrayList<IldaFrame> getFrames() {
-
+    public List<IldaFrame> getFrames() {
         IldaFrame.fixHeaders(theFrames);
         return theFrames;
     }
