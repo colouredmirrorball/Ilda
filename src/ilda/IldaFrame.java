@@ -1,10 +1,11 @@
 package ilda;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import processing.core.PApplet;
 import processing.core.PGraphics;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * A frame is essentially a collection of points. It can render its geometry to a PGraphics.
@@ -260,16 +261,24 @@ public class IldaFrame {
         return pg;
     }
 
-    public List<IldaPoint> getPoints() {
+    public List<IldaPoint> getPoints()
+    {
         return points;
     }
 
+    public List<IldaPoint> getCopyOnWritePoints()
+    {
+        return new CopyOnWriteArrayList<>(points);
+    }
+
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "[" + frameName + "] - points: " + points.size();
     }
 
-    public void setFrameName(String frameName) {
+    public void setFrameName(String frameName)
+    {
         this.frameName = frameName;
     }
 
