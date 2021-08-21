@@ -15,8 +15,6 @@ import static processing.core.PApplet.map;
 
 /**
  * This class can be used to render ilda files as a subclass of PGraphics.
- * Well, it might be.
- * Sometime in the future.
  *<p>
  * You can use this class in the same way as you would use another PGraphics.
  * For example you can use most graphic calls on an instance of this class.
@@ -52,18 +50,16 @@ public class IldaRenderer extends PGraphics {
     protected float ellipseDetail = 1f;
     private float circleCorrection = 0f;
 
-    protected boolean renderingText = false;
-    protected double textDetail = 0.01;
-    protected PVector prevVector = new PVector();
+    private boolean renderingText = false;
+    private double textDetail = 0.01;
+    private PVector prevVector = new PVector();
 
-    static protected final int MATRIX_STACK_DEPTH = 32;
-    protected PMatrix3D matrix = new PMatrix3D();
+    private static final int MATRIX_STACK_DEPTH = 32;
+    private final PMatrix3D matrix = new PMatrix3D();
 
-    protected PMatrix3D[] matrixStack = new PMatrix3D[MATRIX_STACK_DEPTH];
+    private final PMatrix3D[] matrixStack = new PMatrix3D[MATRIX_STACK_DEPTH];
 
-
-    protected IldaPoint currentPoint = new IldaPoint(0, 0, 0, 0, 0, 0, true);
-    protected boolean overwrite = false;
+    private boolean overwrite = false;
 
     Optimiser optimiser;
     boolean optimise = true;
@@ -95,7 +91,7 @@ public class IldaRenderer extends PGraphics {
 
     /**
      * If set to true, no new frame will be added to the frame list when calling EndDraw().
-     * Instead the renderer will keep writing on the same frame.
+     * Instead, the renderer will keep writing on the same frame.
      * This is useful for drawing applications where you want to keep adding content to the same frame instead of making an animation.
      * False by default.
      *
@@ -152,7 +148,9 @@ public class IldaRenderer extends PGraphics {
     @Override
     public void beginDraw() {
         if (!overwrite || currentFrame == null) {
-
+            if (currentFrame != null) {
+                currentFrame.points.clear();
+            }
             currentFrame = new IldaFrame();
             currentFrame.ildaVersion = 4;
             currentFrame.frameName = "P5Frame";
@@ -338,6 +336,7 @@ public class IldaRenderer extends PGraphics {
         int blue = (int) (strokeB * 255);
 
         //when drawing points, add a blanked point before every point
+        IldaPoint currentPoint = new IldaPoint(0, 0, 0, 0, 0, 0, true);
         if ((shape == POINT) || shape == POINTS) {
             currentPoint = new IldaPoint(xpos, ypos, zpos, red, green, blue, true);
             currentFrame.points.add(currentPoint);
