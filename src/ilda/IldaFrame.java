@@ -136,7 +136,7 @@ public class IldaFrame {
     }
 
     public int getPointCount() {
-        return pointCount;
+        return points.size();
     }
 
     public int getFrameNumber() {
