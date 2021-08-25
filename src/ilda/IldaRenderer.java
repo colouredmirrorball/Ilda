@@ -1,15 +1,10 @@
 package ilda;
 
+import processing.core.*;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
-import processing.core.PApplet;
-import processing.core.PConstants;
-import processing.core.PGraphics;
-import processing.core.PMatrix3D;
-import processing.core.PShape;
-import processing.core.PVector;
 
 import static processing.core.PApplet.map;
 
@@ -440,11 +435,9 @@ public class IldaRenderer extends PGraphics {
     }
 
     /**
-     * Number reflecting the amount of points in an ellipse.
-     * The lower, the less points there are. The higher, the more.
-     * The default value is 1. Finding a good value is a bit arbitrary.
-     * This value is multiplied by the sum of the third and fourth arguments of the ellipse method
-     * (the width and height).
+     * Number reflecting the amount of points in an ellipse. The lower, the fewer points there are. The higher, the
+     * more. The default value is 1. Finding a good value is a bit arbitrary. This value is multiplied by the sum of the
+     * third and fourth arguments of the ellipse method (the width and height).
      *
      * @param detail gets multiplied with (width+height) of the ellipse arguments to get the total points
      */
@@ -459,7 +452,7 @@ public class IldaRenderer extends PGraphics {
      * Can be negative to leave a gap.
      * Default is 0.
      *
-     * @param correction for how much extra points the ellipse continues
+     * @param correction for how many extra points the ellipse continues
      */
 
     public void setEllipseCorrection(int correction) {
