@@ -358,11 +358,9 @@ public class IldaRenderer extends PGraphics
         int blue = (int) (strokeB * 255);
 
         //when drawing points, add a blanked point before every point
-        IldaPoint currentPoint;
         if ((shape == POINT) || shape == POINTS)
         {
-            currentPoint = new IldaPoint(xpos, ypos, zpos, red, green, blue, true);
-            currentFrame.points.add(currentPoint);
+            currentFrame.points.add(new IldaPoint(xpos, ypos, zpos, red, green, blue, true));
             shouldBlank = false;
             vertexCount = 0;
         }
@@ -372,29 +370,19 @@ public class IldaRenderer extends PGraphics
             vertexCount = 0;
         }
 
+        if (renderingText)
+        {
+            // text uses the polygon kind, but this creates artifacts
+            closedShape = false;
+        }
         if (closedShape && vertexCount == 1)
         {
             firstPoint = new IldaPoint(xpos, ypos, zpos, red, green, blue, false);
-            if (renderingText) closedShape = false;
         }
 
-        currentPoint = new IldaPoint(xpos, ypos, zpos, red, green, blue, shouldBlank);
+        currentFrame.points.add(new IldaPoint(xpos, ypos, zpos, red, green, blue, shouldBlank));
 
-        if (renderingText)
-        {
-            PVector currPos = new PVector(x, y, z);
-            float dist = PVector.dist(currPos, prevVector);
-            if (dist > textDetail * textSize && dist != 0)
-            {
-                currentFrame.points
-                        .add(currentPoint);  //blargh should probably look at angle as well
-                prevVector = currPos;
-            }
-
-        } else
-            currentFrame.points.add(currentPoint);
-
-        if (shouldBlank) shouldBlank = false;
+        shouldBlank = false;
 
     }
 
@@ -441,10 +429,9 @@ public class IldaRenderer extends PGraphics
     @Override
     protected void textCharImpl(char ch, float x, float y)
     {
-
         PShape glyph = this.textFont.getShape(ch);
-        renderingText = true;   //for haxx
-        closedShape = true;
+        renderingText = true;
+        closedShape = false;
         this.shape(glyph, x, y);
         renderingText = false;
 
