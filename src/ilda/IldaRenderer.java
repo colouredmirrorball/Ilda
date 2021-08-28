@@ -173,46 +173,6 @@ public class IldaRenderer extends PGraphics
     }
 
     @Override
-    public void beginShape(int kind)
-    {
-        shape = kind;
-        shouldBlank = true;
-        vertexCount = 0;
-        closedShape = false;
-
-        switch (kind)
-        {
-            case TRIANGLE:
-            case TRIANGLES:
-            case QUAD:
-            case QUADS:
-            case POLYGON:
-            case RECT:
-            case ELLIPSE:
-            case SPHERE:
-            case BOX:
-                closedShape = true;
-                break;
-            default:
-                break;
-
-        }
-    }
-
-    @Override
-    public void beginContour()
-    {
-        shouldBlank = true;
-    }
-
-    @Override
-    public void endContour()
-    {
-        if (closedShape)
-            currentFrame.points.add(firstPoint);
-    }
-
-    @Override
     public void translate(float x, float y)
     {
         translate(x, y, 0);
@@ -322,6 +282,40 @@ public class IldaRenderer extends PGraphics
     }
 
     @Override
+    public void beginShape(int kind)
+    {
+        shape = kind;
+        shouldBlank = true;
+        vertexCount = 0;
+        closedShape = false;
+
+        switch (kind)
+        {
+            case TRIANGLE:
+            case TRIANGLES:
+            case QUAD:
+            case QUADS:
+            case POLYGON:
+            case RECT:
+            case ELLIPSE:
+            case SPHERE:
+            case BOX:
+                closedShape = true;
+                break;
+            default:
+                break;
+
+        }
+    }
+
+    @Override
+    public void beginContour()
+    {
+        shouldBlank = true;
+        vertexCount = 0;
+    }
+
+    @Override
     public void vertex(float x, float y)
     {
         vertex(x, y, 0);
@@ -343,7 +337,6 @@ public class IldaRenderer extends PGraphics
         vertex[SB] = strokeB;
         vertex[SA] = strokeA;
         vertex[SW] = strokeWeight;
-        vertexCount++;
 
         PVector pos = new PVector(x, y, z);
 
@@ -364,17 +357,13 @@ public class IldaRenderer extends PGraphics
             vertexCount = 0;
         }
 
-        if ((shape == LINES) && vertexCount == 2)
+        if ((shape == LINES) && vertexCount == 1)
         {
             vertexCount = 0;
         }
 
-        if (renderingText)
-        {
-            // text uses the polygon kind, but this creates artifacts
-            closedShape = false;
-        }
-        if (closedShape && vertexCount == 1)
+
+        if (closedShape && vertexCount == 0)
         {
             firstPoint = new IldaPoint(xpos, ypos, zpos, red, green, blue, false);
         }
@@ -382,13 +371,34 @@ public class IldaRenderer extends PGraphics
         currentFrame.points.add(new IldaPoint(xpos, ypos, zpos, red, green, blue, shouldBlank));
 
         shouldBlank = false;
+        vertexCount++;
+
+    }
+
+    @Override
+    public void endContour()
+    {
+        if (closedShape)
+        {
+            currentFrame.points.add(firstPoint);
+            shouldBlank = true;
+        }
 
     }
 
     @Override
     public void endShape()
     {
-        if (closedShape) currentFrame.points.add(firstPoint);
+        endShape(closedShape ? CLOSE : OPEN);
+    }
+
+    @Override
+    public void endShape(int kind)
+    {
+        if (kind == CLOSE)
+        {
+            currentFrame.points.add(firstPoint);
+        }
     }
 
     @Override

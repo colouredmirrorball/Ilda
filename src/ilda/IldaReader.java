@@ -9,17 +9,17 @@ import java.util.List;
 
 /**
  * This class reads a file and passes the data to frames and points.
- * <p/>
+ * <p>
  * Ilda files are explained here: http://www.laserist.org/StandardsDocs/IDTF05-finaldraft.pdf This document only
  * mentions Ilda V0, 1, 2 and 3, no V4 and V5 so here's a breakdown: ILDA V0 is 3D and uses palettes ILDA V1 is 2D and
  * uses palettes ILDA V2 is a palette ILDA V3 is a 24-bit palette, but was discontinued and is not a part of the
  * official standard anymore ILDA V4 is 3D with true-colour information in BGR format ILDA V5 is 2D with true-colour
- * information in BGR format
- * <p/>
+ * information in BGR format.</p>
+ * <p>
  * An Ilda file is composed of headers that always start with "ILDA", followed by three zeros and the version number. A
  * complete header is 32 bytes. After the header, the data follows. In case of a palette (V2), each data point has three
  * bytes: R, G and B. In case of a frame (V0/1/4/5), the X, Y and Z (for 3D frames) values are spread out over two bytes
- * Then either two status bytes follow with a blanking bit and palette colour number, or BGR values.
+ * Then either two status bytes follow with a blanking bit and palette colour number, or BGR values.</p>
  */
 public class IldaReader extends FileParser
 {

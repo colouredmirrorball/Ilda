@@ -1,10 +1,14 @@
 package ilda;
 
+import processing.data.JSONObject;
+
 /**
- * Bundles all optimisation settings so they are easily shared across the package and easily transported to other projects.
- * You can create a settings file for each projector and load it in all your sketches and projects without having to recreate the settings again.
+ * Bundles all optimisation settings so they are easily shared across the package and easily transported to other
+ * projects. You can create a settings file for each projector and load it in all your sketches and projects without
+ * having to recreate the settings again.
  */
-public class OptimisationSettings {
+public class OptimisationSettings
+{
 
 
     protected boolean interpolateLit;
@@ -55,19 +59,40 @@ public class OptimisationSettings {
         this.maxDistBlank = maxDistBlank;
     }
 
-    public boolean isAngleDwell() {
+    public boolean isAngleDwell()
+    {
         return angleDwell;
     }
 
-    public void setAngleDwell(boolean angleDwell) {
+    public void setAngleDwell(boolean angleDwell)
+    {
         this.angleDwell = angleDwell;
     }
 
-    public String[] generateOptimisationFile()
+    public String toJSON()
     {
-        String[] out = new String[8];
-        out[0] = "interpolateLit " + interpolateLit;
-        return out;
+        JSONObject output = new JSONObject();
+        output.setFloat("maxDistBlank", maxDistBlank);
+        output.setFloat("maxDistLit", maxDistLit);
+        output.setBoolean("isAngleDwell", angleDwell);
+        output.setBoolean("isInterpolateBlanked", interpolateBlanked);
+        output.setBoolean("isInterpolateLit", interpolateLit);
+        output.setInt("blankDwellAmount", blankDwellAmount);
+        output.setFloat("angleDwellFactor", angleDwellFactor);
+
+        return output.toString();
+    }
+
+    public void fromJSON(String json)
+    {
+        JSONObject input = JSONObject.parse(json);
+        maxDistBlank = input.getFloat("maxDistBlank", maxDistBlank);
+        maxDistLit = input.getFloat("maxDistLit", maxDistLit);
+        angleDwell = input.getBoolean("isAngleDwell", angleDwell);
+        interpolateBlanked = input.getBoolean("isInterpolateBlanked", interpolateBlanked);
+        interpolateLit = input.getBoolean("isInterpolateLit", interpolateLit);
+        blankDwellAmount = input.getInt("blankDwellAmount", blankDwellAmount);
+        angleDwellFactor = input.getFloat("angleDwellFactor", angleDwellFactor);
     }
 
 
