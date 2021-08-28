@@ -38,11 +38,9 @@ var NO_MATCH = 0xffff;
 var MIN_RESULTS = 3;
 var MAX_RESULTS = 500;
 var UNNAMED = "<Unnamed>";
-
 function escapeHtml(str) {
     return str.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
-
 function getHighlightedText(item, matcher, fallbackMatcher) {
     var escapedItem = escapeHtml(item);
     var highlighted = escapedItem.replace(matcher, highlight);
@@ -51,7 +49,6 @@ function getHighlightedText(item, matcher, fallbackMatcher) {
     }
     return highlighted;
 }
-
 function getURLPrefix(ui) {
     var urlPrefix = "";
     var slash = "/";
@@ -72,7 +69,6 @@ function getURLPrefix(ui) {
     }
     return urlPrefix;
 }
-
 function createSearchPattern(term) {
     var pattern = "";
     var isWordToken = false;
@@ -96,12 +92,10 @@ function createSearchPattern(term) {
     });
     return pattern;
 }
-
 function createMatcher(pattern, flags) {
     var isCamelCase = /[A-Z]/.test(pattern);
     return new RegExp(pattern, flags + (isCamelCase ? "" : "i"));
 }
-
 var watermark = 'Search';
 $(function () {
     var search = $("#search");
@@ -190,7 +184,6 @@ $.widget("custom.catcomplete", $.ui.autocomplete, {
         return li;
     }
 });
-
 function rankMatch(match, category) {
     if (!match) {
         return NO_MATCH;
@@ -233,7 +226,6 @@ function rankMatch(match, category) {
     return leftBoundaryMatch + periferalMatch + (delta / 200);
 
 }
-
 function doSearch(request, response) {
     var result = [];
     searchPattern = createSearchPattern(request.term);
@@ -263,7 +255,6 @@ function doSearch(request, response) {
         }
         return [];
     }
-
     function searchIndex(indexArray, category, nameFunc) {
         var primaryResults = searchIndexWithMatcher(indexArray, camelCaseMatcher, category, nameFunc);
         result = result.concat(primaryResults);
