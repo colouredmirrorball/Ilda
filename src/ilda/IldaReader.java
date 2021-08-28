@@ -10,29 +10,28 @@ import java.util.List;
 /**
  * This class reads a file and passes the data to frames and points.
  * <p/>
- * Ilda files are explained here: http://www.laserist.org/StandardsDocs/IDTF05-finaldraft.pdf
- * This document only mentions Ilda V0, 1, 2 and 3, no V4 and V5 so here's a breakdown:
- * ILDA V0 is 3D and uses palettes
- * ILDA V1 is 2D and uses palettes
- * ILDA V2 is a palette
- * ILDA V3 is a 24-bit palette, but was discontinued and is not a part of the official standard anymore
- * ILDA V4 is 3D with true-colour information in BGR format
- * ILDA V5 is 2D with true-colour information in BGR format
+ * Ilda files are explained here: http://www.laserist.org/StandardsDocs/IDTF05-finaldraft.pdf This document only
+ * mentions Ilda V0, 1, 2 and 3, no V4 and V5 so here's a breakdown: ILDA V0 is 3D and uses palettes ILDA V1 is 2D and
+ * uses palettes ILDA V2 is a palette ILDA V3 is a 24-bit palette, but was discontinued and is not a part of the
+ * official standard anymore ILDA V4 is 3D with true-colour information in BGR format ILDA V5 is 2D with true-colour
+ * information in BGR format
  * <p/>
- * An Ilda file is composed of headers that always start with "ILDA", followed by three zeros and the version number.
- * A complete header is 32 bytes.
- * After the header, the data follows. In case of a palette (V2), each data point has three bytes: R, G and B.
- * In case of a frame (V0/1/4/5), the X, Y and Z (for 3D frames) values are spread out over two bytes
+ * An Ilda file is composed of headers that always start with "ILDA", followed by three zeros and the version number. A
+ * complete header is 32 bytes. After the header, the data follows. In case of a palette (V2), each data point has three
+ * bytes: R, G and B. In case of a frame (V0/1/4/5), the X, Y and Z (for 3D frames) values are spread out over two bytes
  * Then either two status bytes follow with a blanking bit and palette colour number, or BGR values.
  */
-public class IldaReader extends FileParser {
+public class IldaReader extends FileParser
+{
 
     private IldaPalette palette;
 
-    public IldaReader(String location) throws FileNotFoundException {
+    public IldaReader(String location) throws FileNotFoundException
+    {
         super(location);
 
-        if (b == null) {
+        if (b == null)
+        {
             throw new FileNotFoundException("Error: could not read file at " + location);
         }
 
@@ -44,59 +43,59 @@ public class IldaReader extends FileParser {
     }
 
     /**
-     * Parse an ilda file from disk
-     * Normally only this static method should be required to retrieve all IldaFrames from a file
+     * Parse an ilda file from disk and retrieve its contents. Note that since there is no information here about canvas
+     * size, all positions are normalised between -1 and 1.
      *
      * @param location path to the ilda file
      * @return list of all loaded frames
      */
 
-    public static List<IldaFrame> readFile(String location) throws FileNotFoundException {
+    public static List<IldaFrame> readFile(String location) throws FileNotFoundException
+    {
         IldaReader reader = new IldaReader(location);
         return reader.getFramesFromBytes();
     }
 
-
-
-    public void setPalette(IldaPalette palette) {
+    public void setPalette(IldaPalette palette)
+    {
         this.palette = palette;
     }
 
-    private List<IldaFrame> getFramesFromBytes() {
+    private List<IldaFrame> getFramesFromBytes()
+    {
         reset();
         ArrayList<IldaFrame> theFrames = new ArrayList<>();
-        if (b == null) {
-            //This should have been caught before
+        if (b == null)
+        {
             return Collections.emptyList();
         }
 
-        if (b.length < 32) {
+        if (b.length < 32)
+        {
             //There isn't even a complete header here!
             throw new RuntimeException("Error: file is not long enough to be a valid ILDA file!");
         }
 
         //Check if the first four bytes read ILDA:
-
-
-        String hdr = parseString(4);
-        if (!hdr.equals("ILDA")) {
-            throw new RuntimeException("Error: invalid ILDA file, found " + hdr + ", expected ILDA instead");
+        String header = parseString(4);
+        if (!header.equals("ILDA"))
+        {
+            throw new RuntimeException("Error: invalid ILDA file, found " + header + ", expected ILDA instead");
         }
 
         reset();
 
-        loadIldaFrame( theFrames);
+        loadIldaFrame(theFrames);
         return theFrames;
-
-
     }
 
     /**
      * Iterative method to load ilda frames, the new frames are appended to an ArrayList.
-     * @param f IldaFrame ArrayList where the new frame will be appended
+     *
+     * @param frames IldaFrame List where the new frame will be appended
      */
 
-    private void loadIldaFrame(  ArrayList<IldaFrame> f)
+    private void loadIldaFrame(List<IldaFrame> frames)
     {
         if (position >= b.length - 32)
         {
@@ -138,9 +137,8 @@ public class IldaReader extends FileParser {
         skip(1);
 
 
-
-
-        if (ildaVersion == 2) {
+        if (ildaVersion == 2)
+        {
 
             palette = new IldaPalette();
 
@@ -154,10 +152,12 @@ public class IldaReader extends FileParser {
 
             // ILDA V2: Palette information
 
-            for (int i = 0; i < pointCount; i ++) {
+            for (int i = 0; i < pointCount; i++)
+            {
                 palette.addColour(parseByte(), parseByte(), parseByte());
             }
-        } else {
+        } else
+        {
             IldaFrame frame = new IldaFrame();
 
             frame.setIldaFormat(ildaVersion);
@@ -175,33 +175,34 @@ public class IldaReader extends FileParser {
                 float y = parseShort();
                 float z = 0;
                 if (is3D) z = parseShort();
-                boolean bl = false;
-                if ((parseByte() & 0x40) == 64) bl = true;
-                if (ildaVersion == 0 || ildaVersion == 1) {
+                boolean bl = (parseByte() & 0x40) == 64;
+                if (ildaVersion == 0 || ildaVersion == 1)
+                {
                     IldaPoint point = new IldaPoint(x * 0.00003051757f, y * -0.00003051757f, z * 0.00003051757f, parseByte() & 0xff, bl);
                     frame.addPoint(point);
-                } else if (ildaVersion == 4 || ildaVersion == 5) {
+                } else if (ildaVersion == 4 || ildaVersion == 5)
+                {
                     int blue = parseByte();
                     int g = parseByte();
                     int r = parseByte();
                     IldaPoint point = new IldaPoint(x * 0.00003051757f, y * -0.00003051757f, z * 0.00003051757f, blue & 0xff, g & 0xff, r & 0xff, bl);
                     frame.addPoint(point);
                 }
-
-
             }
 
-            if (frame.isPalette()) {
-                if (palette == null) {
+            if (frame.isPalette())
+            {
+                if (palette == null)
+                {
                     palette = new IldaPalette();
                     palette.setDefaultPalette();
                 }
 
                 frame.palettePaint(palette);
             }
-            f.add(frame);
+            frames.add(frame);
 
-            loadIldaFrame( f);
+            loadIldaFrame(frames);
         }
     }
 

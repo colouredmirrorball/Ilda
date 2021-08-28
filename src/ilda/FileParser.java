@@ -11,9 +11,6 @@ class FileParser
 
     int position = 0;
 
-
-
-
     FileParser(String location)
     {
         this.location = location;

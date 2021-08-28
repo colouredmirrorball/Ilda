@@ -48,7 +48,6 @@ public class IldaRenderer extends PGraphics
     private float circleCorrection = 0f;
     private boolean renderingText = false;
     private double textDetail = 0.01;
-    private PVector prevVector = new PVector();
     private boolean overwrite = false;
     private int matrixStackDepth;
 
@@ -509,7 +508,7 @@ public class IldaRenderer extends PGraphics
             IldaPoint newPoint = new IldaPoint(p);
             PVector position = newPoint.getPosition();
             position.x = map(position.x, 0, width, x, x + w);
-            position.y = map(position.y, 0, height, y, y + w);
+            position.y = map(position.y, 0, height, y, y + h);
             currentFrame.addPoint(newPoint);
         }
     }

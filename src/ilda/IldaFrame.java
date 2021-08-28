@@ -12,7 +12,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public class IldaFrame {
     protected int ildaVersion = 4;
-    ArrayList<IldaPoint> points = new ArrayList<>();
+    final List<IldaPoint> points = new ArrayList<>();
     protected String frameName = "";
     protected String companyName = "Processing";
     protected int pointCount;
