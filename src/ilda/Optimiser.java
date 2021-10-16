@@ -38,30 +38,56 @@ public class Optimiser
     {
         float maxDistBlankSQ = settings.maxDistBlank * settings.maxDistBlank;
         float maxDistLitSQ = settings.maxDistLit * settings.maxDistLit;
-        for (int i = points.size() - 2; i >= 0; i--)
+        if (settings.isClippingEnabled()) clip(points);
+        for (int i = points.size() - 2; i >= 1; i--)
         {
             IldaPoint previousPoint = points.get(i + 1);
             IldaPoint point = points.get(i);
-            IldaPoint nextPoint = null;
-            if (i != 0)
-                nextPoint = points.get(i - 1);
+            IldaPoint nextPoint = points.get(i - 1);
 
             float distancePreviousSQ = calculateDistanceSquared(previousPoint, point);
-            if (nextPoint != null)
+
+            if (settings.isReduceData() && arePointsCollinear(previousPoint, point, nextPoint))
+            {
+                points.remove(point);
+                continue;
+            }
+            interpolate(points, maxDistBlankSQ, maxDistLitSQ, i, previousPoint, point, distancePreviousSQ);
+            if (settings.isAngleDwell())
             {
                 addAngleDwellPoints(points, i, previousPoint, point, nextPoint, distancePreviousSQ);
             }
 
-            interpolate(points, maxDistBlankSQ, maxDistLitSQ, i, previousPoint, point, distancePreviousSQ);
         }
 
         return points;
     }
 
-    private void interpolate(List<IldaPoint> points, float maxDistBlankSQ, float maxDistLitSQ, int i, IldaPoint previousPoint, IldaPoint point, float distancePreviousSQ)
+    private void clip(List<IldaPoint> points)
     {
-        if (settings.interpolateBlanked && previousPoint.blanked && distancePreviousSQ > maxDistBlankSQ
-                || settings.interpolateLit && !previousPoint.blanked && distancePreviousSQ > maxDistLitSQ)
+        float[] clipBounds = settings.getClipBounds();
+        if (points.size() < 2) return;
+        for (int index = 0; index < points.size() - 1; index++)
+        {
+            IldaPoint point = points.get(index);
+            IldaPoint nextPoint = points.get(index + 1);
+
+        }
+
+    }
+
+    private boolean arePointsCollinear(IldaPoint previousPoint, IldaPoint point, IldaPoint nextPoint)
+    {
+        // Find slope of the two lines between the three points and if they are (about) equal, they're collinear
+        boolean collinear = false;
+        return collinear;
+    }
+
+    private void interpolate(List<IldaPoint> points, float maxDistBlankSQ, float maxDistLitSQ, int i,
+                             IldaPoint previousPoint, IldaPoint point, float distancePreviousSQ)
+    {
+        if (settings.interpolateBlanked && previousPoint.blanked && point.blanked && distancePreviousSQ > maxDistBlankSQ
+                || settings.interpolateLit && !previousPoint.blanked && !point.blanked && distancePreviousSQ > maxDistLitSQ)
         {
             double dist = Math.sqrt(distancePreviousSQ);
             double maxDist = previousPoint.blanked ? settings.maxDistBlank : settings.maxDistLit;
@@ -79,20 +105,19 @@ public class Optimiser
         }
     }
 
-    private void addAngleDwellPoints(List<IldaPoint> points, int i, IldaPoint previousPoint, IldaPoint point, IldaPoint nextPoint, float distancePreviousSQ)
+    private void addAngleDwellPoints(List<IldaPoint> points, int i, IldaPoint previousPoint, IldaPoint point,
+                                     IldaPoint nextPoint, float distancePreviousSQ)
     {
-        float distanceNextSQ;
-        distanceNextSQ = calculateDistanceSquared(point, nextPoint);
-        if (settings.isAngleDwell())
+        if (nextPoint == null) return;
+        float distanceNextSQ = calculateDistanceSquared(point, nextPoint);
+        float distancePreviousNextSQ = calculateDistanceSquared(previousPoint, nextPoint);
+        float factor = (distancePreviousSQ + distanceNextSQ) / distancePreviousNextSQ;
+        int dwellPoints = (int) (settings.angleDwellFactor * factor);
+        for (int dwellPoint = 0; dwellPoint < dwellPoints; dwellPoint++)
         {
-            float distancePreviousNextSQ = calculateDistanceSquared(previousPoint, nextPoint);
-            float factor = (distancePreviousSQ + distanceNextSQ) / distancePreviousNextSQ;
-            int dwellPoints = (int) (settings.angleDwellFactor * factor);
-            for (int dwellPoint = 0; dwellPoint < dwellPoints; dwellPoint++)
-            {
-                points.add(i + 1, new IldaPoint(point));
-            }
+            points.add(i, new IldaPoint(point));
         }
+
     }
 
     private float calculateDistanceSquared(IldaPoint point1, IldaPoint point2)

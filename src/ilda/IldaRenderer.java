@@ -46,7 +46,6 @@ public class IldaRenderer extends PGraphics
     Optimiser optimiser;
     boolean optimise = true;
     private float circleCorrection = 0f;
-    private boolean renderingText = false;
     private double textDetail = 0.01;
     private boolean overwrite = false;
     private int matrixStackDepth;
@@ -439,17 +438,18 @@ public class IldaRenderer extends PGraphics
     protected void textCharImpl(char ch, float x, float y)
     {
         PShape glyph = this.textFont.getShape(ch);
-        renderingText = true;
         closedShape = false;
         this.shape(glyph, x, y);
-        renderingText = false;
 
     }
 
     @Override
     public void applyMatrix(float n00, float n01, float n02, float n10, float n11, float n12)
     {
-        this.applyMatrixImpl(n00, n01, 0.0F, n02, n10, n11, 0.0F, n12, 0.0F, 0.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.0F, 1.0F);
+        this.applyMatrixImpl(n00, n01, 0.0F, n02,
+                n10, n11, 0.0F, n12,
+                0.0F, 0.0F, 1.0F, 0.0F,
+                0.0F, 0.0F, 0.0F, 1.0F);
     }
 
     @Override
