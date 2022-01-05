@@ -2,12 +2,14 @@ package ilda;
 
 import processing.core.PVector;
 
+import java.util.Objects;
+
 /**
- * A point of an ilda frame. Location is stored in three shorts (xyz) ranging from -1 to 1. Colour is stored in an
- * integer which is a 32 bit number: the first eight bits are not used, the second eight bits are red (0-255), the next
- * eight represent green and the last eight bits are blue. This is the "official" colour representation: points also
- * store a palIndex but this is only used to set the colour of a palette, never to render it to a screen. A point also
- * has a blanked flag which determines if the point is off or on.
+ * A point of an ilda frame. Position is stored in a PVector with bounds [-1..1]. Colour is stored in an integer which
+ * is a 32-bit number: the first eight bits are not used, the second eight bits are red (0-255), the next eight
+ * represent green and the last eight bits are blue. This is the "official" colour representation: points also store a
+ * palIndex but this is only used to set the colour of a palette, never to render it to a screen. A point also has a
+ * blanked flag which determines if the point is off or on.
  */
 public class IldaPoint
 {
@@ -19,7 +21,7 @@ public class IldaPoint
     /**
      * Constructor for an IldaPoint.
      *
-     * @param position a Processing PVector with the position of the newly created point: rescale the coordinates so
+     * @param position a Processing PVector with the position of the newly created point: rescale the coordinates, so
      *                 they're in [-1,1]! (0 = center)
      * @param red      Integer between 0-255
      * @param green
@@ -100,16 +102,16 @@ public class IldaPoint
     {
         int index = 0;
         double distance = 1000;
-        byte red = (byte) ((colour >> 16) & 0xFF);
-        byte green = (byte) ((colour >> 8) & 0xFF);
-        byte blue = (byte) (colour & 0xFF);
+        byte red = getRed();
+        byte green = getGreen();
+        byte blue = getBlue();
 
         int i = 0;
         for (int c : palette.colours)
         {
-            byte cred = (byte) ((c >> 16) & 0xFF);
-            byte cgreen = (byte) ((c >> 8) & 0xFF);
-            byte cblue = (byte) (c & 0xFF);
+            byte cred = getRed(c);
+            byte cgreen = getGreen(c);
+            byte cblue = getBlue(c);
             double d = Math.pow(cred - red, 2) + Math.pow(cgreen - green, 2) + Math
                     .pow(cblue - blue, 2);
             if (d < distance)
@@ -121,6 +123,36 @@ public class IldaPoint
 
         }
         return index;
+    }
+
+    public byte getRed()
+    {
+        return getRed(colour);
+    }
+
+    public byte getGreen()
+    {
+        return getGreen(colour);
+    }
+
+    public byte getBlue()
+    {
+        return getBlue(colour);
+    }
+
+    private byte getRed(int c)
+    {
+        return (byte) ((c >> 16) & 0xFF);
+    }
+
+    private byte getGreen(int colour)
+    {
+        return (byte) ((colour >> 8) & 0xFF);
+    }
+
+    private byte getBlue(int colour)
+    {
+        return (byte) (colour & 0xFF);
     }
 
     /**
@@ -233,4 +265,21 @@ public class IldaPoint
         return palIndex;
     }
 
+    @Override
+    public boolean equals(Object o)
+    {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        IldaPoint point = (IldaPoint) o;
+        return colour == point.colour
+                && blanked == point.blanked
+                && palIndex == point.palIndex
+                && position != null && position.equals(point.position);
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(position, colour, blanked, palIndex);
+    }
 }
