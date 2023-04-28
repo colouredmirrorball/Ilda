@@ -301,7 +301,7 @@ public class IldaRenderer extends PGraphics
         vertexCount = 0;
         closedShape = switch (kind)
             {
-                case TRIANGLE, TRIANGLES, QUAD, QUADS, POLYGON, RECT, ELLIPSE, SPHERE, BOX -> closedShape;
+                case TRIANGLE, TRIANGLES, QUAD, QUADS, POLYGON, RECT, ELLIPSE, SPHERE, BOX -> true;
                 default -> false;
             };
     }
