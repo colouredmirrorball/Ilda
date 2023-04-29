@@ -1,1 +1,506 @@
-memberSearchIndex = [{"p":"ilda","c":"IldaPalette","l":"addColour(int, int, int)","u":"addColour(int,int,int)"},{"p":"ilda","c":"IldaFrame","l":"addPoint(IldaPoint)","u":"addPoint(ilda.IldaPoint)"},{"p":"ilda","c":"OptimisationSettings","l":"angleDwell"},{"p":"ilda","c":"OptimisationSettings","l":"angleDwellFactor"},{"p":"ilda","c":"IldaRenderer","l":"applyMatrix(float, float, float, float, float, float)","u":"applyMatrix(float,float,float,float,float,float)"},{"p":"ilda","c":"IldaRenderer","l":"applyMatrix(float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float)","u":"applyMatrix(float,float,float,float,float,float,float,float,float,float,float,float,float,float,float,float)"},{"p":"ilda","c":"IldaRenderer","l":"applyMatrixImpl(float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float)","u":"applyMatrixImpl(float,float,float,float,float,float,float,float,float,float,float,float,float,float,float,float)"},{"p":"ilda","c":"IldaReader","l":"b"},{"p":"ilda","c":"IldaRenderer","l":"background()"},{"p":"ilda","c":"IldaRenderer","l":"beginContour()"},{"p":"ilda","c":"IldaRenderer","l":"beginDraw()"},{"p":"ilda","c":"IldaRenderer","l":"beginShape(int)"},{"p":"ilda","c":"OptimisationSettings","l":"blankDwell"},{"p":"ilda","c":"OptimisationSettings","l":"blankDwellAmount"},{"p":"ilda","c":"IldaPoint","l":"blanked"},{"p":"ilda","c":"IldaRenderer","l":"clearAllFrames()"},{"p":"ilda","c":"IldaRenderer","l":"clearFrame()"},{"p":"ilda","c":"IldaRenderer","l":"closedShape"},{"p":"ilda","c":"IldaPoint","l":"colour"},{"p":"ilda","c":"IldaFrame","l":"companyName"},{"p":"ilda","c":"IldaRenderer","l":"count"},{"p":"ilda","c":"IldaRenderer","l":"currentFrame"},{"p":"ilda","c":"IldaRenderer","l":"defaultFontOrDeath(String, float)","u":"defaultFontOrDeath(java.lang.String,float)"},{"p":"ilda","c":"IldaRenderer","l":"depth"},{"p":"ilda","c":"IldaRenderer","l":"dispose()"},{"p":"ilda","c":"IldaRenderer","l":"drawIldaFrame(IldaFrame)","u":"drawIldaFrame(ilda.IldaFrame)"},{"p":"ilda","c":"IldaRenderer","l":"drawIldaFrame(IldaFrame, int, int)","u":"drawIldaFrame(ilda.IldaFrame,int,int)"},{"p":"ilda","c":"IldaRenderer","l":"drawIldaFrame(IldaFrame, int, int, int, int)","u":"drawIldaFrame(ilda.IldaFrame,int,int,int,int)"},{"p":"ilda","c":"IldaRenderer","l":"ellipseDetail"},{"p":"ilda","c":"IldaRenderer","l":"ellipseImpl(float, float, float, float)","u":"ellipseImpl(float,float,float,float)"},{"p":"ilda","c":"IldaRenderer","l":"endContour()"},{"p":"ilda","c":"IldaRenderer","l":"endDraw()"},{"p":"ilda","c":"IldaRenderer","l":"endShape()"},{"p":"ilda","c":"IldaRenderer","l":"endShape(int)"},{"p":"ilda","c":"IldaRenderer","l":"file"},{"p":"ilda","c":"IldaRenderer","l":"firstPoint"},{"p":"ilda","c":"IldaFrame","l":"fixHeader(IldaFrame, int, int, String, String)","u":"fixHeader(ilda.IldaFrame,int,int,java.lang.String,java.lang.String)"},{"p":"ilda","c":"IldaFrame","l":"fixHeader(int, int, String, String)","u":"fixHeader(int,int,java.lang.String,java.lang.String)"},{"p":"ilda","c":"IldaFrame","l":"fixHeaders(IldaFrame[])","u":"fixHeaders(ilda.IldaFrame[])"},{"p":"ilda","c":"IldaFrame","l":"fixHeaders(List<IldaFrame>)","u":"fixHeaders(java.util.List)"},{"p":"ilda","c":"IldaFrame","l":"fixHeaders(List<IldaFrame>, String, String)","u":"fixHeaders(java.util.List,java.lang.String,java.lang.String)"},{"p":"ilda","c":"IldaFrame","l":"frameName"},{"p":"ilda","c":"IldaFrame","l":"frameNumber"},{"p":"ilda","c":"OptimisationSettings","l":"fromJSON(String)","u":"fromJSON(java.lang.String)"},{"p":"ilda","c":"IldaPoint","l":"getBestFittingPaletteColourIndex(IldaPalette)","u":"getBestFittingPaletteColourIndex(ilda.IldaPalette)"},{"p":"ilda","c":"IldaWriter","l":"getBytesFromFrames(IldaFrame[], IldaPalette, int)","u":"getBytesFromFrames(ilda.IldaFrame[],ilda.IldaPalette,int)"},{"p":"ilda","c":"IldaWriter","l":"getBytesFromFrames(IldaFrame[], int)","u":"getBytesFromFrames(ilda.IldaFrame[],int)"},{"p":"ilda","c":"IldaWriter","l":"getBytesFromFrames(List<IldaFrame>)","u":"getBytesFromFrames(java.util.List)"},{"p":"ilda","c":"IldaWriter","l":"getBytesFromFrames(List<IldaFrame>, IldaPalette, int)","u":"getBytesFromFrames(java.util.List,ilda.IldaPalette,int)"},{"p":"ilda","c":"IldaWriter","l":"getBytesFromFrames(List<IldaFrame>, int)","u":"getBytesFromFrames(java.util.List,int)"},{"p":"ilda","c":"IldaPoint","l":"getColour()"},{"p":"ilda","c":"IldaPalette","l":"getColour(int)"},{"p":"ilda","c":"IldaFrame","l":"getCompanyName()"},{"p":"ilda","c":"IldaFrame","l":"getCopyOnWritePoints()"},{"p":"ilda","c":"IldaRenderer","l":"getCurrentFrame()"},{"p":"ilda","c":"PicReader","l":"getFrame()"},{"p":"ilda","c":"PicReader","l":"getFrame(String)","u":"getFrame(java.lang.String)"},{"p":"ilda","c":"IldaFrame","l":"getFrameName()"},{"p":"ilda","c":"IldaFrame","l":"getFrameNumber()"},{"p":"ilda","c":"IldaRenderer","l":"getFrames()"},{"p":"ilda","c":"IldaRenderer","l":"getFramesAmount()"},{"p":"ilda","c":"IldaFrame","l":"getIldaVersion()"},{"p":"ilda","c":"OptimisationSettings","l":"getMaxDistBlank()"},{"p":"ilda","c":"OptimisationSettings","l":"getMaxDistLit()"},{"p":"ilda","c":"IldaRenderer","l":"getOptimisationSettings()"},{"p":"ilda","c":"IldaPoint","l":"getPalIndex()"},{"p":"ilda","c":"IldaFrame","l":"getPointCount()"},{"p":"ilda","c":"IldaFrame","l":"getPoints()"},{"p":"ilda","c":"IldaPoint","l":"getPosition()"},{"p":"ilda","c":"IldaPoint","l":"getPosition(float, float, float)","u":"getPosition(float,float,float)"},{"p":"ilda","c":"IldaFrame","l":"getScannerHead()"},{"p":"ilda","c":"Optimiser","l":"getSettings()"},{"p":"ilda","c":"IldaRenderer","l":"getTextDetail()"},{"p":"ilda","c":"IldaFrame","l":"getTotalFrames()"},{"p":"ilda","c":"IldaRenderer","l":"getTranslation()"},{"p":"ilda","c":"IldaPoint","l":"getX()"},{"p":"ilda","c":"IldaPoint","l":"getY()"},{"p":"ilda","c":"IldaPoint","l":"getZ()"},{"p":"ilda","c":"IldaFrame","l":"IldaFrame()","u":"%3Cinit%3E()"},{"p":"ilda","c":"IldaPalette","l":"IldaPalette()","u":"%3Cinit%3E()"},{"p":"ilda","c":"IldaPoint","l":"IldaPoint(float, float, float, int, boolean)","u":"%3Cinit%3E(float,float,float,int,boolean)"},{"p":"ilda","c":"IldaPoint","l":"IldaPoint(float, float, float, int, int, int, boolean)","u":"%3Cinit%3E(float,float,float,int,int,int,boolean)"},{"p":"ilda","c":"IldaPoint","l":"IldaPoint(IldaPoint)","u":"%3Cinit%3E(ilda.IldaPoint)"},{"p":"ilda","c":"IldaPoint","l":"IldaPoint(PVector, int, int, int, boolean)","u":"%3Cinit%3E(processing.core.PVector,int,int,int,boolean)"},{"p":"ilda","c":"IldaReader","l":"IldaReader(File)","u":"%3Cinit%3E(java.io.File)"},{"p":"ilda","c":"IldaReader","l":"IldaReader(String)","u":"%3Cinit%3E(java.lang.String)"},{"p":"ilda","c":"IldaRenderer","l":"IldaRenderer(PApplet)","u":"%3Cinit%3E(processing.core.PApplet)"},{"p":"ilda","c":"IldaRenderer","l":"IldaRenderer(PApplet, int, int)","u":"%3Cinit%3E(processing.core.PApplet,int,int)"},{"p":"ilda","c":"IldaFrame","l":"ildaVersion"},{"p":"ilda","c":"OptimisationSettings","l":"interpolateBlanked"},{"p":"ilda","c":"OptimisationSettings","l":"interpolateLit"},{"p":"ilda","c":"IldaRenderer","l":"invDepth"},{"p":"ilda","c":"IldaRenderer","l":"invHeight"},{"p":"ilda","c":"IldaRenderer","l":"invWidth"},{"p":"ilda","c":"IldaRenderer","l":"is2D()"},{"p":"ilda","c":"IldaRenderer","l":"is3D()"},{"p":"ilda","c":"OptimisationSettings","l":"isAngleDwell()"},{"p":"ilda","c":"IldaPoint","l":"isBlanked()"},{"p":"ilda","c":"OptimisationSettings","l":"isInterpolateBlanked()"},{"p":"ilda","c":"OptimisationSettings","l":"isInterpolateLit()"},{"p":"ilda","c":"IldaRenderer","l":"isOverwrite()"},{"p":"ilda","c":"IldaFrame","l":"isPalette()"},{"p":"ilda","c":"IldaReader","l":"location"},{"p":"ilda","c":"OptimisationSettings","l":"maxDistBlank"},{"p":"ilda","c":"OptimisationSettings","l":"maxDistLit"},{"p":"ilda","c":"OptimisationSettings","l":"OptimisationSettings()","u":"%3Cinit%3E()"},{"p":"ilda","c":"Optimiser","l":"Optimiser(OptimisationSettings)","u":"%3Cinit%3E(ilda.OptimisationSettings)"},{"p":"ilda","c":"Optimiser","l":"optimiseSegment(List<IldaPoint>)","u":"optimiseSegment(java.util.List)"},{"p":"ilda","c":"IldaFrame","l":"palette"},{"p":"ilda","c":"IldaFrame","l":"palettePaint(IldaPalette)","u":"palettePaint(ilda.IldaPalette)"},{"p":"ilda","c":"IldaPalette","l":"paletteToBytes()"},{"p":"ilda","c":"IldaPoint","l":"palIndex"},{"p":"ilda","c":"IldaFrame","l":"pointCount"},{"p":"ilda","c":"IldaRenderer","l":"popMatrix()"},{"p":"ilda","c":"IldaPoint","l":"position"},{"p":"ilda","c":"IldaRenderer","l":"pushMatrix()"},{"p":"ilda","c":"IldaReader","l":"readFile(String)","u":"readFile(java.lang.String)"},{"p":"ilda","c":"IldaFrame","l":"renderFrame(PApplet)","u":"renderFrame(processing.core.PApplet)"},{"p":"ilda","c":"IldaFrame","l":"renderFrame(PApplet, boolean)","u":"renderFrame(processing.core.PApplet,boolean)"},{"p":"ilda","c":"IldaFrame","l":"renderFrame(PApplet, boolean, float, float, float)","u":"renderFrame(processing.core.PApplet,boolean,float,float,float)"},{"p":"ilda","c":"IldaFrame","l":"renderFrame(PApplet, boolean, int, int)","u":"renderFrame(processing.core.PApplet,boolean,int,int)"},{"p":"ilda","c":"IldaFrame","l":"renderFrame(PApplet, int, int)","u":"renderFrame(processing.core.PApplet,int,int)"},{"p":"ilda","c":"IldaFrame","l":"renderFrame(PGraphics, boolean)","u":"renderFrame(processing.core.PGraphics,boolean)"},{"p":"ilda","c":"IldaFrame","l":"renderFrame(PGraphics, boolean, float, float, float)","u":"renderFrame(processing.core.PGraphics,boolean,float,float,float)"},{"p":"ilda","c":"IldaFrame","l":"renderFrame(PGraphics, boolean, int, int)","u":"renderFrame(processing.core.PGraphics,boolean,int,int)"},{"p":"ilda","c":"IldaFrame","l":"renderFrame(PGraphics, boolean, int, int, float, float, float)","u":"renderFrame(processing.core.PGraphics,boolean,int,int,float,float,float)"},{"p":"ilda","c":"IldaRenderer","l":"resetMatrix()"},{"p":"ilda","c":"IldaRenderer","l":"resize(int, int)","u":"resize(int,int)"},{"p":"ilda","c":"IldaRenderer","l":"rotate(float)"},{"p":"ilda","c":"IldaRenderer","l":"rotate(float, float, float, float)","u":"rotate(float,float,float,float)"},{"p":"ilda","c":"IldaRenderer","l":"rotateX(float)"},{"p":"ilda","c":"IldaRenderer","l":"rotateY(float)"},{"p":"ilda","c":"IldaRenderer","l":"rotateZ(float)"},{"p":"ilda","c":"IldaRenderer","l":"scale(float, float, float)","u":"scale(float,float,float)"},{"p":"ilda","c":"IldaFrame","l":"scannerHead"},{"p":"ilda","c":"OptimisationSettings","l":"setAngleDwell(boolean)"},{"p":"ilda","c":"IldaPoint","l":"setBlanked(boolean)"},{"p":"ilda","c":"IldaPoint","l":"setColour(IldaPalette)","u":"setColour(ilda.IldaPalette)"},{"p":"ilda","c":"IldaPoint","l":"setColour(int, IldaPalette)","u":"setColour(int,ilda.IldaPalette)"},{"p":"ilda","c":"IldaPoint","l":"setColour(int, int, int)","u":"setColour(int,int,int)"},{"p":"ilda","c":"IldaFrame","l":"setCompanyName(String)","u":"setCompanyName(java.lang.String)"},{"p":"ilda","c":"IldaPalette","l":"setDefaultPalette()"},{"p":"ilda","c":"IldaRenderer","l":"setEllipseCorrection(int)"},{"p":"ilda","c":"IldaRenderer","l":"setEllipseDetail(float)"},{"p":"ilda","c":"IldaFrame","l":"setFrameName(String)","u":"setFrameName(java.lang.String)"},{"p":"ilda","c":"IldaFrame","l":"setFrameNumber(int)"},{"p":"ilda","c":"IldaFrame","l":"setIldaFormat(int)"},{"p":"ilda","c":"OptimisationSettings","l":"setInterpolateBlanked(boolean)"},{"p":"ilda","c":"OptimisationSettings","l":"setInterpolateLit(boolean)"},{"p":"ilda","c":"OptimisationSettings","l":"setMaxDistBlank(float)"},{"p":"ilda","c":"OptimisationSettings","l":"setMaxDistLit(float)"},{"p":"ilda","c":"IldaRenderer","l":"setOptimisationSettings(OptimisationSettings)","u":"setOptimisationSettings(ilda.OptimisationSettings)"},{"p":"ilda","c":"IldaRenderer","l":"setOptimise(boolean)"},{"p":"ilda","c":"IldaRenderer","l":"setOverwrite(boolean)"},{"p":"ilda","c":"IldaFrame","l":"setPalette(boolean)"},{"p":"ilda","c":"IldaReader","l":"setPalette(IldaPalette)","u":"setPalette(ilda.IldaPalette)"},{"p":"ilda","c":"IldaRenderer","l":"setPath(String)","u":"setPath(java.lang.String)"},{"p":"ilda","c":"IldaPoint","l":"setPosition(float, float, float)","u":"setPosition(float,float,float)"},{"p":"ilda","c":"IldaPoint","l":"setPosition(PVector)","u":"setPosition(processing.core.PVector)"},{"p":"ilda","c":"IldaFrame","l":"setScannerHead(int)"},{"p":"ilda","c":"Optimiser","l":"setSettings(OptimisationSettings)","u":"setSettings(ilda.OptimisationSettings)"},{"p":"ilda","c":"IldaRenderer","l":"setTextDetail(double)"},{"p":"ilda","c":"IldaFrame","l":"setTotalFrames(int)"},{"p":"ilda","c":"IldaRenderer","l":"setTranslation(float, float, float)","u":"setTranslation(float,float,float)"},{"p":"ilda","c":"IldaRenderer","l":"shouldBlank"},{"p":"ilda","c":"IldaRenderer","l":"textCharImpl(char, float, float)","u":"textCharImpl(char,float,float)"},{"p":"ilda","c":"IldaRenderer","l":"theFrames"},{"p":"ilda","c":"OptimisationSettings","l":"toJSON()"},{"p":"ilda","c":"IldaFrame","l":"toString()"},{"p":"ilda","c":"IldaFrame","l":"totalFrames"},{"p":"ilda","c":"IldaRenderer","l":"translate(float, float)","u":"translate(float,float)"},{"p":"ilda","c":"IldaRenderer","l":"translate(float, float, float)","u":"translate(float,float,float)"},{"p":"ilda","c":"IldaRenderer","l":"vertex(float, float)","u":"vertex(float,float)"},{"p":"ilda","c":"IldaRenderer","l":"vertex(float, float, float)","u":"vertex(float,float,float)"},{"p":"ilda","c":"IldaWriter","l":"writeFile(String, IldaFrame[])","u":"writeFile(java.lang.String,ilda.IldaFrame[])"},{"p":"ilda","c":"IldaWriter","l":"writeFile(String, IldaFrame[], IldaPalette, int)","u":"writeFile(java.lang.String,ilda.IldaFrame[],ilda.IldaPalette,int)"},{"p":"ilda","c":"IldaWriter","l":"writeFile(String, IldaFrame[], int)","u":"writeFile(java.lang.String,ilda.IldaFrame[],int)"},{"p":"ilda","c":"IldaWriter","l":"writeFile(String, List<IldaFrame>)","u":"writeFile(java.lang.String,java.util.List)"},{"p":"ilda","c":"IldaWriter","l":"writeFile(String, List<IldaFrame>, IldaPalette, int)","u":"writeFile(java.lang.String,java.util.List,ilda.IldaPalette,int)"},{"p":"ilda","c":"IldaWriter","l":"writeFile(String, List<IldaFrame>, int)","u":"writeFile(java.lang.String,java.util.List,int)"}];updateSearchResults();
+memberSearchIndex = [{
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamSource",
+    "l": "ABSTRACT_GENERATOR"
+}, {
+    "p": "be.cmbsoft.laseroutput",
+    "c": "AbstractOutputTest",
+    "l": "AbstractOutputTest()",
+    "u": "%3Cinit%3E()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamResponseStatus",
+    "l": "ACK"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "Etherdream",
+    "l": "connectionFailed()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamLightEngineState",
+    "l": "COOLDOWN"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamLightEngineState",
+    "l": "EMERGENCY_STOP"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "Etherdream",
+    "l": "Etherdream(InetAddress, EtherdreamBroadcast)",
+    "u": "%3Cinit%3E(java.net.InetAddress,be.cmbsoft.laseroutput.etherdream.EtherdreamBroadcast)"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamBeginPlaybackCommand",
+    "l": "EtherdreamBeginPlaybackCommand(int)",
+    "u": "%3Cinit%3E(int)"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamBroadcast",
+    "l": "EtherdreamBroadcast(byte[])",
+    "u": "%3Cinit%3E(byte[])"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamDiscoverer",
+    "l": "EtherdreamDiscoverer(Map<String, Etherdream>)",
+    "u": "%3Cinit%3E(java.util.Map)"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamLightEngineFlags",
+    "l": "EtherdreamLightEngineFlags(short)",
+    "u": "%3Cinit%3E(short)"
+}, {
+    "p": "be.cmbsoft.laseroutput",
+    "c": "EtherdreamOutput",
+    "l": "EtherdreamOutput()",
+    "u": "%3Cinit%3E()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamPlaybackFlags",
+    "l": "EtherdreamPlaybackFlags(short)",
+    "u": "%3Cinit%3E(short)"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamPrepareStreamCommand",
+    "l": "EtherdreamPrepareStreamCommand()",
+    "u": "%3Cinit%3E()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamResponse",
+    "l": "EtherdreamResponse(byte[])",
+    "u": "%3Cinit%3E(byte[])"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamStatus",
+    "l": "EtherdreamStatus(ByteBuffer)",
+    "u": "%3Cinit%3E(java.nio.ByteBuffer)"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamStopCommand",
+    "l": "EtherdreamStopCommand()",
+    "u": "%3Cinit%3E()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamWriteDataCommand",
+    "l": "EtherdreamWriteDataCommand(List<IldaPoint>)",
+    "u": "%3Cinit%3E(java.util.List)"
+}, {"p": "be.cmbsoft.laseroutput", "c": "AbstractOutputTest", "l": "generateCircle()"}, {
+    "p": "be.cmbsoft.laseroutput",
+    "c": "AbstractOutputTest",
+    "l": "generateSquare()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamResponseStatus",
+    "l": "get(char)"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamLightEngineState",
+    "l": "get(int)"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamPlaybackState",
+    "l": "get(int)"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamSource",
+    "l": "get(int)"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "Etherdream",
+    "l": "getBroadcast()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamBroadcast",
+    "l": "getBufferCapacity()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamStatus",
+    "l": "getBufferFullness()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamBeginPlaybackCommand",
+    "l": "getBytes()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamCommand",
+    "l": "getBytes()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamPrepareStreamCommand",
+    "l": "getBytes()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamStopCommand",
+    "l": "getBytes()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamWriteDataCommand",
+    "l": "getBytes()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamResponse",
+    "l": "getCommand()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamBeginPlaybackCommand",
+    "l": "getCommandChar()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamCommand",
+    "l": "getCommandChar()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamPrepareStreamCommand",
+    "l": "getCommandChar()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamStopCommand",
+    "l": "getCommandChar()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamWriteDataCommand",
+    "l": "getCommandChar()"
+}, {"p": "be.cmbsoft.laseroutput", "c": "LsxOscOutput", "l": "getDestinationFrame()"}, {
+    "p": "be.cmbsoft.laseroutput",
+    "c": "EtherdreamOutput",
+    "l": "getDetectedDevices()"
+}, {"p": "be.cmbsoft.laseroutput", "c": "LaserOutput", "l": "getFps()"}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamBroadcast",
+    "l": "getHardwareRevision()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamStatus",
+    "l": "getLightEngineFlags()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamStatus",
+    "l": "getLightEngineState()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamBroadcast",
+    "l": "getMac()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamBroadcast",
+    "l": "getMacAddress()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamBroadcast",
+    "l": "getMaxPointRate()"
+}, {"p": "be.cmbsoft.laseroutput", "c": "LaserOutput", "l": "getMode()"}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamStatus",
+    "l": "getPlaybackFlags()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamStatus",
+    "l": "getPlaybackState()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamStatus",
+    "l": "getPointCount()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamStatus",
+    "l": "getPointRate()"
+}, {"p": "be.cmbsoft.laseroutput", "c": "LaserOutput", "l": "getPps()"}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamStatus",
+    "l": "getProtocol()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamResponse",
+    "l": "getResponse()"
+}, {
+    "p": "be.cmbsoft.laseroutput",
+    "c": "LsxOscOutput",
+    "l": "getRootName()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamBroadcast",
+    "l": "getSoftwareRevision()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamStatus",
+    "l": "getSource()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamStatus",
+    "l": "getSourceFlags()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamBroadcast",
+    "l": "getStatus()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamResponse",
+    "l": "getStatus()"
+}, {
+    "p": "be.cmbsoft.laseroutput",
+    "c": "LsxOscOutput",
+    "l": "getTimeline()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamCommunicationThread",
+    "l": "halt()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamCommunicationThread2",
+    "l": "halt()"
+}, {"p": "be.cmbsoft.laseroutput", "c": "EtherdreamOutput", "l": "halt()"}, {
+    "p": "be.cmbsoft.laseroutput",
+    "c": "LaserOutput",
+    "l": "halt()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamPlaybackState",
+    "l": "IDLE"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamLightEngineState",
+    "l": "INVALID"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamPlaybackState",
+    "l": "INVALID"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamSource",
+    "l": "INVALID"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamLightEngineFlags",
+    "l": "isEmergencyStopDueToEStopInputToProjector()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamLightEngineFlags",
+    "l": "isEmergencyStopDueToEStopPacketOrInvalidCommand()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamLightEngineFlags",
+    "l": "isEmergencyStopDueToOvertemperature()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamLightEngineFlags",
+    "l": "isEmergencyStopInputToProjectorIsActive()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamPlaybackFlags",
+    "l": "iseStop()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "Etherdream",
+    "l": "isFlag(short, int)",
+    "u": "isFlag(short,int)"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamLightEngineFlags",
+    "l": "isLossOfEthernetLink()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamLightEngineFlags",
+    "l": "isOvertemperatureConditionActive()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamPlaybackFlags",
+    "l": "isShutterState()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamPlaybackFlags",
+    "l": "isUnderFlow()"
+}, {
+    "p": "be.cmbsoft.laseroutput",
+    "c": "LaserOutput",
+    "l": "LaserOutput()",
+    "u": "%3Cinit%3E()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "Etherdream",
+    "l": "log(String)",
+    "u": "log(java.lang.String)"
+}, {
+    "p": "be.cmbsoft.laseroutput",
+    "c": "LsxOscOutput",
+    "l": "LsxOscOutput(int, int, String, int)",
+    "u": "%3Cinit%3E(int,int,java.lang.String,int)"
+}, {
+    "p": "be.cmbsoft.laseroutput",
+    "c": "LsxOscOutput",
+    "l": "map(float, float, float, float, float)",
+    "u": "map(float,float,float,float,float)"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamResponseStatus",
+    "l": "NAK_FULL"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamResponseStatus",
+    "l": "NAK_INVALID"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamResponseStatus",
+    "l": "NAK_STOP_CONDITION"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamSource",
+    "l": "NETWORK_STREAMING"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamPlaybackState",
+    "l": "PLAYING"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamPlaybackState",
+    "l": "PREPARED"
+}, {
+    "p": "be.cmbsoft.laseroutput",
+    "c": "LaserOutput",
+    "l": "project(IldaFrame)",
+    "u": "project(ilda.IldaFrame)"
+}, {
+    "p": "be.cmbsoft.laseroutput",
+    "c": "LaserOutput",
+    "l": "project(IldaRenderer)",
+    "u": "project(ilda.IldaRenderer)"
+}, {
+    "p": "be.cmbsoft.laseroutput",
+    "c": "EtherdreamOutput",
+    "l": "project(List<IldaPoint>)",
+    "u": "project(java.util.List)"
+}, {
+    "p": "be.cmbsoft.laseroutput",
+    "c": "LaserOutput",
+    "l": "project(List<IldaPoint>)",
+    "u": "project(java.util.List)"
+}, {
+    "p": "be.cmbsoft.laseroutput",
+    "c": "LsxOscOutput",
+    "l": "project(List<IldaPoint>)",
+    "u": "project(java.util.List)"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "Etherdream",
+    "l": "project(List<IldaPoint>, int)",
+    "u": "project(java.util.List,int)"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamCommunicationThread",
+    "l": "project(List<IldaPoint>, int)",
+    "u": "project(java.util.List,int)"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamCommunicationThread2",
+    "l": "project(List<IldaPoint>, int)",
+    "u": "project(java.util.List,int)"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamLightEngineState",
+    "l": "READY"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamCommunicationThread",
+    "l": "run()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamCommunicationThread2",
+    "l": "run()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamDiscoverer",
+    "l": "run()"
+}, {"p": "be.cmbsoft.laseroutput", "c": "LaserOutput", "l": "run()"}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamSource",
+    "l": "SD_CARD_PLAYBACK"
+}, {
+    "p": "be.cmbsoft.laseroutput",
+    "c": "LaserOutput",
+    "l": "setCurrentFrame(IldaFrame)",
+    "u": "setCurrentFrame(ilda.IldaFrame)"
+}, {
+    "p": "be.cmbsoft.laseroutput",
+    "c": "LaserOutput",
+    "l": "setCurrentPoints(List<IldaPoint>)",
+    "u": "setCurrentPoints(java.util.List)"
+}, {
+    "p": "be.cmbsoft.laseroutput",
+    "c": "LsxOscOutput",
+    "l": "setDestinationFrame(int)"
+}, {"p": "be.cmbsoft.laseroutput", "c": "LaserOutput", "l": "setFps(int)"}, {
+    "p": "be.cmbsoft.laseroutput",
+    "c": "LaserOutput",
+    "l": "setMode(LaserOutput.Mode)",
+    "u": "setMode(be.cmbsoft.laseroutput.LaserOutput.Mode)"
+}, {"p": "be.cmbsoft.laseroutput", "c": "LaserOutput", "l": "setPps(int)"}, {
+    "p": "be.cmbsoft.laseroutput",
+    "c": "LsxOscOutput",
+    "l": "setRootName(String)",
+    "u": "setRootName(java.lang.String)"
+}, {"p": "be.cmbsoft.laseroutput", "c": "LsxOscOutput", "l": "setTimeline(int)"}, {
+    "p": "be.cmbsoft.laseroutput",
+    "c": "LaserOutput.Mode",
+    "l": "STATIC_FPS"
+}, {
+    "p": "be.cmbsoft.laseroutput",
+    "c": "LaserOutput.Mode",
+    "l": "STATIC_PPS"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "Etherdream",
+    "l": "stop()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamDiscoverer",
+    "l": "stop()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "Etherdream",
+    "l": "update(EtherdreamBroadcast)",
+    "u": "update(be.cmbsoft.laseroutput.etherdream.EtherdreamBroadcast)"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamLightEngineState",
+    "l": "valueOf(String)",
+    "u": "valueOf(java.lang.String)"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamPlaybackState",
+    "l": "valueOf(String)",
+    "u": "valueOf(java.lang.String)"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamResponseStatus",
+    "l": "valueOf(String)",
+    "u": "valueOf(java.lang.String)"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamSource",
+    "l": "valueOf(String)",
+    "u": "valueOf(java.lang.String)"
+}, {
+    "p": "be.cmbsoft.laseroutput",
+    "c": "LaserOutput.Mode",
+    "l": "valueOf(String)",
+    "u": "valueOf(java.lang.String)"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamLightEngineState",
+    "l": "values()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamPlaybackState",
+    "l": "values()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamResponseStatus",
+    "l": "values()"
+}, {"p": "be.cmbsoft.laseroutput.etherdream", "c": "EtherdreamSource", "l": "values()"}, {
+    "p": "be.cmbsoft.laseroutput",
+    "c": "LaserOutput.Mode",
+    "l": "values()"
+}, {
+    "p": "be.cmbsoft.laseroutput.etherdream",
+    "c": "EtherdreamWriteDataCommand",
+    "l": "verify(byte[])"
+}, {"p": "be.cmbsoft.laseroutput.etherdream", "c": "EtherdreamLightEngineState", "l": "WARMUP"}];
+updateSearchResults();

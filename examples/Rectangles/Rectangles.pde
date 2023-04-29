@@ -1,7 +1,8 @@
 import ilda.*;
-
+import be.cmbsoft.laseroutput.*;
 //The IldaRenderer can be used as a PGraphics to render Ilda files
 IldaRenderer r;
+LsxOscOutput output    = new LsxOscOutput(1, 10, "127.0.0.1", 10000);
 
 //Some rectangles that bounce around
 ArrayList<Rectangle> rects = new ArrayList<Rectangle>();
@@ -43,7 +44,7 @@ void draw()
   r.endDraw();
 
   //Displays the current IldaFrame on the Processing canvas
-  r.getCurrentFrame().renderFrame(this, false);  
+  r.getCurrentFrame().renderFrame(this, false);
 
   if (!hideText)
   {
@@ -55,6 +56,7 @@ void draw()
     text("S - save frames to ILDA file", 40, 115);
     text("H - hide help text", 40, 140);
   }
+  output.project(r);
 }
 
 void mouseClicked()
