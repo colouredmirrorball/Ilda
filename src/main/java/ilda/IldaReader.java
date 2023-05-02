@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static ilda.Utilities.logException;
+
 /**
  * This class reads a file and passes the data to frames and points.
  * <p>
@@ -55,8 +57,18 @@ public class IldaReader extends FileParser {
      * @return list of all loaded frames
      */
 
-    public static List<IldaFrame> readFile(String location) throws FileNotFoundException {
-        IldaReader reader = new IldaReader(location);
+    public static List<IldaFrame> readFile(String location)
+    {
+        IldaReader reader;
+        try
+        {
+            reader = new IldaReader(location);
+        }
+        catch (FileNotFoundException exception)
+        {
+            logException(exception);
+            return Collections.emptyList();
+        }
         return reader.getFramesFromBytes();
     }
 
