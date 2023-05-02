@@ -9,17 +9,18 @@ void setup()
   size(600, 600, P3D);
 
 
-  theFrames = IldaReader.readFile("lines.ild");
+  theFrames = IldaReader.readFile(this, "lines.ild");
   smooth();
 }
 
 void draw()
 {
   background(00);
-  //theFrames.get(0).renderFrame(this);
+  theFrames.get(0).renderFrame(this);
 
-
-  ArrayList<IldaPoint> points = theFrames.get(0).getPoints();
+/*
+  //This code will manually display the points
+  List<IldaPoint> points = theFrames.get(0).getPoints();
   boolean firstPoint = true;
   float oldpositionx = 0;
   float oldpositiony = 0;
@@ -59,4 +60,5 @@ void draw()
       oldpositionz = position.z;
     }
   }
+  */
 }
