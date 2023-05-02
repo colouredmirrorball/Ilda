@@ -1,34 +1,38 @@
 package ilda;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Optional;
 
-import static java.nio.file.Files.readAllBytes;
+import processing.core.PApplet;
 
-class FileParser {
-    protected String location;
+class FileParser
+{
+
     protected byte[] b;
+    protected int    position = 0;
 
-    int position = 0;
+    FileParser(PApplet applet, String location)
+    {
+        b = Optional.ofNullable(applet).map(appl -> appl.loadBytes(location)).orElseThrow();
+    }
 
-    FileParser(String location) {
-        this.location = location;
-        try {
-            b = readAllBytes(new File(location).toPath());
-        } catch (Exception e) {
-            b = null;
-
+    public FileParser(File file) throws FileNotFoundException
+    {
+        b = PApplet.loadBytes(file);
+        if (b == null)
+        {
+            throw new FileNotFoundException("Error: could not read file at " + file);
         }
     }
 
-    public FileParser(File file) {
-        this(file.getAbsolutePath());
-    }
-
-    byte parseByte() {
+    byte parseByte()
+    {
         return (byte) (b[position++] & 0xff);
     }
 
-    short parseShort() {
+    short parseShort()
+    {
         return (short) (b[position++] << 8 | (b[position++] & 0xff));
     }
 
