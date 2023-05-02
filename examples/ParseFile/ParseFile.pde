@@ -1,16 +1,19 @@
 import ilda.*;
+import be.cmbsoft.laseroutput.*;
+import java.util.*;
 
-ArrayList<IldaFrame> frames;
-
+List<IldaFrame> frames;
+LsxOscOutput output;
 
 
 void setup()
 {
   size(800, 800, P3D);
+  output = new LsxOscOutput(1, 10, "127.0.0.1", 10000);
   try
   {
     //Read the Ilda file and retrieve the frames it contains
-    frames = IldaReader.readFile(sketchPath()+"\\Circles.ild");
+    frames = IldaReader.readFile(this, "Circles.ild");
   }
   catch(Exception e)
   {
@@ -27,5 +30,7 @@ void draw()
   background(0);
 
   //Display the current frame on the Processing canvas
-  frames.get(frameCount%frames.size()).renderFrame(this);
+  IldaFrame currentFrame = frames.get(frameCount%frames.size());
+  currentFrame.renderFrame(this);
+  output.project(currentFrame);
 }
