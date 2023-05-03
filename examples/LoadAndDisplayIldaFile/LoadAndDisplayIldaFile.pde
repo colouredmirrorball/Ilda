@@ -1,4 +1,4 @@
-import ilda.*;
+import be.cmbsoft.ilda.*;
 import java.util.*;
 
 List<IldaFrame> theFrames = new ArrayList<IldaFrame>();
