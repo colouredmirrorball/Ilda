@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import processing.core.PApplet;
+import processing.core.PConstants;
 import processing.core.PGraphics;
 
 /**
@@ -221,9 +222,14 @@ public class IldaFrame {
      */
 
     public PGraphics renderFrame(PGraphics pg, boolean showBlanking, int sizex, int sizey,
-        float rotx, float roty, float rotz) {
+        float rotx, float roty, float rotz)
+    {
 
-        if (pg.is2D()) {
+        int oldColorMode = pg.colorMode;
+        pg.colorMode(PConstants.RGB);
+
+        if (pg.is2D())
+        {
             //For now...
             pg.text("2D frame", 1, 15);
             pg.endDraw();
@@ -273,8 +279,8 @@ public class IldaFrame {
                 oldpositionz = pointz;
             }
         }
-
         pg.popMatrix();
+        pg.colorMode(oldColorMode);
         return pg;
     }
 
