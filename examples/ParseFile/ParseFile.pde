@@ -1,4 +1,4 @@
-import ilda.*;
+import be.cmbsoft.ilda.*;
 import be.cmbsoft.laseroutput.*;
 import java.util.*;
 
