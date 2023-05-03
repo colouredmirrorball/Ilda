@@ -1,4 +1,4 @@
-package ilda;
+package be.cmbsoft.ilda;
 
 
 import java.io.File;
@@ -8,8 +8,6 @@ import java.util.Collections;
 import java.util.List;
 
 import processing.core.PApplet;
-
-import static ilda.Utilities.logException;
 
 /**
  * This class reads a file and passes the data to frames and points.
@@ -86,7 +84,7 @@ public class IldaReader extends FileParser
         }
         catch (FileNotFoundException exception)
         {
-            logException(exception);
+            Utilities.logException(exception);
             return Collections.emptyList();
         }
         return reader.getFramesFromBytes();

@@ -1,11 +1,9 @@
-package ilda;
+package be.cmbsoft.ilda;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 
 import processing.core.PApplet;
-
-import static ilda.Utilities.logException;
 
 
 public class PicReader extends FileParser
@@ -36,7 +34,7 @@ public class PicReader extends FileParser
         }
         catch (FileNotFoundException exception)
         {
-            logException(exception);
+            Utilities.logException(exception);
             return null;
         }
         return parser.getFrame();

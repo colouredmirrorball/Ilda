@@ -1,4 +1,4 @@
-package ilda;
+package be.cmbsoft.ilda;
 
 public class Utilities
 {

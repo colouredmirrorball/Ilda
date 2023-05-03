@@ -1,4 +1,4 @@
-package ilda;
+package be.cmbsoft.ilda;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -6,15 +6,13 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
 import processing.core.PApplet;
+import static processing.core.PApplet.map;
 import processing.core.PConstants;
 import processing.core.PGraphics;
 import processing.core.PMatrix3D;
 import processing.core.PShape;
 import processing.core.PVector;
-
-import static processing.core.PApplet.map;
 
 /**
  * This class can be used to render ilda files as a subclass of PGraphics.

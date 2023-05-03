@@ -1,4 +1,4 @@
-package ilda;
+package be.cmbsoft.ilda;
 
 import processing.data.FloatList;
 import processing.data.JSONArray;
