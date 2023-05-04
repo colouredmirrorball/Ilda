@@ -6,13 +6,15 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 import processing.core.PApplet;
-import static processing.core.PApplet.map;
 import processing.core.PConstants;
 import processing.core.PGraphics;
 import processing.core.PMatrix3D;
 import processing.core.PShape;
 import processing.core.PVector;
+
+import static processing.core.PApplet.map;
 
 /**
  * This class can be used to render ilda files as a subclass of PGraphics.
@@ -425,8 +427,7 @@ public class IldaRenderer extends PGraphics
 
     /**
      * Well wouldn't it be boss if this "just worked"!!! Should be automatically called by the
-     * several text()
-     * implementations of the parent PGraphics class
+     * several text() implementations of the parent PGraphics class
      *
      * @param ch the character
      * @param x  position x
