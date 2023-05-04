@@ -13,7 +13,7 @@ class BeamEffect extends Effect {
   }
 
   @Override
-    void display(IldaRenderer renderer) {
+  void display(IldaRenderer renderer) {
     for (int i = 0; i < positions.length; i++) {
       renderer.stroke( i % 2 == 0 ? firstColor : secondColor);
       float x = oldPositions[i].x;
