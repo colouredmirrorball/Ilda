@@ -47,8 +47,8 @@ class SineEffect extends Effect {
   }
 
   void randomize() {
-    frequency = random(1, 8);
-    amplitude = random(0.02, 0.6);
+    frequency = (int)(7*randomGaussian()+1);
+    amplitude = random(0.02, 0.5);
     speed = (random(1) < 0.5 ? -1 : 1) * random(0.00005, 0.0003);
   }
 

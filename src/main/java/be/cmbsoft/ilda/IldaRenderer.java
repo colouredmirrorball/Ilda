@@ -6,13 +6,15 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 import processing.core.PApplet;
-import static processing.core.PApplet.map;
 import processing.core.PConstants;
 import processing.core.PGraphics;
 import processing.core.PMatrix3D;
 import processing.core.PShape;
 import processing.core.PVector;
+
+import static processing.core.PApplet.map;
 
 /**
  * This class can be used to render ilda files as a subclass of PGraphics.
@@ -435,12 +437,20 @@ public class IldaRenderer extends PGraphics
     @Override
     protected void textCharImpl(char ch, float x, float y)
     {
-        PShape glyph = this.textFont.getShape(ch);
+        PShape glyph           = this.textFont.getShape(ch);
+        int    oldBezierDetail = bezierDetail;
+        bezierDetail(3);
         closedShape = false;
-        this.beginShape();
-        this.shape(glyph, x, y);
-        this.endShape();
-
+        if (glyph != null)
+        {
+            // FIXME this does not take matrix operations into account...
+            if (x > width) return;
+            if (y > height + glyph.height) return;
+            if (x < -glyph.width) return;
+            if (y < 0) return;
+            this.shape(glyph, x, y);
+        }
+        bezierDetail(oldBezierDetail);
     }
 
     @Override
@@ -505,7 +515,7 @@ public class IldaRenderer extends PGraphics
         {
             throw new RuntimeException("Using text requires PApplet");
         }
-        this.textFont = parentPApplet.createFont("Lucida" + " Sans", size, true, null);
+        this.textFont = parentPApplet.createFont("Lucida Sans", size, true, null);
     }
 
     /**

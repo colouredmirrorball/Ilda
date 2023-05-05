@@ -6,7 +6,7 @@ LsxOscOutput output;
 
 String content;
 
-float offset = 0;
+float offset;
 color colour;
 
 boolean showPointCount = true;
@@ -48,6 +48,8 @@ void setup() {
   r.endDraw();
 
   colorMode(RGB);
+
+  offset = width;
 }
 
 void draw() {
@@ -81,7 +83,7 @@ void draw() {
   }
 
   // This will send the laser frame to the laser
-  //output.project(currentFrame);
+  output.project(currentFrame);
 }
 
 void keyPressed() {
