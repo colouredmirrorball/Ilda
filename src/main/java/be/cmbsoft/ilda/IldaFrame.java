@@ -25,8 +25,7 @@ public class IldaFrame {
 
     /**
      * Fixes the frame headers eg. updates point count, frame number, total frames, ... It leaves
-     * the frame name and
-     * company name untouched. It assumes the frames form a complete sequence.
+     * the frame name and company name untouched. It assumes the frames form a complete sequence.
      *
      * @param frames A reference to the frames whose headers need to get fixed.
      */
@@ -37,10 +36,8 @@ public class IldaFrame {
 
     /**
      * Fixes the frame headers eg.updates point count, frame number, total frames It sets the
-     * frame name and company
-     * name to the arguments you gave it. It assumes the frames form a complete sequence (for the
-     * total frame entry).
-     * Call this before writing to an ilda file
+     * frame name and company name to the arguments you gave it. It assumes the frames form a
+     * complete sequence (for the total frame entry). Call this before writing to an ilda file.
      *
      * @param frames      A reference to the frames whose headers need to get fixed.
      * @param frameName   A name you want to give the frame
@@ -50,13 +47,12 @@ public class IldaFrame {
     public static void fixHeaders(List<IldaFrame> frames, String frameName, String companyName) {
         int i = 1;
         for (IldaFrame frame : frames) {
-
             fixHeader(frame, i++, frames.size(), frameName, companyName);
         }
     }
 
     /**
-     * Static version of fixHeader() See documentation there
+     * Single frame version of fixHeader(), See documentation there
      */
 
     public static void fixHeader(IldaFrame frame, int frameNumber, int totalFrames,
@@ -76,7 +72,9 @@ public class IldaFrame {
     }
 
     public void addPoint(IldaPoint point) {
-        if (point != null) {points.add(point);}
+        if (point != null) {
+            points.add(point);
+        }
     }
 
     public PGraphics renderFrame(PApplet parent) {
