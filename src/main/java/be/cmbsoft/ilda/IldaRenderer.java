@@ -437,6 +437,7 @@ public class IldaRenderer extends PGraphics
     @Override
     protected void textCharImpl(char ch, float x, float y)
     {
+        if (ch == ' ') return;
         PShape glyph           = this.textFont.getShape(ch);
         int    oldBezierDetail = bezierDetail;
         bezierDetail(3);
