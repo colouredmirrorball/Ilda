@@ -6,15 +6,13 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
 import processing.core.PApplet;
+import static processing.core.PApplet.map;
 import processing.core.PConstants;
 import processing.core.PGraphics;
 import processing.core.PMatrix3D;
 import processing.core.PShape;
 import processing.core.PVector;
-
-import static processing.core.PApplet.map;
 
 /**
  * This class can be used to render ilda files as a subclass of PGraphics.
@@ -439,7 +437,9 @@ public class IldaRenderer extends PGraphics
     {
         PShape glyph = this.textFont.getShape(ch);
         closedShape = false;
+        this.beginShape();
         this.shape(glyph, x, y);
+        this.endShape();
 
     }
 
@@ -467,10 +467,6 @@ public class IldaRenderer extends PGraphics
         float n13, float n20, float n21, float n22, float n23, float n30, float n31, float n32, float n33)
     {
         this.matrix.apply(n00, n01, n02, n03, n10, n11, n12, n13, n20, n21, n22, n23, n30, n31, n32, n33);
-        //this.modelviewInv.set(this.modelview);
-        //this.modelviewInv.invert();
-        //this.projmodelview.apply(n00, n01, n02, n03, n10, n11, n12, n13, n20, n21, n22, n23,
-        // n30, n31, n32, n33);
     }
 
     /**
