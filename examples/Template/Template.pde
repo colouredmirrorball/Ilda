@@ -1,22 +1,20 @@
 import be.cmbsoft.ilda.*;
 import be.cmbsoft.laseroutput.*;
 
+
+// Use graphic calls on the IldaRenderer object to create laser art
 IldaRenderer r;
-LsxOscOutput output;
 
-String content;
-
-float offset;
-color colour;
+// The output can receive laser art from the renderer and send it to a laser
+LaserOutput output;
 
 boolean showPointCount = true;
 
 void setup() {
-
   // Since the projection surface of the laser effect is a square, use a square canvas in Processing
   size(800, 800, P3D);
 
-  // The IldaRenderer object can be used to draw on, similar to a PGraphics object
+  // The renderer requires just a reference to the sketch
   r = new IldaRenderer(this);
 
   // Because we are continuously sending to a laser in real time, we don't want to keep everything that's been rendered
@@ -31,25 +29,6 @@ void setup() {
     "127.0.0.1", // IP address of computer running LSX
     10000 // Port of the LSX OSC server. This can be changed using Setup >> Remote Control >> OSC Setup >> Listening port.
     );
-
-  // Fetch some data from Wikipedia
-  JSONObject json = loadJSONObject("https://en.wikipedia.org/api/rest_v1/page/random/summary");
-  content = json.getString("extract").replace('\n', ' ');
-  println(json.getString("title"));
-  println(content);
-
-  colorMode(HSB);
-  colour = color(random(255), 255, 255);
-
-  // Initialise some parameters in the renderer
-  r.beginDraw();
-  r.stroke(colour);
-  r.textSize(height/4);
-  r.endDraw();
-
-  colorMode(RGB);
-
-  offset = width;
 }
 
 void draw() {
@@ -62,17 +41,36 @@ void draw() {
   // Reset the frame
   r.background();
 
-  // Draw some text
-  r.text(content, offset, height/2);
+
+  /*
+   Here, you can program the actual graphical elements for the laser output.
+   You can only use stroke-based vector elements such as:
+    - stroke() (determines line colour)
+    - ellipse()
+    - rect()
+    - triangle()
+    - text()
+    - shape()
+    - vertex()
+    
+   You cannot use methods that are pixel based, like:
+    - fill()
+    - strokeWeight()
+    - image()
+    - texture()
+   */
 
   // Calling beginDraw() requires calling endDraw()
   r.endDraw();
-  offset-=10;
+
+  // Retrieve the freshly created frame from the renderer
   IldaFrame currentFrame = r.getCurrentFrame();
 
   // This will display the laser frame in the Processing window
   currentFrame.renderFrame(this);
 
+  // Display the point count on the screen, toggle with "P" on the keyboard.
+  // It's a good idea to limit point count to 1500 points to reduce flickering.
   if (showPointCount) {
     int pointCount = currentFrame.getPointCount();
     fill(255);
@@ -87,6 +85,7 @@ void draw() {
 }
 
 void keyPressed() {
+  // Toggle the point count display
   if (key == 'P' || key == 'p') {
     showPointCount = !showPointCount;
   }

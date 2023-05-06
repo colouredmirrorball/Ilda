@@ -322,7 +322,10 @@ public class IldaRenderer extends PGraphics
     @Override
     public void vertex(float x, float y, float z)
     {
-        if (vertexCount >= 512) {vertexCount = 0;}
+        if (vertexCount >= 4096)
+        {
+            vertexCount = 0;
+        }
 
         float[] vertex = vertices[vertexCount];
 
@@ -425,7 +428,7 @@ public class IldaRenderer extends PGraphics
         }
     }
 
-    /**
+    /*
      * Well wouldn't it be boss if this "just worked"!!! Should be automatically called by the
      * several text() implementations of the parent PGraphics class
      *
@@ -664,5 +667,18 @@ public class IldaRenderer extends PGraphics
     {
         this.textDetail = textDetail;
     }
+
+    @Override
+    public void scale(float s)
+    {
+        scale(s, s, s);
+    }
+
+    @Override
+    public void scale(float x, float y)
+    {
+        scale(x, y, 1);
+    }
+
 
 }

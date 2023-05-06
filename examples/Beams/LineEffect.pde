@@ -22,7 +22,7 @@ class LineEffect extends Effect {
     renderer.pushMatrix();
     renderer.translate(width/2, height/2);
     renderer.rotateZ(oldAngle);
-    renderer.translate(-width/2, -height/2+offset);
+    renderer.translate(-width/2, -height/2+oldOffset);
     if (dots) {
       renderer.stroke(secondColor);
       renderer.point(10, 0);
