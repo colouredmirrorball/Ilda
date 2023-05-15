@@ -1,6 +1,7 @@
 package be.cmbsoft.ilda;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +57,12 @@ public class IldaWriter {
 
     private static void writeFile(String location, byte[] b) {
         try {
+            if (location == null) {
+                return;
+            }
+            if (!location.endsWith(".ild") || !location.endsWith(".ILD")) {
+                location = location + ".ild";
+            }
             File file = new File(location);
 
             Files.write(file.toPath(), b);
@@ -117,6 +124,21 @@ public class IldaWriter {
 
     public static void writeFile(String location, List<IldaFrame> frames) {
         writeFile(location, frames, 4);
+    }
+
+    public static void writeFile(File location, List<IldaFrame> frames) {
+        if (location == null) return;
+        IldaFrame.fixHeaders(frames);
+        try {
+            Files.write(location.toPath(), getBytesFromFrames(frames));
+        } catch (IOException exception) {
+            PApplet.println("Error when exporting ilda file: ", exception);
+            exception.printStackTrace();
+        }
+    }
+
+    public static void writeFile(File location, IldaRenderer renderer) {
+        writeFile(location, renderer.getFrames());
     }
 
     public static byte[] getBytesFromFrames(List<IldaFrame> frames) {
