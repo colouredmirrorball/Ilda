@@ -56,7 +56,7 @@ public class IldaRenderer extends PGraphics
     protected               float                ellipseDetail      = 1f;
     protected               float                invDepth;
     Optimiser optimiser;
-    boolean   optimise = true;
+    boolean   optimise = false;
     private float   circleCorrection = 0f;
     private double  textDetail       = 0.01;
     private boolean overwrite        = false;

@@ -15,8 +15,19 @@ boolean showPointCount = true;
 AudioIn input;
 Amplitude amplitude;
 Waveform waveform;
+FFT fft;
+
+AudioIn inputRight;
+Amplitude amplitudeRight;
 
 int samples = 200;
+int bands = 256;
+int maxBand = 16;
+
+int effectIndex = 0;
+int amountOfEffects = 4;
+
+Effect currentEffect;
 
 void setup() {
   // Since the projection surface of the laser effect is a square, use a square canvas in Processing
@@ -25,11 +36,20 @@ void setup() {
   input = new AudioIn(this, 0);
   input.start();
 
+  inputRight = new AudioIn(this, 1);
+  inputRight.start();
+
   amplitude = new Amplitude(this);
   amplitude.input(input);
 
+  amplitudeRight = new Amplitude(this);
+  amplitudeRight.input(inputRight);
+
   waveform = new Waveform(this, samples);
   waveform.input(input);
+
+  fft = new FFT(this, bands);
+  fft.input(input);
 
   // The renderer requires just a reference to the sketch
   r = new IldaRenderer(this);
@@ -46,12 +66,13 @@ void setup() {
     "127.0.0.1", // IP address of computer running LSX
     10000 // Port of the LSX OSC server. This can be changed using Setup >> Remote Control >> OSC Setup >> Listening port.
     );
+
+  nextEffect();
 }
 
 void draw() {
 
-  waveform.analyze();
-  float intensity = amplitude.analyze();
+
   // Clear the Processing window
   background(0);
 
@@ -61,13 +82,7 @@ void draw() {
   // Reset the frame
   r.background();
 
-  r.stroke(map(intensity, 0, 0.3, 50, 255), 0, 0);
-
-  r.beginShape(LINE);
-  for (int i = 0; i < samples; i++) {
-    r.vertex(map(i, 0, samples, 0, width), map(waveform.data[i], -1, 1, 0, height));
-  }
-  r.endShape();
+  currentEffect.display(r);
 
   // Calling beginDraw() requires calling endDraw()
   r.endDraw();
@@ -98,10 +113,43 @@ void keyPressed() {
   if (key == 'P' || key == 'p') {
     showPointCount = !showPointCount;
   }
+  if (key == CODED) {
+    if (keyCode == LEFT) {
+      previousEffect();
+    } else if (keyCode == RIGHT) {
+      nextEffect();
+    }
+  }
 }
 
 void exit() {
   // It is a good idea to clear output to the projector when exiting
   output.sendEmptyFrame();
   super.exit();
+}
+
+void nextEffect() {
+  setEffect(++effectIndex >= amountOfEffects ? effectIndex = 0 : effectIndex);
+}
+
+void previousEffect() {
+  setEffect(--effectIndex < 0 ? effectIndex = amountOfEffects-1 : effectIndex);
+}
+
+void setEffect(int index) {
+  switch(index) {
+  case 0:
+  default:
+    currentEffect = new WaveformEffect();
+    break;
+  case 1:
+    currentEffect = new SpectrumBarsEffect();
+    break;
+  case 2:
+    currentEffect = new VUEffect();
+    break;
+  case 3:
+    currentEffect = new CircleWaveEffect();
+    break;
+  }
 }

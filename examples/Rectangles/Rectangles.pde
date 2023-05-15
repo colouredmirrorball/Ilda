@@ -77,6 +77,12 @@ void keyPressed()
   if (key == 'c') rects.clear();
 }
 
+void exit() {
+  // It is a good idea to clear output to the projector when exiting
+  output.sendEmptyFrame();
+  super.exit();
+}
+
 
 
 class Rectangle
