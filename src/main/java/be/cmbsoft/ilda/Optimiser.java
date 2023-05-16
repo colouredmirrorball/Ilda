@@ -50,7 +50,9 @@ public class Optimiser
         float maxDistLitSQ   = settings.maxDistLit * settings.maxDistLit;
         if (settings.isClippingEnabled())
         {
-            points = clip(points);
+            List<IldaPoint> clipped = clip(points);
+            points.clear();
+            points.addAll(clipped);
         }
         if (false)
         {
@@ -96,10 +98,6 @@ public class Optimiser
         for (int index = 0; index < points.size() - 1; index++)
         {
             IldaPoint point = points.get(index);
-            if (point.blanked)
-            {
-                continue;
-            }
             IldaPoint nextPoint = points.get(index + 1);
 
             PVector position     = point.position;

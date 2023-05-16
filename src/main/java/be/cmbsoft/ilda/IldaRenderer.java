@@ -178,9 +178,7 @@ public class IldaRenderer extends PGraphics
     {
         if (optimise)
         {
-            List<IldaPoint> points = optimiser.optimiseSegment(currentFrame.points);
-            currentFrame.points.clear();
-            currentFrame.points.addAll(points);
+            optimiser.optimiseSegment(currentFrame.points);
         }
         currentFrame.pointCount = currentFrame.points.size();
         if (!overwrite) {theFrames.add(currentFrame);}
