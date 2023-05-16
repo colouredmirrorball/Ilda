@@ -298,7 +298,6 @@ $(function () {
             expanded = false;
         }
     }
-
     $("button#navbar-toggle-button").click(function (e) {
         if (expanded) {
             collapse();

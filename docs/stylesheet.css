@@ -44,39 +44,30 @@ pre {
     font-family:'DejaVu Sans Mono', monospace;
     font-size:14px;
 }
-
 h1 {
     font-size: 20px;
 }
-
 h2 {
     font-size: 18px;
 }
-
 h3 {
     font-size: 16px;
 }
-
 h4 {
     font-size: 15px;
 }
-
 h5 {
     font-size: 14px;
 }
-
 h6 {
     font-size: 13px;
 }
-
 ul {
     list-style-type: disc;
 }
-
 code, tt {
     font-family: 'DejaVu Sans Mono', monospace;
 }
-
 :not(h1, h2, h3, h4, h5, h6) > code,
 :not(h1, h2, h3, h4, h5, h6) > tt {
     font-size: 14px;
@@ -84,7 +75,6 @@ code, tt {
     margin-top: 8px;
     line-height: 1.4em;
 }
-
 dt code {
     font-family: 'DejaVu Sans Mono', monospace;
     font-size: 14px;
@@ -133,11 +123,9 @@ button {
         height: 100%;
         width: 100%;
     }
-
     header.flex-header {
         flex: 0 0 auto;
     }
-
     div.flex-content {
         flex: 1 1 auto;
         overflow-y: auto;
@@ -155,15 +143,12 @@ button {
     overflow: hidden;
     font-size: 12px;
 }
-
 button#navbar-toggle-button {
     display: none;
 }
-
 ul.sub-nav-list-small {
     display: none;
 }
-
 .sub-nav {
     background-color: #dee3e9;
     float: left;
@@ -171,18 +156,15 @@ ul.sub-nav-list-small {
     overflow: hidden;
     font-size: 12px;
 }
-
 .sub-nav div {
     clear: left;
     float: left;
     padding: 6px;
     text-transform: uppercase;
 }
-
 .sub-nav .sub-nav-list {
     padding-top: 4px;
 }
-
 ul.nav-list {
     display: block;
     margin: 0 25px 0 0;
@@ -238,7 +220,6 @@ ul.sub-nav-list li {
         display: none;
     }
 }
-
 /*
  * Styles for page header.
  */
@@ -249,12 +230,10 @@ ul.sub-nav-list li {
 .sub-title {
     margin: 5px 0 0 0;
 }
-
 .header ul {
     margin: 0 0 15px 0;
     padding: 0;
 }
-
 .header ul li {
     list-style: none;
     font-size: 13px;
@@ -342,27 +321,22 @@ ul.summary-list > li {
     margin-bottom: 15px;
     line-height: 1.4;
 }
-
 .summary-table dl, .summary-table dl dt, .summary-table dl dd {
     margin-top: 0;
     margin-bottom: 1px;
 }
-
 ul.see-list, ul.see-list-long {
     padding-left: 0;
     list-style: none;
 }
-
 ul.see-list li {
     display: inline;
 }
-
 ul.see-list li:not(:last-child):after,
 ul.see-list-long li:not(:last-child):after {
     content: ", ";
     white-space: pre-wrap;
 }
-
 /*
  * Styles for tables.
  */
@@ -374,7 +348,6 @@ ul.see-list-long li:not(:last-child):after {
     border-bottom: 1px solid #EEE;
     padding: 0;
 }
-
 .caption {
     position: relative;
     text-align: left;
@@ -408,12 +381,10 @@ ul.see-list-long li:not(:last-child):after {
     border: none;
     height: 16px;
 }
-
 div.table-tabs {
     padding: 10px 0 0 1px;
     margin: 0;
 }
-
 div.table-tabs > button {
     border: none;
     cursor: pointer;
@@ -462,41 +433,33 @@ div.table-tabs > button.table-tab {
         grid-template-columns: minmax(15%, max-content) minmax(15%, auto);
     }
 }
-
 .summary-table > div, .details-table > div {
     text-align: left;
     padding: 8px 3px 3px 7px;
 }
-
 .col-first, .col-second, .col-last, .col-constructor-name, .col-summary-item-name {
     vertical-align: top;
     padding-right: 0;
     padding-top: 8px;
     padding-bottom: 3px;
 }
-
 .table-header {
     background: #dee3e9;
     font-weight: bold;
 }
-
 .col-first, .col-first {
     font-size: 13px;
 }
-
 .col-second, .col-second, .col-last, .col-constructor-name, .col-summary-item-name, .col-last {
     font-size: 13px;
 }
-
 .col-first, .col-second, .col-constructor-name {
     vertical-align: top;
     overflow: auto;
 }
-
 .col-last {
     white-space: normal;
 }
-
 .col-first a:link, .col-first a:visited,
 .col-second a:link, .col-second a:visited,
 .col-first a:link, .col-first a:visited,
@@ -505,7 +468,6 @@ div.table-tabs > button.table-tab {
 .col-summary-item-name a:link, .col-summary-item-name a:visited {
     font-weight: bold;
 }
-
 .even-row-color, .even-row-color .table-header {
     background-color: #FFFFFF;
 }
@@ -556,23 +518,19 @@ div.block {
     color: green;
     padding: 0 30px 0 0;
 }
-
 .block {
     display: block;
     margin: 0 10px 5px 0;
     color: #474747;
 }
-
 .deprecated-label, .description-from-type-label, .implementation-label, .member-name-link,
 .module-label-in-package, .module-label-in-type, .package-label-in-type,
 .package-hierarchy-label, .type-name-label, .type-name-link, .search-tag-link, .preview-label {
     font-weight: bold;
 }
-
 .deprecation-comment, .help-footnote, .preview-comment {
     font-style: italic;
 }
-
 .deprecation-block {
     font-size: 14px;
     font-family: 'DejaVu Serif', Georgia, "Times New Roman", Times, serif;
@@ -584,7 +542,6 @@ div.block {
     margin-right: 10px;
     display: inline-block;
 }
-
 .preview-block {
     font-size: 14px;
     font-family: 'DejaVu Serif', Georgia, "Times New Roman", Times, serif;
@@ -596,11 +553,9 @@ div.block {
     margin-right: 10px;
     display: inline-block;
 }
-
 div.block div.deprecation-comment {
     font-style: normal;
 }
-
 details.invalid-tag, span.invalid-tag {
     font-size: 14px;
     font-family: 'DejaVu Serif', Georgia, "Times New Roman", Times, serif;
@@ -610,18 +565,15 @@ details.invalid-tag, span.invalid-tag {
     padding: 2px 4px;
     display: inline-block;
 }
-
 details.invalid-tag summary {
     cursor: pointer;
 }
-
 /*
  * Styles specific to HTML5 elements.
  */
 main, nav, header, footer, section {
     display: block;
 }
-
 /*
  * Styles for javadoc search.
  */
@@ -652,11 +604,9 @@ ul.ui-autocomplete li {
     clear: both;
     min-width: 100%;
 }
-
 .result-highlight {
     font-weight: bold;
 }
-
 #search-input {
     background-image: url('resources/glass.png');
     background-size: 13px;
@@ -666,7 +616,6 @@ ul.ui-autocomplete li {
     width: 250px;
     margin: 0;
 }
-
 #reset-button {
     background-color: transparent;
     background-image: url('resources/x.png');
@@ -681,12 +630,10 @@ ul.ui-autocomplete li {
     top: 10px;
     font-size: 0;
 }
-
 ::placeholder {
     color: #909090;
     opacity: 1;
 }
-
 .search-tag-desc-result {
     font-style: italic;
     font-size: 11px;
@@ -707,15 +654,12 @@ ul.ui-autocomplete li {
     margin: -100px 0 0 100px;
     z-index: 1;
 }
-
 .inherited-list {
     margin: 10px 0 10px 0;
 }
-
 section.class-description {
     line-height: 1.4;
 }
-
 .summary section[class$="-summary"], .details section[class$="-details"],
 .class-uses .detail, .serialized-class-details {
     padding: 0px 20px 5px 10px;
@@ -727,30 +671,24 @@ section.class-description {
     background-color: #ffffff;
     border: none;
 }
-
 .vertical-separator {
     padding: 0 5px;
 }
-
 ul.help-section-list {
     margin: 0;
 }
-
 ul.help-subtoc > li {
     display: inline-block;
     padding-right: 5px;
     font-size: smaller;
 }
-
 ul.help-subtoc > li::before {
     content: "\2022";
     padding-right: 2px;
 }
-
 span.help-note {
     font-style: italic;
 }
-
 /*
  * Indicator icon for external links.
  */
@@ -855,7 +793,6 @@ table.striped > tbody > tr > th, table.striped > tbody > tr > td {
 table.striped > tbody > tr > th {
     font-weight: normal;
 }
-
 /**
  * Tweak style for small screens.
  */
@@ -864,12 +801,10 @@ table.striped > tbody > tr > th {
         max-height: 100vh;
         overflow-y: auto;
     }
-
     div#navbar-top {
         height: 2.8em;
         transition: height 0.35s ease;
     }
-
     ul.nav-list {
         display: block;
         width: 40%;
@@ -878,14 +813,12 @@ table.striped > tbody > tr > th {
         margin: 10px 0 0 0;
         padding: 0;
     }
-
     ul.nav-list li {
         float: none;
         padding: 6px;
         margin-left: 10px;
         margin-top: 2px;
     }
-
     ul.sub-nav-list-small {
         display: block;
         height: 100%;
@@ -897,19 +830,15 @@ table.striped > tbody > tr > th {
         margin: 6px 0 0 0;
         padding: 0;
     }
-
     ul.sub-nav-list-small ul {
         padding-left: 20px;
     }
-
     ul.sub-nav-list-small a:link, ul.sub-nav-list-small a:visited {
         color: #4A6782;
     }
-
     ul.sub-nav-list-small a:hover {
         color: #bb7a2a;
     }
-
     ul.sub-nav-list-small li {
         list-style: none;
         float: none;
@@ -917,23 +846,18 @@ table.striped > tbody > tr > th {
         margin-top: 1px;
         text-transform: uppercase;
     }
-
     ul.sub-nav-list-small > li {
         margin-left: 10px;
     }
-
     ul.sub-nav-list-small li p {
         margin: 5px 0;
     }
-
     div#navbar-sub-list {
         display: none;
     }
-
     .top-nav a:link, .top-nav a:active, .top-nav a:visited {
         display: block;
     }
-
     button#navbar-toggle-button {
         width: 3.4em;
         height: 2.8em;
@@ -945,7 +869,6 @@ table.striped > tbody > tr > th {
         cursor: pointer;
         font-size: 10px;
     }
-
     button#navbar-toggle-button .nav-bar-toggle-icon {
         display: block;
         width: 24px;
@@ -955,77 +878,62 @@ table.striped > tbody > tr > th {
         transition: all 0.1s;
         background-color: #ffffff;
     }
-
     button#navbar-toggle-button.expanded span.nav-bar-toggle-icon:nth-child(1) {
         transform: rotate(45deg);
         transform-origin: 10% 10%;
         width: 26px;
     }
-
     button#navbar-toggle-button.expanded span.nav-bar-toggle-icon:nth-child(2) {
         opacity: 0;
     }
-
     button#navbar-toggle-button.expanded span.nav-bar-toggle-icon:nth-child(3) {
         transform: rotate(-45deg);
         transform-origin: 10% 90%;
         width: 26px;
     }
 }
-
 @media screen and (max-width: 800px) {
     .about-language {
         padding-right: 16px;
     }
-
     ul.nav-list li {
         margin-left: 5px;
     }
-
     ul.sub-nav-list-small > li {
         margin-left: 5px;
     }
-
     main {
         padding: 10px;
     }
-
     .summary section[class$="-summary"], .details section[class$="-details"],
     .class-uses .detail, .serialized-class-details {
         padding: 0 8px 5px 8px;
     }
-
     body {
         -webkit-text-size-adjust: none;
     }
 }
-
 @media screen and (max-width: 400px) {
     .about-language {
         font-size: 10px;
         padding-right: 12px;
     }
 }
-
 @media screen and (max-width: 400px) {
     .nav-list-search {
         width: 94%;
     }
-
     #search-input {
         width: 70%;
     }
 }
-
 @media screen and (max-width: 320px) {
     .nav-list-search > label {
         display: none;
     }
-
     .nav-list-search {
         width: 90%;
     }
-
     #search-input {
         width: 80%;
     }
@@ -1038,11 +946,9 @@ pre.snippet {
     overflow: auto;
     white-space: pre;
 }
-
 div.snippet-container {
     position: relative;
 }
-
 button.snippet-copy {
     position: absolute;
     top: 6px;
@@ -1055,22 +961,18 @@ button.snippet-copy {
     cursor: pointer;
     background: none;
 }
-
 button.snippet-copy img {
     width: 18px;
     height: 18px;
     padding: 0.05em 0;
     background: none;
 }
-
 div.snippet-container:hover button.snippet-copy {
     opacity: 80%;
 }
-
 div.snippet-container button.snippet-copy:hover {
     opacity: 100%;
 }
-
 button.snippet-copy span {
     color: #3d3d3d;
     content: attr(aria-label);
@@ -1083,35 +985,28 @@ button.snippet-copy span {
     top: -0.5em;
     display: none;
 }
-
 div.snippet-container:hover button.snippet-copy span {
     display: inline;
 }
-
 button.snippet-copy:active {
     background: #d3d3d3;
     opacity: 100%;
 }
-
 @media screen and (max-width: 800px) {
     pre.snippet {
         padding-top: 26px;
     }
-
     button.snippet-copy {
         top: 4px;
         right: 4px;
     }
 }
-
 pre.snippet .italic {
     font-style: italic;
 }
-
 pre.snippet .bold {
     font-weight: bold;
 }
-
 pre.snippet .highlighted {
     background-color: #f7c590;
     border-radius: 10%;
