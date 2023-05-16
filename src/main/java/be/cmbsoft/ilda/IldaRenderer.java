@@ -56,7 +56,7 @@ public class IldaRenderer extends PGraphics
     protected               float                ellipseDetail      = 1f;
     protected               float                invDepth;
     Optimiser optimiser;
-    boolean   optimise = false;
+    boolean   optimise = true;
     private float   circleCorrection = 0f;
     private double  textDetail       = 0.01;
     private boolean overwrite        = false;
@@ -176,7 +176,12 @@ public class IldaRenderer extends PGraphics
     @Override
     public void endDraw()
     {
-        if (optimise) {optimiser.optimiseSegment(currentFrame.points);}
+        if (optimise)
+        {
+            List<IldaPoint> points = optimiser.optimiseSegment(currentFrame.points);
+            currentFrame.points.clear();
+            currentFrame.points.addAll(points);
+        }
         currentFrame.pointCount = currentFrame.points.size();
         if (!overwrite) {theFrames.add(currentFrame);}
         count++;

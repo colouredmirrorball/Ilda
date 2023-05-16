@@ -30,8 +30,9 @@ public class OptimisationSettings {
     float[] clipBounds = new float[]{-1f, 1f, 1f, -1f};
 
     public OptimisationSettings() {
-        interpolateLit = true;
-        interpolateBlanked = true;
+        interpolateLit = false;
+        interpolateBlanked = false;
+        clippingEnabled = true;
     }
 
     public float getAngleDwellFactor() {
@@ -56,25 +57,37 @@ public class OptimisationSettings {
         return blankDwellAmount;
     }
 
-    public OptimisationSettings setBlankDwellAmount(int blankDwellAmount) {
+    public OptimisationSettings setBlankDwellAmount(int blankDwellAmount)
+    {
         this.blankDwellAmount = blankDwellAmount;
         return this;
     }
 
-    public float[] getClipBounds() {
+    public float[] getClipBounds()
+    {
         return clipBounds;
     }
 
-    public OptimisationSettings setClipBounds(float[] clipBounds) {
+    /**
+     * Set the boundaries of the rectangle outside of which points should be clipped away
+     *
+     * @param clipBounds float array containing coordinates in the range -1..1, in this order: left, up, right, down
+     *                   (clockwise)
+     * @return this
+     */
+    public OptimisationSettings setClipBounds(float[] clipBounds)
+    {
         this.clipBounds = clipBounds;
         return this;
     }
 
-    public boolean isInterpolateLit() {
+    public boolean isInterpolateLit()
+    {
         return interpolateLit;
     }
 
-    public OptimisationSettings setInterpolateLit(boolean interpolateLit) {
+    public OptimisationSettings setInterpolateLit(boolean interpolateLit)
+    {
         this.interpolateLit = interpolateLit;
         return this;
     }

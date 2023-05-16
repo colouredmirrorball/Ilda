@@ -15,11 +15,12 @@ import processing.core.PVector;
  * A point also has a
  * blanked flag which determines if the point is off or on.
  */
-public class IldaPoint {
-    protected PVector position;
-    protected int colour;
-    protected boolean blanked;
-    protected byte palIndex;
+public class IldaPoint
+{
+    PVector position;
+    int     colour;
+    boolean blanked;
+    byte    palIndex;
 
     /**
      * Constructor for an IldaPoint.
@@ -33,14 +34,14 @@ public class IldaPoint {
      * @param blanked  True if the point should not be on or displayed
      */
     public IldaPoint(PVector position, int red, int green, int blue, boolean blanked) {
-        floatsToXYZ(position.x, position.y, position.z);
+        floatsToPosition(position.x, position.y, position.z);
         setColour(red, green, blue);
 
         this.blanked = blanked;
     }
 
     public IldaPoint(float x, float y, float z, int red, int green, int blue, boolean blanked) {
-        floatsToXYZ(x, y, z);
+        floatsToPosition(x, y, z);
         setColour(red, green, blue);
         this.blanked = blanked;
     }
@@ -50,7 +51,7 @@ public class IldaPoint {
      */
 
     public IldaPoint(float x, float y, float z, int paletteIndex, boolean blanked) {
-        floatsToXYZ(x, y, z);
+        floatsToPosition(x, y, z);
         palIndex = (byte) paletteIndex;
         this.blanked = blanked;
 
@@ -63,7 +64,8 @@ public class IldaPoint {
         palIndex = point.palIndex;
     }
 
-    private void floatsToXYZ(float x, float y, float z) {
+    private void floatsToPosition(float x, float y, float z)
+    {
         this.position = new PVector(x, y, z);
     }
 
