@@ -3,8 +3,6 @@ package be.cmbsoft.ilda;
 import java.io.File;
 import java.io.FileNotFoundException;
 
-import processing.core.PApplet;
-
 
 public class PicReader extends FileParser
 {
@@ -13,9 +11,9 @@ public class PicReader extends FileParser
         super(new File(location));
     }
 
-    PicReader(PApplet applet, String location)
+    public PicReader(File location) throws FileNotFoundException
     {
-        super(applet, location);
+        super(location);
     }
 
     /**
@@ -40,9 +38,18 @@ public class PicReader extends FileParser
         return parser.getFrame();
     }
 
-    public static IldaFrame getFrame(PApplet parent, String location)
+    public static IldaFrame getFrame(File location)
     {
-        PicReader parser = new PicReader(parent, location);
+        PicReader parser;
+        try
+        {
+            parser = new PicReader(location);
+        }
+        catch (FileNotFoundException exception)
+        {
+            Utilities.logException(exception);
+            return null;
+        }
         return parser.getFrame();
     }
 

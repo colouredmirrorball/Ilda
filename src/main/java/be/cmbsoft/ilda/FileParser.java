@@ -2,7 +2,6 @@ package be.cmbsoft.ilda;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Optional;
 
 import processing.core.PApplet;
 
@@ -11,11 +10,6 @@ class FileParser
 
     protected byte[] b;
     protected int    position = 0;
-
-    FileParser(PApplet applet, String location)
-    {
-        b = Optional.ofNullable(applet).map(appl -> appl.loadBytes(location)).orElseThrow();
-    }
 
     public FileParser(File file) throws FileNotFoundException
     {

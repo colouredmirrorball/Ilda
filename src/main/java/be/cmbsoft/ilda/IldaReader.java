@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import processing.core.PApplet;
-
 /**
  * This class reads a file and passes the data to frames and points.
  * <p>
@@ -36,34 +34,14 @@ public class IldaReader extends FileParser
 
     private IldaPalette palette;
 
-    public IldaReader(String location) throws FileNotFoundException
+    private IldaReader(String location) throws FileNotFoundException
     {
         this(new File(location));
     }
 
-    public IldaReader(PApplet applet, String location)
-    {
-        super(applet, location);
-    }
-
-    public IldaReader(File file) throws FileNotFoundException
+    private IldaReader(File file) throws FileNotFoundException
     {
         super(file);
-    }
-
-    /**
-     * Read an Ilda file from disk and convert it to a list of IldaFrame objects. The location may be relative to the
-     * sketch path if the parameter applet is set
-     *
-     * @param applet   Reference to applet (usually <code>this</code>), necessary for retrieving relative sketch paths.
-     * @param location Either absolute file path or name of a file in the data folder of the sketch.
-     * @return Parsed frames in an ArrayList
-     */
-
-    public static List<IldaFrame> readFile(PApplet applet, String location)
-    {
-        IldaReader reader = new IldaReader(applet, location);
-        return reader.getFramesFromBytes();
     }
 
     /**
@@ -90,14 +68,32 @@ public class IldaReader extends FileParser
         return reader.getFramesFromBytes();
     }
 
-    public void setPalette(IldaPalette palette) {
+    public static List<IldaFrame> readFile(File location)
+    {
+        IldaReader reader;
+        try
+        {
+            reader = new IldaReader(location);
+        }
+        catch (FileNotFoundException exception)
+        {
+            Utilities.logException(exception);
+            return Collections.emptyList();
+        }
+        return reader.getFramesFromBytes();
+    }
+
+    public void setPalette(IldaPalette palette)
+    {
         this.palette = palette;
     }
 
-    private List<IldaFrame> getFramesFromBytes() {
+    private List<IldaFrame> getFramesFromBytes()
+    {
         reset();
         ArrayList<IldaFrame> theFrames = new ArrayList<>();
-        if (b == null) {
+        if (b == null)
+        {
             return Collections.emptyList();
         }
 
@@ -226,6 +222,5 @@ public class IldaReader extends FileParser
             loadIldaFrame(frames);
         }
     }
-
 
 }
