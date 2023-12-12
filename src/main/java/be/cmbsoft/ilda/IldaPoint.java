@@ -57,11 +57,19 @@ public class IldaPoint
 
     }
 
-    public IldaPoint(IldaPoint point) {
+    public IldaPoint(IldaPoint point)
+    {
         position = new PVector(point.position.x, point.position.y, point.position.z);
         colour = point.colour;
         blanked = point.blanked;
         palIndex = point.palIndex;
+    }
+
+    public IldaPoint(PVector position, boolean blanked, int paletteIndex)
+    {
+        this.position = position;
+        this.blanked = blanked;
+        this.palIndex = (byte) paletteIndex;
     }
 
     private void floatsToPosition(float x, float y, float z)
@@ -101,13 +109,15 @@ public class IldaPoint
         byte blue = getBlue();
 
         int i = 0;
-        for (int c : palette.colours) {
-            byte cred = getRed(c);
+        for (int c : palette.getColours())
+        {
+            byte cred   = getRed(c);
             byte cgreen = getGreen(c);
-            byte cblue = getBlue(c);
+            byte cblue  = getBlue(c);
             double d = Math.pow(cred - red, 2) + Math.pow(cgreen - green, 2) + Math
                 .pow(cblue - blue, 2);
-            if (d < distance) {
+            if (d < distance)
+            {
                 distance = d;
                 index = i;
             }
@@ -149,7 +159,7 @@ public class IldaPoint
      */
 
     public void setColour(int paletteIndex, IldaPalette palette) {
-        colour = palette.colours.get(paletteIndex);
+        colour = palette.getColours().get(paletteIndex);
     }
 
     /**
@@ -217,7 +227,7 @@ public class IldaPoint
      */
 
     public void setColour(IldaPalette palette) {
-        colour = palette.colours.get(palIndex);
+        colour = palette.getColours().get(palIndex);
     }
 
     public boolean isBlanked() {
@@ -246,14 +256,45 @@ public class IldaPoint
         if (o == null || getClass() != o.getClass()) {return false;}
         IldaPoint point = (IldaPoint) o;
         return colour == point.colour
-               && blanked == point.blanked
-               && palIndex == point.palIndex
-               && position != null && position.equals(point.position);
+            && blanked == point.blanked
+            && palIndex == point.palIndex
+            && position != null && position.equals(point.position);
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         return Objects.hash(position, colour, blanked, palIndex);
+    }
+
+    public IldaPoint clone(IldaPoint p)
+    {
+        return new IldaPoint(p);
+    }
+
+    public void setColour(int colour)
+    {
+        this.colour = colour;
+    }
+
+    public void repaintWithPalette(IldaPalette palette)
+    {
+        setColour(Objects.requireNonNull(palette).getColour(palIndex));
+    }
+
+    public void setPalIndex(byte palIndex)
+    {
+        this.palIndex = palIndex;
+    }
+
+    public int getPaletteIndex()
+    {
+        return getPalIndex();
+    }
+
+    public void setPaletteIndex(int index)
+    {
+        setPalIndex((byte) index);
     }
 
 }

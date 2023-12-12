@@ -8,15 +8,16 @@ import java.util.List;
  * to a colour in a palette.
  * Changing a palette results in changing the colours of a frame.
  */
-public class IldaPalette {
-    String name;
-    String companyName;
-    int totalColors;
-    int paletteNumber;
-    int scannerHead;
-    List<Integer> colours = new ArrayList<>();
+public class IldaPalette
+{
+    private final List<Integer> colours = new ArrayList<>();
+    private       String        name;
+    private       String        companyName;
+    private       int           paletteNumber;
+    private       int           scannerHead;
 
-    public void addColour(int r, int g, int b) {
+    public void addColour(int r, int g, int b)
+    {
         colours.add(((r & 0xFF) << 16) + ((g & 0xFF) << 8) + (b & 0xFF));
     }
 
@@ -47,24 +48,13 @@ public class IldaPalette {
         IldaWriter.writeCommonIldaHeader(theBytes);
         theBytes.add((byte) 2); //version byte
 
-        for (int i = 0; i < 8; i++)    //Bytes 9-16: Name
-        {
-            char letter;
-            if (name.length() < i + 1) {letter = ' ';} else {letter = name.charAt(i);}
-            theBytes.add((byte) letter);
-        }
+        writeField(theBytes, name);
 
         if (companyName == null)   //Bytes 17-24: Company Name
         {
             IldaWriter.writeCustomCompanyName(theBytes);
         } else {
-            for (int i = 0; i < 8; i++) {
-                char letter;
-                if (companyName.length() < i + 1) {letter = ' ';} else {
-                    letter = companyName.charAt(i);
-                }
-                theBytes.add((byte) letter);
-            }
+            writeField(theBytes, companyName);
         }
 
         int totalSize = colours.size();
@@ -90,7 +80,8 @@ public class IldaPalette {
                 theBytes.add((byte) (colour & 0xFF));
             }
             byte[] bt = new byte[theBytes.size()];
-            for (int i = 0; i < theBytes.size(); i++) {
+            for (int i = 0; i < theBytes.size(); i++)
+            {
                 bt[i] = theBytes.get(i);
             }
             result = bt;
@@ -99,14 +90,28 @@ public class IldaPalette {
         return result;
     }
 
+    private void writeField(ArrayList<Byte> theBytes, String companyName)
+    {
+        for (int i = 0; i < 8; i++)
+        {
+            char letter;
+            if (companyName.length() < i + 1) {letter = ' ';}
+            else
+            {
+                letter = companyName.charAt(i);
+            }
+            theBytes.add((byte) letter);
+        }
+    }
+
     /**
      * Converts this palette to the standard 64 color palette used in most programs
      */
 
-    public void setDefaultPalette() {
+    public void setDefaultPalette()
+    {
         name = "Ilda64";
         companyName = "Ilda4P5";
-        totalColors = 64;
         paletteNumber = 0;
         scannerHead = 0;
 
@@ -176,6 +181,79 @@ public class IldaPalette {
         addColour(255, 64, 64);
         addColour(15, 32, 32);
 
+    }
+
+    public List<Integer> getColours()
+    {
+        return colours;
+    }
+
+    public int getColoursAmount()
+    {
+        return colours.size();
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    public String getCompanyName()
+    {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName)
+    {
+        this.companyName = companyName;
+    }
+
+    public int getPaletteNumber()
+    {
+        return paletteNumber;
+    }
+
+    public void setPaletteNumber(int paletteNumber)
+    {
+        this.paletteNumber = paletteNumber;
+    }
+
+    public int getScannerHead()
+    {
+        return scannerHead;
+    }
+
+    public void setScannerHead(int scannerHead)
+    {
+        this.scannerHead = scannerHead;
+    }
+
+    public void resizePalette(int newSize)
+    {
+        //Delete all colours that are above the new size:
+        if (newSize < colours.size() && newSize >= 0)
+        {
+            colours.subList(newSize, colours.size()).clear();
+        }
+
+        //Add new black colour if the new size is bigger than the previous one:
+        else
+        {
+            for (int i = colours.size(); i < newSize; i++)
+            {
+                colours.add(0);
+            }
+        }
+    }
+
+    public void addColour(int colour)
+    {
+        colours.add(colour);
     }
 
 }

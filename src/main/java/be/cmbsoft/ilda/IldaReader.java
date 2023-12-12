@@ -164,17 +164,18 @@ public class IldaReader extends FileParser
 
             palette = new IldaPalette();
 
-            palette.name = name;
-            palette.companyName = company;
-            palette.totalColors = pointCount;
+            palette.setName(name);
+            palette.setCompanyName(company);
 
             //Byte 30: scanner head.
-            palette.scannerHead = scannerhead;
+            palette.setScannerHead(scannerhead);
+            palette.setPaletteNumber(frameNumber);
 
 
             // ILDA V2: Palette information
 
-            for (int i = 0; i < pointCount; i++) {
+            for (int i = 0; i < pointCount; i++)
+            {
                 palette.addColour(parseByte(), parseByte(), parseByte());
             }
         } else {
