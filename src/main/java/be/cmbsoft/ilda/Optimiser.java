@@ -5,10 +5,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import processing.core.PVector;
-
 import static java.lang.Math.max;
 import static java.lang.Math.min;
+import processing.core.PVector;
 
 /**
  * Optimises a frame or frame segments according to its OptimisationSettings.
@@ -54,30 +53,31 @@ public class Optimiser
             points.clear();
             points.addAll(clipped);
         }
-        if (false)
-        {
-            // Disabled for now
-            for (int i = points.size() - 2; i >= 1; i--)
-            {
-                IldaPoint previousPoint = points.get(i + 1);
-                IldaPoint point         = points.get(i);
-                IldaPoint nextPoint     = points.get(i - 1);
+        for (int i = points.size() - 2; i >= 1; i--) {
+            IldaPoint previousPoint = points.get(i + 1);
+            IldaPoint point         = points.get(i);
+            IldaPoint nextPoint     = points.get(i - 1);
 
-                float distancePreviousSQ = calculateDistanceSquared(previousPoint, point);
-
-                if (settings.isReduceData() && arePointsCollinear(previousPoint, point, nextPoint))
-                {
-                    points.remove(point);
-                    continue;
-                }
-                interpolate(points, maxDistBlankSQ, maxDistLitSQ, i, previousPoint, point,
-                    distancePreviousSQ);
-                if (settings.isAngleDwell())
-                {
-                    addAngleDwellPoints(points, i, previousPoint, point, nextPoint, distancePreviousSQ);
-                }
-
+            float distancePreviousSQ = calculateDistanceSquared(previousPoint, point);
+/*
+            if (settings.isReduceData() && arePointsCollinear(previousPoint, point, nextPoint)) {
+                points.remove(point);
+                continue;
             }
+
+ */
+            interpolate(points, maxDistBlankSQ, maxDistLitSQ, i, previousPoint, point, distancePreviousSQ);
+            if (settings.isAngleDwell()) {
+                addAngleDwellPoints(points, i, previousPoint, point, nextPoint, distancePreviousSQ);
+            }
+            if (settings.blankDwell) {
+                if (point.blanked != previousPoint.blanked) {
+                    for (int i1 = 0; i1 < settings.blankDwellAmount; i1++) {
+                        points.add(i, new IldaPoint(previousPoint));
+                    }
+                }
+            }
+
         }
 
         return points;
@@ -153,8 +153,7 @@ public class Optimiser
     }
 
     private void addTwoIntersectingPoints(List<IldaPoint> output, float left, float up, float right, float down,
-        IldaPoint point,
-        PVector position, PVector nextPosition)
+        IldaPoint point, PVector position, PVector nextPosition)
     {
 
         List<PVector> allIntersections = findAllIntersections(position, nextPosition, left, up, right, down);
@@ -203,8 +202,7 @@ public class Optimiser
     }
 
     private List<PVector> findAllIntersections(PVector position, PVector nextPosition, float left, float up,
-        float right,
-        float down)
+        float right, float down)
     {
         List<PVector> result = new ArrayList<>();
         result.add(findIntersection(position.x, position.y, nextPosition.x, nextPosition.y, left, down, right, down));
@@ -288,8 +286,7 @@ public class Optimiser
         return collinear;
     }
 
-    private void interpolate(List<IldaPoint> points, float maxDistBlankSQ, float maxDistLitSQ,
-        int i,
+    private void interpolate(List<IldaPoint> points, float maxDistBlankSQ, float maxDistLitSQ, int index,
         IldaPoint previousPoint, IldaPoint point, float distancePreviousSQ)
     {
         if (settings.interpolateBlanked && previousPoint.blanked && point.blanked &&
@@ -309,7 +306,7 @@ public class Optimiser
                     previousPoint.getX() + (point.getX() - previousPoint.getX()) * factor,
                     previousPoint.getY() + (point.getY() - previousPoint.getY()) * factor,
                     previousPoint.getZ() + (point.getZ() - previousPoint.getZ()) * factor);
-                points.add(i + 1, newPoint);
+                points.add(index + 1, newPoint);
             }
         }
     }
