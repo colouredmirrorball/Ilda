@@ -22,8 +22,8 @@ public class OptimisationSettings {
     boolean angleDwell = true;
     float angleDwellFactor = 1;
 
-    boolean blankDwell = true;
-    int blankDwellAmount = 2;
+    boolean blankDwell       = true;
+    int     blankDwellAmount = 6;
 
     boolean clippingEnabled = false;
     boolean reduceData = true;
