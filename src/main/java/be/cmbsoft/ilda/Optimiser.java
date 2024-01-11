@@ -67,9 +67,9 @@ public class Optimiser
 
  */
             interpolate(points, maxDistBlankSQ, maxDistLitSQ, i, previousPoint, point, distancePreviousSQ);
-            if (settings.isAngleDwell()) {
-                addAngleDwellPoints(points, i, previousPoint, point, nextPoint, distancePreviousSQ);
-            }
+//            if (settings.isAngleDwell()) {
+//                addAngleDwellPoints(points, i, previousPoint, point, nextPoint, distancePreviousSQ);
+//            }
             if (settings.blankDwell) {
                 if (point.blanked != previousPoint.blanked) {
                     for (int i1 = 0; i1 < settings.blankDwellAmount; i1++) {
