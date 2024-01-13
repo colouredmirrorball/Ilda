@@ -23,9 +23,9 @@ public class OptimisationSettings {
     float angleDwellFactor = 1;
 
     boolean blankDwell       = true;
-    int     blankDwellAmount = 6;
+    int     blankDwellAmount = 11;
 
-    boolean clippingEnabled = false;
+    boolean clippingEnabled;
     boolean reduceData = true;
     float[] clipBounds = new float[]{-1f, 1f, 1f, -1f};
 

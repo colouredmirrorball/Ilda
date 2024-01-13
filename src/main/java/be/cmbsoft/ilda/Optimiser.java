@@ -5,9 +5,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import processing.core.PVector;
+
 import static java.lang.Math.max;
 import static java.lang.Math.min;
-import processing.core.PVector;
 
 /**
  * Optimises a frame or frame segments according to its OptimisationSettings.
@@ -45,42 +46,109 @@ public class Optimiser
 
     public List<IldaPoint> optimiseSegment(List<IldaPoint> points)
     {
-        float maxDistBlankSQ = settings.maxDistBlank * settings.maxDistBlank;
-        float maxDistLitSQ   = settings.maxDistLit * settings.maxDistLit;
+
         if (settings.isClippingEnabled())
         {
             List<IldaPoint> clipped = clip(points);
             points.clear();
             points.addAll(clipped);
         }
-        for (int i = points.size() - 2; i >= 1; i--) {
-            IldaPoint previousPoint = points.get(i + 1);
-            IldaPoint point         = points.get(i);
-            IldaPoint nextPoint     = points.get(i - 1);
-
-            float distancePreviousSQ = calculateDistanceSquared(previousPoint, point);
-/*
-            if (settings.isReduceData() && arePointsCollinear(previousPoint, point, nextPoint)) {
-                points.remove(point);
-                continue;
-            }
-
- */
-            interpolate(points, maxDistBlankSQ, maxDistLitSQ, i, previousPoint, point, distancePreviousSQ);
-//            if (settings.isAngleDwell()) {
-//                addAngleDwellPoints(points, i, previousPoint, point, nextPoint, distancePreviousSQ);
-//            }
-            if (settings.blankDwell) {
-                if (point.blanked != previousPoint.blanked) {
-                    for (int i1 = 0; i1 < settings.blankDwellAmount; i1++) {
-                        points.add(i, new IldaPoint(previousPoint));
-                    }
-                }
-            }
-
+        if (settings.interpolateBlanked || settings.interpolateLit)
+        {
+            float           maxDistBlankSQ = settings.maxDistBlank * settings.maxDistBlank;
+            float           maxDistLitSQ   = settings.maxDistLit * settings.maxDistLit;
+            List<IldaPoint> interpolated   = interpolate(points, maxDistBlankSQ, maxDistLitSQ);
+            points.clear();
+            points.addAll(interpolated);
+        }
+        if (settings.blankDwell)
+        {
+            List<IldaPoint> dwelled = dwell(points);
+            points.clear();
+            points.addAll(dwelled);
         }
 
         return points;
+    }
+
+    private List<IldaPoint> dwell(List<IldaPoint> points)
+    {
+        List<IldaPoint> output = new ArrayList<>();
+        for (int i = 0; i < points.size() - 1; i++)
+        {
+            IldaPoint point     = points.get(i);
+            IldaPoint nextPoint = points.get(i + 1);
+            if (i == 0)
+            {
+                addBlankedPoints(point, output, settings.blankDwellAmount);
+                if (!point.blanked)
+                {
+                    output.add(point);
+                }
+            }
+            else if (point.blanked != nextPoint.blanked)
+            {
+                if (!point.blanked)
+                {
+                    output.add(point);
+                }
+                addBlankedPoints(point, output, settings.blankDwellAmount);
+            }
+            else
+            {
+                output.add(point);
+            }
+        }
+        if (points.size() > 1)
+        {
+            output.add(points.get(points.size() - 1));
+        }
+        return output;
+    }
+
+    private void addBlankedPoints(IldaPoint originalPoint, List<IldaPoint> output, int amount)
+    {
+        IldaPoint copy = new IldaPoint(originalPoint);
+        copy.setBlanked(true);
+        for (int i = 0; i < amount; i++)
+        {
+            output.add(copy);
+        }
+    }
+
+    private List<IldaPoint> interpolate(List<IldaPoint> points, float maxDistBlankSQ, float maxDistLitSQ)
+    {
+        List<IldaPoint> output = new ArrayList<>();
+        for (int i = points.size() - 2; i >= 1; i--)
+        {
+            IldaPoint previousPoint = points.get(i + 1);
+            IldaPoint point         = points.get(i);
+
+            float distancePreviousSQ = calculateDistanceSquared(previousPoint, point);
+            if (settings.interpolateBlanked && previousPoint.blanked && point.blanked &&
+                distancePreviousSQ > maxDistBlankSQ
+                || settings.interpolateLit && !previousPoint.blanked && !point.blanked &&
+                distancePreviousSQ > maxDistLitSQ)
+            {
+                double dist        = Math.sqrt(distancePreviousSQ);
+                double maxDist     = previousPoint.blanked ? settings.maxDistBlank : settings.maxDistLit;
+                int    addedPoints = (int) (dist / maxDist);
+
+                for (int j = 0; j <= addedPoints; j++)
+                {
+                    IldaPoint newPoint = new IldaPoint(previousPoint);
+                    float     factor   = (float) (1 - (dist - j * maxDist) / dist);
+                    newPoint.setPosition(
+                        previousPoint.getX() + (point.getX() - previousPoint.getX()) * factor,
+                        previousPoint.getY() + (point.getY() - previousPoint.getY()) * factor,
+                        previousPoint.getZ() + (point.getZ() - previousPoint.getZ()) * factor);
+                    points.add(i + 1, newPoint);
+                }
+            }
+
+
+        }
+        return output;
     }
 
     private List<IldaPoint> clip(List<IldaPoint> points)
@@ -186,11 +254,6 @@ public class Optimiser
             // Mathematically, intersection should never be null here.
             addPoint(output, nextPoint, blanked, intersection);
         }
-        else
-        {
-//            throw new IllegalStateException("Intersection can mathematically not be null here (but it is). Check
-//            maths pls!");
-        }
     }
 
     private void addPoint(List<IldaPoint> output, IldaPoint point, boolean blanked, PVector newPointPosition)
@@ -275,40 +338,6 @@ public class Optimiser
         float x = position.x;
         float y = position.y;
         return x >= left && x <= right && y <= up && y >= down;
-    }
-
-    private boolean arePointsCollinear(IldaPoint previousPoint, IldaPoint point,
-        IldaPoint nextPoint)
-    {
-        // Find slope of the two lines between the three points and if they are (about) equal,
-        // they're collinear
-        boolean collinear = false;
-        return collinear;
-    }
-
-    private void interpolate(List<IldaPoint> points, float maxDistBlankSQ, float maxDistLitSQ, int index,
-        IldaPoint previousPoint, IldaPoint point, float distancePreviousSQ)
-    {
-        if (settings.interpolateBlanked && previousPoint.blanked && point.blanked &&
-            distancePreviousSQ > maxDistBlankSQ
-            || settings.interpolateLit && !previousPoint.blanked && !point.blanked &&
-            distancePreviousSQ > maxDistLitSQ)
-        {
-            double dist        = Math.sqrt(distancePreviousSQ);
-            double maxDist     = previousPoint.blanked ? settings.maxDistBlank : settings.maxDistLit;
-            int    addedPoints = (int) (dist / maxDist);
-
-            for (int j = 0; j <= addedPoints; j++)
-            {
-                IldaPoint newPoint = new IldaPoint(previousPoint);
-                float     factor   = (float) (1 - (dist - j * maxDist) / dist);
-                newPoint.setPosition(
-                    previousPoint.getX() + (point.getX() - previousPoint.getX()) * factor,
-                    previousPoint.getY() + (point.getY() - previousPoint.getY()) * factor,
-                    previousPoint.getZ() + (point.getZ() - previousPoint.getZ()) * factor);
-                points.add(index + 1, newPoint);
-            }
-        }
     }
 
     private void addAngleDwellPoints(List<IldaPoint> points, int i, IldaPoint previousPoint,
