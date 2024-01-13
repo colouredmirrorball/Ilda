@@ -5,10 +5,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import processing.core.PVector;
-
 import static java.lang.Math.max;
 import static java.lang.Math.min;
+import processing.core.PVector;
 
 /**
  * Optimises a frame or frame segments according to its OptimisationSettings.
@@ -119,6 +118,9 @@ public class Optimiser
     private List<IldaPoint> interpolate(List<IldaPoint> points, float maxDistBlankSQ, float maxDistLitSQ)
     {
         List<IldaPoint> output = new ArrayList<>();
+        if (points.size() > 1) {
+            output.add(points.get(points.size() - 1));
+        }
         for (int i = points.size() - 2; i >= 1; i--)
         {
             IldaPoint previousPoint = points.get(i + 1);
@@ -142,12 +144,16 @@ public class Optimiser
                         previousPoint.getX() + (point.getX() - previousPoint.getX()) * factor,
                         previousPoint.getY() + (point.getY() - previousPoint.getY()) * factor,
                         previousPoint.getZ() + (point.getZ() - previousPoint.getZ()) * factor);
-                    points.add(i + 1, newPoint);
+                    output.add(i + 1, newPoint);
                 }
             }
-
+            output.add(point);
 
         }
+        if (!points.isEmpty()) {
+            output.add(points.get(0));
+        }
+
         return output;
     }
 

@@ -30,8 +30,8 @@ public class OptimisationSettings {
     float[] clipBounds = new float[]{-1f, 1f, 1f, -1f};
 
     public OptimisationSettings() {
-        interpolateLit = false;
-        interpolateBlanked = false;
+        interpolateLit     = true;
+        interpolateBlanked = true;
         clippingEnabled = true;
     }
 
