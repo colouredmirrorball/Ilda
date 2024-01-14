@@ -5,9 +5,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import processing.core.PVector;
+
 import static java.lang.Math.max;
 import static java.lang.Math.min;
-import processing.core.PVector;
 
 /**
  * Optimises a frame or frame segments according to its OptimisationSettings.
@@ -118,40 +119,42 @@ public class Optimiser
     private List<IldaPoint> interpolate(List<IldaPoint> points, float maxDistBlankSQ, float maxDistLitSQ)
     {
         List<IldaPoint> output = new ArrayList<>();
-        if (points.size() > 1) {
-            output.add(points.get(points.size() - 1));
-        }
-        for (int i = points.size() - 2; i >= 1; i--)
+        if (points.size() > 1)
         {
-            IldaPoint previousPoint = points.get(i + 1);
-            IldaPoint point         = points.get(i);
-
-            float distancePreviousSQ = calculateDistanceSquared(previousPoint, point);
-            if (settings.interpolateBlanked && previousPoint.blanked && point.blanked &&
-                distancePreviousSQ > maxDistBlankSQ
-                || settings.interpolateLit && !previousPoint.blanked && !point.blanked &&
-                distancePreviousSQ > maxDistLitSQ)
-            {
-                double dist        = Math.sqrt(distancePreviousSQ);
-                double maxDist     = previousPoint.blanked ? settings.maxDistBlank : settings.maxDistLit;
-                int    addedPoints = (int) (dist / maxDist);
-
-                for (int j = 0; j <= addedPoints; j++)
-                {
-                    IldaPoint newPoint = new IldaPoint(previousPoint);
-                    float     factor   = (float) (1 - (dist - j * maxDist) / dist);
-                    newPoint.setPosition(
-                        previousPoint.getX() + (point.getX() - previousPoint.getX()) * factor,
-                        previousPoint.getY() + (point.getY() - previousPoint.getY()) * factor,
-                        previousPoint.getZ() + (point.getZ() - previousPoint.getZ()) * factor);
-                    output.add(i + 1, newPoint);
-                }
-            }
-            output.add(point);
-
-        }
-        if (!points.isEmpty()) {
             output.add(points.get(0));
+            for (int i = 1; i < points.size(); i++)
+            {
+                IldaPoint previousPoint = points.get(i - 1);
+                IldaPoint point         = points.get(i);
+
+                float distancePreviousSQ = calculateDistanceSquared(previousPoint, point);
+                if (settings.interpolateBlanked && point.blanked && distancePreviousSQ > maxDistBlankSQ ||
+                    settings.interpolateLit && !point.blanked && distancePreviousSQ > maxDistLitSQ)
+                {
+                    List<IldaPoint> addedPoints       = new ArrayList<>();
+                    double          dist              = Math.sqrt(distancePreviousSQ);
+                    double          maxDist           =
+                        previousPoint.blanked ? settings.maxDistBlank : settings.maxDistLit;
+                    int             addedPointsAmount = (int) (dist / maxDist);
+
+                    for (int j = 1; j <= addedPointsAmount; j++)
+                    {
+                        IldaPoint newPoint = new IldaPoint(point);
+                        float     factor   = (float) (1 - (dist - j * maxDist) / dist);
+                        newPoint.setPosition(previousPoint.getX() + (point.getX() - previousPoint.getX()) * factor,
+                            previousPoint.getY() + (point.getY() - previousPoint.getY()) * factor,
+                            previousPoint.getZ() + (point.getZ() - previousPoint.getZ()) * factor);
+                        addedPoints.add(j - 1, newPoint);
+                    }
+                    output.addAll(addedPoints);
+                }
+                output.add(point);
+
+            }
+        }
+        else
+        {
+            output.addAll(points);
         }
 
         return output;
@@ -171,7 +174,7 @@ public class Optimiser
         float down  = clipBounds[3];
         for (int index = 0; index < points.size() - 1; index++)
         {
-            IldaPoint point = points.get(index);
+            IldaPoint point     = points.get(index);
             IldaPoint nextPoint = points.get(index + 1);
 
             PVector position     = point.position;
@@ -329,10 +332,9 @@ public class Optimiser
         double intersectY = (a1 * c2 - a2 * c1) / determinant;
 
         // Verify point is in the line segments
-        if (min(x1, x2) <= intersectX && intersectX <= max(x1, x2)
-            && min(x3, x4) <= intersectX && intersectX <= max(x3, x4)
-            && min(y1, y2) <= intersectY && intersectY <= max(y1, y2)
-            && min(y3, y4) <= intersectY && intersectY <= max(y3, y4))
+        if (min(x1, x2) <= intersectX && intersectX <= max(x1, x2) && min(x3, x4) <= intersectX && intersectX <= max(x3,
+            x4) && min(y1, y2) <= intersectY && intersectY <= max(y1, y2) && min(y3, y4) <= intersectY &&
+            intersectY <= max(y3, y4))
         {
             result = new PVector((float) intersectX, (float) intersectY);
         }
@@ -346,8 +348,7 @@ public class Optimiser
         return x >= left && x <= right && y <= up && y >= down;
     }
 
-    private void addAngleDwellPoints(List<IldaPoint> points, int i, IldaPoint previousPoint,
-        IldaPoint point,
+    private void addAngleDwellPoints(List<IldaPoint> points, int i, IldaPoint previousPoint, IldaPoint point,
         IldaPoint nextPoint, float distancePreviousSQ)
     {
         if (nextPoint == null) {return;}
@@ -364,9 +365,9 @@ public class Optimiser
 
     private float calculateDistanceSquared(IldaPoint point1, IldaPoint point2)
     {
-        return (point1.getX() - point2.getX()) * (point1.getX() - point2.getX())
-            + (point1.getY() - point2.getY()) * (point1.getY() - point2.getY())
-            + (point1.getZ() - point2.getZ()) * (point1.getZ() - point2.getZ());
+        return (point1.getX() - point2.getX()) * (point1.getX() - point2.getX()) +
+            (point1.getY() - point2.getY()) * (point1.getY() - point2.getY()) +
+            (point1.getZ() - point2.getZ()) * (point1.getZ() - point2.getZ());
     }
 
 }

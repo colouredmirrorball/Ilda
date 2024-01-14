@@ -11,49 +11,52 @@ import processing.data.JSONObject;
  * and projects without
  * having to recreate the settings again.
  */
-public class OptimisationSettings {
-
+public class OptimisationSettings
+{
 
     boolean interpolateLit;
     boolean interpolateBlanked;
-    float maxDistLit = 0.03f;
-    float maxDistBlank = 0.03f;
-
-    boolean angleDwell = true;
-    float angleDwellFactor = 1;
-
+    float   maxDistLit       = 0.03f;
+    float   maxDistBlank     = 0.03f;
+    boolean angleDwell       = true;
+    float   angleDwellFactor = 1;
     boolean blankDwell       = true;
     int     blankDwellAmount = 11;
-
     boolean clippingEnabled;
-    boolean reduceData = true;
-    float[] clipBounds = new float[]{-1f, 1f, 1f, -1f};
+    boolean reduceData       = true;
+    float[] clipBounds       = new float[]{-1f, 1f, 1f, -1f};
 
-    public OptimisationSettings() {
-        interpolateLit     = true;
+    public OptimisationSettings()
+    {
+        interpolateLit = true;
         interpolateBlanked = true;
         clippingEnabled = true;
     }
 
-    public float getAngleDwellFactor() {
+    public float getAngleDwellFactor()
+    {
         return angleDwellFactor;
     }
 
-    public OptimisationSettings setAngleDwellFactor(float angleDwellFactor) {
+    public OptimisationSettings setAngleDwellFactor(float angleDwellFactor)
+    {
         this.angleDwellFactor = angleDwellFactor;
         return this;
     }
 
-    public boolean isBlankDwell() {
+    public boolean isBlankDwell()
+    {
         return blankDwell;
     }
 
-    public OptimisationSettings setBlankDwell(boolean blankDwell) {
+    public OptimisationSettings setBlankDwell(boolean blankDwell)
+    {
         this.blankDwell = blankDwell;
         return this;
     }
 
-    public int getBlankDwellAmount() {
+    public int getBlankDwellAmount()
+    {
         return blankDwellAmount;
     }
 
@@ -92,62 +95,75 @@ public class OptimisationSettings {
         return this;
     }
 
-    public boolean isInterpolateBlanked() {
+    public boolean isInterpolateBlanked()
+    {
         return interpolateBlanked;
     }
 
-    public OptimisationSettings setInterpolateBlanked(boolean interpolateBlanked) {
+    public OptimisationSettings setInterpolateBlanked(boolean interpolateBlanked)
+    {
         this.interpolateBlanked = interpolateBlanked;
         return this;
     }
 
-    public float getMaxDistLit() {
+    public float getMaxDistLit()
+    {
         return maxDistLit;
     }
 
-    public OptimisationSettings setMaxDistLit(float maxDistLit) {
+    public OptimisationSettings setMaxDistLit(float maxDistLit)
+    {
         this.maxDistLit = maxDistLit;
         return this;
     }
 
-    public float getMaxDistBlank() {
+    public float getMaxDistBlank()
+    {
         return maxDistBlank;
     }
 
-    public OptimisationSettings setMaxDistBlank(float maxDistBlank) {
+    public OptimisationSettings setMaxDistBlank(float maxDistBlank)
+    {
         this.maxDistBlank = maxDistBlank;
         return this;
     }
 
-    public boolean isAngleDwell() {
+    public boolean isAngleDwell()
+    {
         return angleDwell;
     }
 
-    public OptimisationSettings setAngleDwell(boolean angleDwell) {
+    public OptimisationSettings setAngleDwell(boolean angleDwell)
+    {
         this.angleDwell = angleDwell;
         return this;
     }
 
-    public boolean isClippingEnabled() {
+    public boolean isClippingEnabled()
+    {
         return clippingEnabled;
     }
 
-    public OptimisationSettings setClippingEnabled(boolean clippingEnabled) {
+    public OptimisationSettings setClippingEnabled(boolean clippingEnabled)
+    {
         this.clippingEnabled = clippingEnabled;
         return this;
     }
 
-    public boolean isReduceData() {
+    public boolean isReduceData()
+    {
         return reduceData;
     }
 
-    public OptimisationSettings setReduceData(boolean reduceData) {
+    public OptimisationSettings setReduceData(boolean reduceData)
+    {
         this.reduceData = reduceData;
         return this;
     }
 
 
-    public String toJSON() {
+    public String toJSON()
+    {
         JSONObject output = new JSONObject();
         output.setFloat("maxDistBlank", maxDistBlank);
         output.setFloat("maxDistLit", maxDistLit);
@@ -163,7 +179,8 @@ public class OptimisationSettings {
         return output.toString();
     }
 
-    public void fromJSON(String json) {
+    public void fromJSON(String json)
+    {
         JSONObject input = JSONObject.parse(json);
         maxDistBlank = input.getFloat("maxDistBlank", maxDistBlank);
         maxDistLit = input.getFloat("maxDistLit", maxDistLit);
