@@ -684,4 +684,9 @@ public class IldaRenderer extends PGraphics
     }
 
 
+    public int getCurrentPointCount()
+    {
+        return currentFrame == null ? 0 : currentFrame.getPointCount();
+    }
+
 }
