@@ -503,8 +503,7 @@ public class IldaRenderer extends PGraphics
     }
 
     /**
-     * Sets the amount of points the ellipse should overshoot or continue drawing, to avoid a gap
-     * . Can be negative to
+     * Sets the amount of points the ellipse should overshoot or continue drawing, to avoid a gap. Can be negative to
      * leave a gap. Default is 0.
      *
      * @param correction for how many extra points the ellipse continues
