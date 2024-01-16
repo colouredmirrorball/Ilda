@@ -139,15 +139,18 @@ public class IldaPoint
         return getBlue(colour);
     }
 
-    private byte getRed(int c) {
+    public static byte getRed(int c)
+    {
         return (byte) ((c >> 16) & 0xFF);
     }
 
-    private byte getGreen(int colour) {
+    public static byte getGreen(int colour)
+    {
         return (byte) ((colour >> 8) & 0xFF);
     }
 
-    private byte getBlue(int colour) {
+    public static byte getBlue(int colour)
+    {
         return (byte) (colour & 0xFF);
     }
 
