@@ -16,8 +16,8 @@ public class OptimisationSettings
 
     boolean interpolateLit;
     boolean interpolateBlanked;
-    float   maxDistLit       = 0.03f;
-    float   maxDistBlank     = 0.03f;
+    float   maxDistLit   = 0.01f;
+    float   maxDistBlank = 0.01f;
     boolean angleDwell       = true;
     float   angleDwellFactor = 1;
     boolean blankDwell       = true;
