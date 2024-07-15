@@ -6,15 +6,13 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
 import processing.core.PApplet;
+import static processing.core.PApplet.map;
 import processing.core.PConstants;
 import processing.core.PGraphics;
 import processing.core.PMatrix3D;
 import processing.core.PShape;
 import processing.core.PVector;
-
-import static processing.core.PApplet.map;
 
 /**
  * This class can be used to render ilda files as a subclass of PGraphics.
@@ -54,7 +52,8 @@ public class IldaRenderer extends PGraphics
     protected               IldaPoint            firstPoint         = new IldaPoint(0, 0, 0, 0, 0, 0, true);
     protected               float                depth;
     protected               float                ellipseDetail      = 1f;
-    protected               float                invDepth;
+    protected float invDepth;
+    private   int   blankBeforePointCount = 10;
     Optimiser optimiser;
     boolean   optimise = true;
     private float   circleCorrection = 0f;
@@ -356,7 +355,9 @@ public class IldaRenderer extends PGraphics
         //when drawing points, add a blanked point before every point
         if ((shape == POINT) || shape == POINTS)
         {
-            currentFrame.points.add(new IldaPoint(xpos, ypos, zpos, red, green, blue, true));
+            for (int i = 0; i < blankBeforePointCount; i++) {
+                currentFrame.points.add(new IldaPoint(xpos, ypos, zpos, red, green, blue, true));
+            }
             shouldBlank = false;
             vertexCount = 0;
         }
@@ -365,7 +366,6 @@ public class IldaRenderer extends PGraphics
         {
             vertexCount = 0;
         }
-
 
         if (closedShape && vertexCount == 0)
         {
@@ -440,24 +440,18 @@ public class IldaRenderer extends PGraphics
      * @param y  position y
      */
 
-    @Override
-    protected void textCharImpl(char ch, float x, float y)
+    /**
+     * Number reflecting the amount of points in an ellipse. The lower, the fewer points there are. The higher, the
+     * more. The default value is 1. Finding a good value is a bit arbitrary. This value is multiplied by the sum of the
+     * third and fourth arguments of the ellipse method (the width and height).
+     *
+     * @param detail gets multiplied with (width+height) of the ellipse arguments to get the
+     *               total points
+     */
+
+    public void setEllipseDetail(float detail)
     {
-        if (ch == ' ') return;
-        PShape glyph           = this.textFont.getShape(ch);
-        int    oldBezierDetail = bezierDetail;
-        bezierDetail(3);
-        closedShape = false;
-        if (glyph != null)
-        {
-            // FIXME this does not take matrix operations into account...
-            if (x > width) return;
-            if (y > height + glyph.height) return;
-            if (x < -glyph.width) return;
-            if (y < 0) return;
-            this.shape(glyph, x, y);
-        }
-        bezierDetail(oldBezierDetail);
+        ellipseDetail = detail;
     }
 
     @Override
@@ -487,19 +481,16 @@ public class IldaRenderer extends PGraphics
     }
 
     /**
-     * Number reflecting the amount of points in an ellipse. The lower, the fewer points there
-     * are. The higher, the
-     * more. The default value is 1. Finding a good value is a bit arbitrary. This value is
-     * multiplied by the sum of the
-     * third and fourth arguments of the ellipse method (the width and height).
+     * Should the frame be optimised for rendering? If set to false, as little points as possible are used to
+     * represent the art. If set to true, the frame will be optimised for display using this renderer's
+     * OptimisationSettings.
      *
-     * @param detail gets multiplied with (width+height) of the ellipse arguments to get the
-     *               total points
+     * @param shouldOptimise should the frame be optimised?
      */
 
-    public void setEllipseDetail(float detail)
+    public void setOptimise(boolean shouldOptimise)
     {
-        ellipseDetail = detail;
+        optimise = shouldOptimise;
     }
 
     /**
@@ -629,17 +620,18 @@ public class IldaRenderer extends PGraphics
     }
 
     /**
-     * Should the frame be optimised for rendering? If set to false, as little points as possible
-     * are used to represent
-     * the art. If set to true, the frame will be optimised for display using this renderer's
-     * OptimisationSettings.
+     * Defines the resolution of the text being drawn as a minimal distance, in terms of fraction (0 - 1) of the
+     * width of the sketch, in which no points are generated. Necessary to reduce point count in curved letters.
      *
-     * @param shouldOptimise should the frame be optimised?
+     * @param textDetail minimal distance between two points in text characters
      */
 
-    public void setOptimise(boolean shouldOptimise)
+    public void setTextDetail(double textDetail)
     {
-        optimise = shouldOptimise;
+        if (textDetail <= 0 || textDetail > 1) {
+            throw new IllegalArgumentException("Text detail should be in the interval [0, 1].");
+        }
+        this.textDetail = textDetail;
     }
 
     public OptimisationSettings getOptimisationSettings()
@@ -658,16 +650,17 @@ public class IldaRenderer extends PGraphics
     }
 
     /**
-     * Defines a minimal distance, in terms of fraction of the size of the font, in which no
-     * points are generated.
-     * Necessary to reduce point count in curved letters.
+     * Set the amount of blanked points that are created before a point when using shape mode POINT or POINTS.
+     * Default is 10 to minimise tails.
      *
-     * @param textDetail minimal distance between two points in text characters
+     * @param blankBeforePointCount amount of blanked dwell points, should be 1 or greater.
      */
-
-    public void setTextDetail(double textDetail)
+    public void setBlankBeforePointCount(int blankBeforePointCount)
     {
-        this.textDetail = textDetail;
+        if (blankBeforePointCount < 1) {
+            throw new IllegalArgumentException("Repeat count should be 1 or greater");
+        }
+        this.blankBeforePointCount = blankBeforePointCount;
     }
 
     @Override
@@ -688,4 +681,24 @@ public class IldaRenderer extends PGraphics
         return currentFrame == null ? 0 : currentFrame.getPointCount();
     }
 
+    @Override
+    protected void textCharImpl(char ch, float x, float y)
+    {
+        if (ch == ' ') return;
+        PShape glyph           = this.textFont.getShape(ch);
+        int    oldBezierDetail = bezierDetail;
+        int detail = (int) (textDetail * width);
+        bezierDetail(detail);
+        closedShape = false;
+        if (glyph != null)
+        {
+            // FIXME this does not take matrix operations into account...
+            if (x > width) return;
+            if (y > height + glyph.height) return;
+            if (x < -glyph.width) return;
+            if (y < 0) return;
+            this.shape(glyph, x, y);
+        }
+        bezierDetail(oldBezierDetail);
+    }
 }
