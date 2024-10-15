@@ -26,8 +26,7 @@ public class IldaPoint
      * Constructor for an IldaPoint.
      *
      * @param position a Processing PVector with the position of the newly created point: rescale
-     *                the coordinates, so
-     *                 they're in [-1,1]! (0 = center)
+     *                the coordinates, so they're in [-1,1]! (0 = center)
      * @param red      Integer between 0-255
      * @param green
      * @param blue

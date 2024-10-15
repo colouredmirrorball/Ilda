@@ -17,45 +17,45 @@ import processing.core.PVector;
 /**
  * This class can be used to render ilda files as a subclass of PGraphics.
  * <p>
- * You can use this class in the same way as you would use another PGraphics. For example you can
- * use most graphic calls
- * on an instance of this class. Usage: as opposed to most PGraphic subclasses, you may use the
- * constructor to create an
+ * You can use this class in the same way as you would use another PGraphics. For example you can use most graphic calls
+ * on an instance of this class. Usage: as opposed to most PGraphic subclasses, you may use the constructor to create an
  * instance of IldaRenderer. You must call beginDraw() and endDraw() around any graphic calls.</p>
  * <p>
- * Example: r = new IldaRenderer(ilda);<br> r.beginDraw();<br> r.stroke(255,0,0);<br> r.line(50,
- * 100,25,60); //draws a
- * red line<br> r.endDraw();<br>
+ * Example:
+ * r = new IldaRenderer(ilda);<br>
+ * r.beginDraw();<br>
+ * r.stroke(255,0,0);<br>
+ * r.line(50, 100,25,60); //draws a red line<br>
+ * r.endDraw();<br>
  * </p>
  * Then you can retrieve the frame(s) with r.getFrames() to export or display.
  * <p>
- * It is ill advised to create a new IldaRenderer instance in draw(). Multiple frames can be
- * created sequentially using
+ * It is ill advised to create a new IldaRenderer instance in draw(). Multiple frames can be created sequentially using
  * the same instance of IldaRenderer.
  * </p>
  */
 
 public class IldaRenderer extends PGraphics
 {
-    private static final    int                  MATRIX_STACK_DEPTH = 32;
+    private static final int                  MATRIX_STACK_DEPTH = 32;
     private final @Nullable PApplet              parentPApplet;
-    private final           PMatrix3D            matrix             = new PMatrix3D();
-    private final           PMatrix3D[]          matrixStack        = new PMatrix3D[MATRIX_STACK_DEPTH];
+    private final        PMatrix3D            matrix             = new PMatrix3D();
+    private final        PMatrix3D[]          matrixStack        = new PMatrix3D[MATRIX_STACK_DEPTH];
     protected               File                 file;
     protected               IldaFrame            currentFrame;
-    protected               int                  count              = 0;
-    protected               ArrayList<IldaFrame> theFrames          = new ArrayList<>();
+    protected            int                  count              = 0;
+    protected            ArrayList<IldaFrame> theFrames          = new ArrayList<>();
     protected               float                invWidth;
     protected               float                invHeight;
-    protected               boolean              shouldBlank        = false;
-    protected               boolean              closedShape        = false;
-    protected               IldaPoint            firstPoint         = new IldaPoint(0, 0, 0, 0, 0, 0, true);
+    protected            boolean              shouldBlank        = false;
+    protected            boolean              closedShape        = false;
+    protected            IldaPoint            firstPoint         = new IldaPoint(0, 0, 0, 0, 0, 0, true);
     protected               float                depth;
-    protected               float                ellipseDetail      = 1f;
-    protected float invDepth;
-    private   int   blankBeforePointCount = 10;
+    protected            float                ellipseDetail      = 1f;
+    protected            float                invDepth;
     Optimiser optimiser;
     boolean   optimise = true;
+    private int blankBeforePointCount = 10;
     private float   circleCorrection = 0f;
     private double  textDetail       = 0.01;
     private boolean overwrite        = false;
@@ -70,9 +70,9 @@ public class IldaRenderer extends PGraphics
     public IldaRenderer(@Nullable PApplet parent, int width, int height)
     {
         this.parentPApplet = parent;
-        this.width = width;
+        this.width  = width;
         this.height = height;
-        depth = width;
+        depth       = width;
 
         defaultSettings();
         textMode(SHAPE);
@@ -130,7 +130,10 @@ public class IldaRenderer extends PGraphics
         if (path != null)
         {
             file = new File(path);
-            if (!file.isAbsolute()) {file = null;}
+            if (!file.isAbsolute())
+            {
+                file = null;
+            }
         }
         if (file == null)
         {
@@ -159,7 +162,7 @@ public class IldaRenderer extends PGraphics
             {
                 currentFrame.points.clear();
             }
-            currentFrame = new IldaFrame();
+            currentFrame           = new IldaFrame();
             currentFrame.ildaVersion = 4;
             currentFrame.frameName = "P5Frame";
             currentFrame.companyName = "Ilda4P5";
@@ -180,7 +183,10 @@ public class IldaRenderer extends PGraphics
             optimiser.optimiseSegment(currentFrame.points);
         }
         currentFrame.pointCount = currentFrame.points.size();
-        if (!overwrite) {theFrames.add(currentFrame);}
+        if (!overwrite)
+        {
+            theFrames.add(currentFrame);
+        }
         count++;
         resetMatrix();
     }
@@ -261,8 +267,10 @@ public class IldaRenderer extends PGraphics
         if (matrixStack[matrixStackDepth] == null)
         {
             matrixStack[matrixStackDepth] = new PMatrix3D(matrix);
+        } else
+        {
+            matrixStack[matrixStackDepth].set(matrix);
         }
-        else {matrixStack[matrixStackDepth].set(matrix);}
         matrixStackDepth++;
     }
 
@@ -288,24 +296,17 @@ public class IldaRenderer extends PGraphics
         return new PVector(matrix.m03, matrix.m13, matrix.m23);
     }
 
-    protected void setTranslation(float x, float y, float z)
-    {
-        matrix.m03 = x;
-        matrix.m13 = y;
-        matrix.m23 = z;
-    }
-
     @Override
     public void beginShape(int kind)
     {
-        shape = kind;
+        shape       = kind;
         shouldBlank = true;
         vertexCount = 0;
         closedShape = switch (kind)
-            {
-                case TRIANGLE, TRIANGLES, QUAD, QUADS, POLYGON, RECT, ELLIPSE, SPHERE, BOX -> true;
-                default -> false;
-            };
+        {
+            case TRIANGLE, TRIANGLES, QUAD, QUADS, POLYGON, RECT, ELLIPSE, SPHERE, BOX -> true;
+            default -> false;
+        };
     }
 
     @Override
@@ -355,7 +356,8 @@ public class IldaRenderer extends PGraphics
         //when drawing points, add a blanked point before every point
         if ((shape == POINT) || shape == POINTS)
         {
-            for (int i = 0; i < blankBeforePointCount; i++) {
+            for (int i = 0; i < blankBeforePointCount; i++)
+            {
                 currentFrame.points.add(new IldaPoint(xpos, ypos, zpos, red, green, blue, true));
             }
             shouldBlank = false;
@@ -405,41 +407,6 @@ public class IldaRenderer extends PGraphics
         }
     }
 
-    @Override
-    protected void ellipseImpl(float x, float y, float w, float h)
-    {
-        float   m     = (w + h) * ellipseDetail;
-        boolean first = true;
-
-        for (float i = 0; i < m + 1 + circleCorrection; i++)
-        {
-            float xpos = (float) (2 * (((x + w / 2 * (Math.sin(TWO_PI * i / m) + 1) + matrix.m03) * invWidth) - 0.5f));
-            float ypos = (float) (2 * (((y + h / 2 * (Math.cos(TWO_PI * i / m) + 1) + matrix.m13) * invHeight) -
-                0.5f));
-            float zpos  = 0;
-            int   red   = (int) (strokeR * 255);
-            int   green = (int) (strokeG * 255);
-            int   blue  = (int) (strokeB * 255);
-            if (first)
-            {
-                IldaPoint p = new IldaPoint(xpos, ypos, zpos, red, green, blue, true);
-                currentFrame.points.add(p);
-                first = false;
-            }
-            IldaPoint p = new IldaPoint(xpos, ypos, zpos, red, green, blue, false);
-            currentFrame.points.add(p);
-        }
-    }
-
-    /*
-     * Well wouldn't it be boss if this "just worked"!!! Should be automatically called by the
-     * several text() implementations of the parent PGraphics class
-     *
-     * @param ch the character
-     * @param x  position x
-     * @param y  position y
-     */
-
     /**
      * Number reflecting the amount of points in an ellipse. The lower, the fewer points there are. The higher, the
      * more. The default value is 1. Finding a good value is a bit arbitrary. This value is multiplied by the sum of the
@@ -457,27 +424,23 @@ public class IldaRenderer extends PGraphics
     @Override
     public void applyMatrix(float n00, float n01, float n02, float n10, float n11, float n12)
     {
-        this.applyMatrixImpl(n00, n01, 0.0F, n02,
-            n10, n11, 0.0F, n12,
-            0.0F, 0.0F, 1.0F, 0.0F,
-            0.0F, 0.0F, 0.0F, 1.0F);
+        this.applyMatrixImpl(n00, n01, 0.0F, n02, n10, n11, 0.0F, n12, 0.0F, 0.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.0F, 1.0F);
     }
+
+    /*
+     * Well wouldn't it be boss if this "just worked"!!! Should be automatically called by the
+     * several text() implementations of the parent PGraphics class
+     *
+     * @param ch the character
+     * @param x  position x
+     * @param y  position y
+     */
 
     @Override
     public void applyMatrix(float n00, float n01, float n02, float n03, float n10, float n11, float n12, float n13,
         float n20, float n21, float n22, float n23, float n30, float n31, float n32, float n33)
     {
         this.applyMatrixImpl(n00, n01, n02, n03, n10, n11, n12, n13, n20, n21, n22, n23, n30, n31, n32, n33);
-    }
-
-    /**
-     * NOT interested in debugging this if it's even bugged maybe it magically works idk idc
-     */
-
-    protected void applyMatrixImpl(float n00, float n01, float n02, float n03, float n10, float n11, float n12,
-        float n13, float n20, float n21, float n22, float n23, float n30, float n31, float n32, float n33)
-    {
-        this.matrix.apply(n00, n01, n02, n03, n10, n11, n12, n13, n20, n21, n22, n23, n30, n31, n32, n33);
     }
 
     /**
@@ -505,16 +468,6 @@ public class IldaRenderer extends PGraphics
         circleCorrection = correction;
     }
 
-    @Override
-    protected void defaultFontOrDeath(String method, float size)
-    {
-        if (parentPApplet == null)
-        {
-            throw new RuntimeException("Using text requires PApplet");
-        }
-        this.textFont = parentPApplet.createFont("Lucida Sans", size, true, null);
-    }
-
     /**
      * Draw an existing ilda frame inside the renderer
      *
@@ -527,7 +480,7 @@ public class IldaRenderer extends PGraphics
 
     public void drawIldaFrame(IldaFrame frame, int x, int y, int w, int h)
     {
-        for (IldaPoint p : frame.points)
+        for (IldaPoint p: frame.points)
         {
             IldaPoint newPoint = new IldaPoint(p);
             PVector   position = newPoint.getPosition();
@@ -577,7 +530,6 @@ public class IldaRenderer extends PGraphics
         return theFrames;
     }
 
-
     /**
      * Get the current frame that's being drawn on
      *
@@ -619,21 +571,6 @@ public class IldaRenderer extends PGraphics
         clearFrame();
     }
 
-    /**
-     * Defines the resolution of the text being drawn as a minimal distance, in terms of fraction (0 - 1) of the
-     * width of the sketch, in which no points are generated. Necessary to reduce point count in curved letters.
-     *
-     * @param textDetail minimal distance between two points in text characters
-     */
-
-    public void setTextDetail(double textDetail)
-    {
-        if (textDetail <= 0 || textDetail > 1) {
-            throw new IllegalArgumentException("Text detail should be in the interval [0, 1].");
-        }
-        this.textDetail = textDetail;
-    }
-
     public OptimisationSettings getOptimisationSettings()
     {
         return this.optimiser.getSettings();
@@ -650,6 +587,22 @@ public class IldaRenderer extends PGraphics
     }
 
     /**
+     * Defines the resolution of the text being drawn as a minimal distance, in terms of fraction (0 - 1) of the
+     * width of the sketch, in which no points are generated. Necessary to reduce point count in curved letters.
+     *
+     * @param textDetail minimal distance between two points in text characters
+     */
+
+    public void setTextDetail(double textDetail)
+    {
+        if (textDetail <= 0 || textDetail > 1)
+        {
+            throw new IllegalArgumentException("Text detail should be in the interval [0, 1].");
+        }
+        this.textDetail = textDetail;
+    }
+
+    /**
      * Set the amount of blanked points that are created before a point when using shape mode POINT or POINTS.
      * Default is 10 to minimise tails.
      *
@@ -657,7 +610,8 @@ public class IldaRenderer extends PGraphics
      */
     public void setBlankBeforePointCount(int blankBeforePointCount)
     {
-        if (blankBeforePointCount < 1) {
+        if (blankBeforePointCount < 1)
+        {
             throw new IllegalArgumentException("Repeat count should be 1 or greater");
         }
         this.blankBeforePointCount = blankBeforePointCount;
@@ -675,10 +629,62 @@ public class IldaRenderer extends PGraphics
         scale(x, y, 1);
     }
 
-
     public int getCurrentPointCount()
     {
         return currentFrame == null ? 0 : currentFrame.getPointCount();
+    }
+
+    protected void setTranslation(float x, float y, float z)
+    {
+        matrix.m03 = x;
+        matrix.m13 = y;
+        matrix.m23 = z;
+    }
+
+    @Override
+    protected void ellipseImpl(float x, float y, float w, float h)
+    {
+        float   m     = (w + h) * ellipseDetail;
+        boolean first = true;
+
+        for (float i = 0; i < m + 1 + circleCorrection; i++)
+        {
+            float xpos  = (float) (2 * (((x + w / 2 * (Math.sin(TWO_PI * i / m) + 1) + matrix.m03) * invWidth) - 0.5f));
+            float ypos  =
+                (float) (2 * (((y + h / 2 * (Math.cos(TWO_PI * i / m) + 1) + matrix.m13) * invHeight) - 0.5f));
+            float zpos  = 0;
+            int   red   = (int) (strokeR * 255);
+            int   green = (int) (strokeG * 255);
+            int   blue  = (int) (strokeB * 255);
+            if (first)
+            {
+                IldaPoint p = new IldaPoint(xpos, ypos, zpos, red, green, blue, true);
+                currentFrame.points.add(p);
+                first = false;
+            }
+            IldaPoint p = new IldaPoint(xpos, ypos, zpos, red, green, blue, false);
+            currentFrame.points.add(p);
+        }
+    }
+
+    /**
+     * NOT interested in debugging this if it's even bugged maybe it magically works idk idc
+     */
+
+    protected void applyMatrixImpl(float n00, float n01, float n02, float n03, float n10, float n11, float n12,
+        float n13, float n20, float n21, float n22, float n23, float n30, float n31, float n32, float n33)
+    {
+        this.matrix.apply(n00, n01, n02, n03, n10, n11, n12, n13, n20, n21, n22, n23, n30, n31, n32, n33);
+    }
+
+    @Override
+    protected void defaultFontOrDeath(String method, float size)
+    {
+        if (parentPApplet == null)
+        {
+            throw new RuntimeException("Using text requires PApplet");
+        }
+        this.textFont = parentPApplet.createFont("Lucida Sans", size, true, null);
     }
 
     @Override
