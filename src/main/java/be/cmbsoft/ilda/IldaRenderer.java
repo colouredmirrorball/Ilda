@@ -6,13 +6,15 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 import processing.core.PApplet;
-import static processing.core.PApplet.map;
 import processing.core.PConstants;
 import processing.core.PGraphics;
 import processing.core.PMatrix3D;
 import processing.core.PShape;
 import processing.core.PVector;
+
+import static processing.core.PApplet.map;
 
 /**
  * This class can be used to render ilda files as a subclass of PGraphics.
@@ -37,42 +39,41 @@ import processing.core.PVector;
 
 public class IldaRenderer extends PGraphics
 {
-    private static final int                  MATRIX_STACK_DEPTH = 32;
+    private static final int                  MATRIX_STACK_DEPTH    = 32;
     private final @Nullable PApplet              parentPApplet;
-    private final        PMatrix3D            matrix             = new PMatrix3D();
-    private final        PMatrix3D[]          matrixStack        = new PMatrix3D[MATRIX_STACK_DEPTH];
+    private final        PMatrix3D            matrix                = new PMatrix3D();
+    private final        PMatrix3D[]          matrixStack           = new PMatrix3D[MATRIX_STACK_DEPTH];
+    private final        Optimiser            optimiser;
     protected               File                 file;
     protected               IldaFrame            currentFrame;
-    protected            int                  count              = 0;
-    protected            ArrayList<IldaFrame> theFrames          = new ArrayList<>();
+    protected            int                  count                 = 0;
+    protected            ArrayList<IldaFrame> theFrames             = new ArrayList<>();
     protected               float                invWidth;
     protected               float                invHeight;
-    protected            boolean              shouldBlank        = false;
-    protected            boolean              closedShape        = false;
-    protected            IldaPoint            firstPoint         = new IldaPoint(0, 0, 0, 0, 0, 0, true);
+    protected            boolean              shouldBlank           = false;
+    protected            boolean              closedShape           = false;
+    protected            IldaPoint            firstPoint            = new IldaPoint(0, 0, 0, 0, 0, 0, true);
     protected               float                depth;
-    protected            float                ellipseDetail      = 1f;
+    protected            float                ellipseDetail         = 1f;
     protected            float                invDepth;
-    Optimiser optimiser;
-    boolean   optimise = true;
-    private int blankBeforePointCount = 10;
-    private float   circleCorrection = 0f;
-    private double  textDetail       = 0.01;
-    private boolean overwrite        = false;
-    private int     matrixStackDepth;
+    private              boolean              optimise              = true;
+    private              int                  blankBeforePointCount = 10;
+    private              float                circleCorrection      = 0f;
+    private              double               textDetail            = 0.01;
+    private              boolean              overwrite             = false;
+    private              int                  matrixStackDepth;
 
     public IldaRenderer(@NotNull PApplet parent)
     {
         this(parent, parent.width, parent.height);
     }
 
-
     public IldaRenderer(@Nullable PApplet parent, int width, int height)
     {
         this.parentPApplet = parent;
-        this.width  = width;
+        this.width = width;
         this.height = height;
-        depth       = width;
+        depth = width;
 
         defaultSettings();
         textMode(SHAPE);
@@ -162,7 +163,7 @@ public class IldaRenderer extends PGraphics
             {
                 currentFrame.points.clear();
             }
-            currentFrame           = new IldaFrame();
+            currentFrame = new IldaFrame();
             currentFrame.ildaVersion = 4;
             currentFrame.frameName = "P5Frame";
             currentFrame.companyName = "Ilda4P5";
@@ -258,20 +259,16 @@ public class IldaRenderer extends PGraphics
     }
 
     @Override
-    public void pushMatrix()
+    public void beginShape(int kind)
     {
-        if (matrixStackDepth == MATRIX_STACK_DEPTH)
+        shape = kind;
+        shouldBlank = true;
+        vertexCount = 0;
+        closedShape = switch (kind)
         {
-            throw new RuntimeException(ERROR_PUSHMATRIX_OVERFLOW);
-        }
-        if (matrixStack[matrixStackDepth] == null)
-        {
-            matrixStack[matrixStackDepth] = new PMatrix3D(matrix);
-        } else
-        {
-            matrixStack[matrixStackDepth].set(matrix);
-        }
-        matrixStackDepth++;
+            case TRIANGLE, TRIANGLES, QUAD, QUADS, POLYGON, RECT, ELLIPSE, SPHERE, BOX -> true;
+            default -> false;
+        };
     }
 
     @Override
@@ -297,50 +294,24 @@ public class IldaRenderer extends PGraphics
     }
 
     @Override
-    public void beginShape(int kind)
-    {
-        shape       = kind;
-        shouldBlank = true;
-        vertexCount = 0;
-        closedShape = switch (kind)
-        {
-            case TRIANGLE, TRIANGLES, QUAD, QUADS, POLYGON, RECT, ELLIPSE, SPHERE, BOX -> true;
-            default -> false;
-        };
-    }
-
-    @Override
-    public void beginContour()
-    {
-        shouldBlank = true;
-        vertexCount = 0;
-    }
-
-    @Override
-    public void vertex(float x, float y)
-    {
-        vertex(x, y, 0);
-    }
-
-    @Override
     public void vertex(float x, float y, float z)
     {
-        if (vertexCount >= 4096)
-        {
-            vertexCount = 0;
-        }
+//        if (vertexCount >= 4096)
+//        {
+//            vertexCount = 0;
+//        }
 
-        float[] vertex = vertices[vertexCount];
-
-        vertex[X] = x;
-        vertex[Y] = y;
-        vertex[Z] = z;
-
-        vertex[SR] = strokeR;
-        vertex[SG] = strokeG;
-        vertex[SB] = strokeB;
-        vertex[SA] = strokeA;
-        vertex[SW] = strokeWeight;
+//        float[] vertex = vertices[vertexCount];
+//
+//        vertex[X] = x;
+//        vertex[Y] = y;
+//        vertex[Z] = z;
+//
+//        vertex[SR] = strokeR;
+//        vertex[SG] = strokeG;
+//        vertex[SB] = strokeB;
+//        vertex[SA] = strokeA;
+//        vertex[SW] = strokeWeight;
 
         PVector pos = new PVector(x, y, z);
 
@@ -366,7 +337,7 @@ public class IldaRenderer extends PGraphics
 
         if ((shape == LINES) && vertexCount == 1)
         {
-            vertexCount = 0;
+//            vertexCount = 0;
         }
 
         if (closedShape && vertexCount == 0)
@@ -377,8 +348,47 @@ public class IldaRenderer extends PGraphics
         currentFrame.points.add(new IldaPoint(xpos, ypos, zpos, red, green, blue, shouldBlank));
 
         shouldBlank = false;
-        vertexCount++;
+//        vertexCount++;
 
+    }
+
+    @Override
+    public void beginContour()
+    {
+        shouldBlank = true;
+        vertexCount = 0;
+    }
+
+    @Override
+    public void vertex(float x, float y)
+    {
+        vertex(x, y, 0);
+    }
+
+    @Override
+    protected void ellipseImpl(float x, float y, float w, float h)
+    {
+        float   m     = (w + h) * ellipseDetail;
+        boolean first = true;
+
+        for (float i = 0; i < m + 1 + circleCorrection; i++)
+        {
+            float xpos = (float) (2 * (((x + w / 2 * (Math.sin(TWO_PI * i / m) + 1) + matrix.m03) * invWidth) - 0.5f));
+            float ypos =
+                (float) (2 * (((y + h / 2 * (Math.cos(TWO_PI * i / m) + 1) + matrix.m13) * invHeight) - 0.5f));
+            float zpos  = 0;
+            int   red   = (int) (strokeR * 255);
+            int   green = (int) (strokeG * 255);
+            int   blue  = (int) (strokeB * 255);
+            if (first)
+            {
+                IldaPoint p = new IldaPoint(xpos, ypos, zpos, red, green, blue, true);
+                currentFrame.points.add(p);
+                first = false;
+            }
+            IldaPoint p = new IldaPoint(xpos, ypos, zpos, red, green, blue, false);
+            currentFrame.points.add(p);
+        }
     }
 
     @Override
@@ -468,26 +478,22 @@ public class IldaRenderer extends PGraphics
         circleCorrection = correction;
     }
 
-    /**
-     * Draw an existing ilda frame inside the renderer
-     *
-     * @param frame frame to be drawn
-     * @param x     x position offset
-     * @param y     y position offset
-     * @param w     width (rescaling)
-     * @param h     height (rescaling)
-     */
-
-    public void drawIldaFrame(IldaFrame frame, int x, int y, int w, int h)
+    @Override
+    public void pushMatrix()
     {
-        for (IldaPoint p: frame.points)
+        if (matrixStackDepth == MATRIX_STACK_DEPTH)
         {
-            IldaPoint newPoint = new IldaPoint(p);
-            PVector   position = newPoint.getPosition();
-            position.x = map(position.x, 0, width, x, x + w);
-            position.y = map(position.y, 0, height, y, y + h);
-            currentFrame.addPoint(newPoint);
+            throw new RuntimeException(ERROR_PUSHMATRIX_OVERFLOW);
         }
+        if (matrixStack[matrixStackDepth] == null)
+        {
+            matrixStack[matrixStackDepth] = new PMatrix3D(matrix);
+        }
+        else
+        {
+            matrixStack[matrixStackDepth].set(matrix);
+        }
+        matrixStackDepth++;
     }
 
     public void drawIldaFrame(IldaFrame frame, int x, int y)
@@ -603,18 +609,25 @@ public class IldaRenderer extends PGraphics
     }
 
     /**
-     * Set the amount of blanked points that are created before a point when using shape mode POINT or POINTS.
-     * Default is 10 to minimise tails.
+     * Draw an existing ilda frame inside the renderer
      *
-     * @param blankBeforePointCount amount of blanked dwell points, should be 1 or greater.
+     * @param frame frame to be drawn
+     * @param x     x position offset
+     * @param y     y position offset
+     * @param w     width (rescaling)
+     * @param h     height (rescaling)
      */
-    public void setBlankBeforePointCount(int blankBeforePointCount)
+
+    public void drawIldaFrame(IldaFrame frame, int x, int y, int w, int h)
     {
-        if (blankBeforePointCount < 1)
+        for (IldaPoint p : frame.points)
         {
-            throw new IllegalArgumentException("Repeat count should be 1 or greater");
+            IldaPoint newPoint = new IldaPoint(p);
+            PVector   position = newPoint.getPosition();
+            position.x = map(position.x, 0, width, x, x + w);
+            position.y = map(position.y, 0, height, y, y + h);
+            currentFrame.addPoint(newPoint);
         }
-        this.blankBeforePointCount = blankBeforePointCount;
     }
 
     @Override
@@ -641,30 +654,20 @@ public class IldaRenderer extends PGraphics
         matrix.m23 = z;
     }
 
-    @Override
-    protected void ellipseImpl(float x, float y, float w, float h)
+    /**
+     * Set the amount of blanked points that are created before a point when using shape mode POINT or POINTS.
+     * Default is 10 to minimise tails.
+     *
+     * @param blankBeforePointCount amount of blanked dwell points, should be 1 or greater.
+     */
+    public IldaRenderer setBlankBeforePointCount(int blankBeforePointCount)
     {
-        float   m     = (w + h) * ellipseDetail;
-        boolean first = true;
-
-        for (float i = 0; i < m + 1 + circleCorrection; i++)
+        if (blankBeforePointCount < 1)
         {
-            float xpos  = (float) (2 * (((x + w / 2 * (Math.sin(TWO_PI * i / m) + 1) + matrix.m03) * invWidth) - 0.5f));
-            float ypos  =
-                (float) (2 * (((y + h / 2 * (Math.cos(TWO_PI * i / m) + 1) + matrix.m13) * invHeight) - 0.5f));
-            float zpos  = 0;
-            int   red   = (int) (strokeR * 255);
-            int   green = (int) (strokeG * 255);
-            int   blue  = (int) (strokeB * 255);
-            if (first)
-            {
-                IldaPoint p = new IldaPoint(xpos, ypos, zpos, red, green, blue, true);
-                currentFrame.points.add(p);
-                first = false;
-            }
-            IldaPoint p = new IldaPoint(xpos, ypos, zpos, red, green, blue, false);
-            currentFrame.points.add(p);
+            throw new IllegalArgumentException("Repeat count should be 1 or greater");
         }
+        this.blankBeforePointCount = blankBeforePointCount;
+        return this;
     }
 
     /**
@@ -707,4 +710,5 @@ public class IldaRenderer extends PGraphics
         }
         bezierDetail(oldBezierDetail);
     }
+
 }
