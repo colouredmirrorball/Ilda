@@ -294,24 +294,63 @@ public class IldaRenderer extends PGraphics
     }
 
     @Override
+    protected void ellipseImpl(float x, float y, float w, float h)
+    {
+        float   m     = (w + h) * ellipseDetail;
+        boolean first = true;
+
+        for (float i = 0; i < m + 1 + circleCorrection; i++)
+        {
+            float xpos = (float) (2 * (((x + w / 2 * (Math.sin(TWO_PI * i / m) + 1) + matrix.m03) * invWidth) - 0.5f));
+            float ypos =
+                (float) (2 * (((y + h / 2 * (Math.cos(TWO_PI * i / m) + 1) + matrix.m13) * invHeight) - 0.5f));
+            float zpos  = 0;
+            int   red   = (int) (strokeR * 255);
+            int   green = (int) (strokeG * 255);
+            int   blue  = (int) (strokeB * 255);
+            if (first)
+            {
+                IldaPoint p = new IldaPoint(xpos, ypos, zpos, red, green, blue, true);
+                currentFrame.points.add(p);
+                first = false;
+            }
+            IldaPoint p = new IldaPoint(xpos, ypos, zpos, red, green, blue, false);
+            currentFrame.points.add(p);
+        }
+    }
+
+    @Override
+    public void beginContour()
+    {
+        shouldBlank = true;
+        vertexCount = 0;
+    }
+
+    @Override
+    public void vertex(float x, float y)
+    {
+        vertex(x, y, 0);
+    }
+
+    @Override
     public void vertex(float x, float y, float z)
     {
-//        if (vertexCount >= 4096)
-//        {
-//            vertexCount = 0;
-//        }
+        if (vertexCount >= 4096)
+        {
+            vertexCount = 0;
+        }
 
-//        float[] vertex = vertices[vertexCount];
-//
-//        vertex[X] = x;
-//        vertex[Y] = y;
-//        vertex[Z] = z;
-//
-//        vertex[SR] = strokeR;
-//        vertex[SG] = strokeG;
-//        vertex[SB] = strokeB;
-//        vertex[SA] = strokeA;
-//        vertex[SW] = strokeWeight;
+        float[] vertex = vertices[vertexCount];
+
+        vertex[X] = x;
+        vertex[Y] = y;
+        vertex[Z] = z;
+
+        vertex[SR] = strokeR;
+        vertex[SG] = strokeG;
+        vertex[SB] = strokeB;
+        vertex[SA] = strokeA;
+        vertex[SW] = strokeWeight;
 
         PVector pos = new PVector(x, y, z);
 
@@ -337,7 +376,7 @@ public class IldaRenderer extends PGraphics
 
         if ((shape == LINES) && vertexCount == 1)
         {
-//            vertexCount = 0;
+            vertexCount = 0;
         }
 
         if (closedShape && vertexCount == 0)
@@ -348,47 +387,8 @@ public class IldaRenderer extends PGraphics
         currentFrame.points.add(new IldaPoint(xpos, ypos, zpos, red, green, blue, shouldBlank));
 
         shouldBlank = false;
-//        vertexCount++;
+        vertexCount++;
 
-    }
-
-    @Override
-    public void beginContour()
-    {
-        shouldBlank = true;
-        vertexCount = 0;
-    }
-
-    @Override
-    public void vertex(float x, float y)
-    {
-        vertex(x, y, 0);
-    }
-
-    @Override
-    protected void ellipseImpl(float x, float y, float w, float h)
-    {
-        float   m     = (w + h) * ellipseDetail;
-        boolean first = true;
-
-        for (float i = 0; i < m + 1 + circleCorrection; i++)
-        {
-            float xpos = (float) (2 * (((x + w / 2 * (Math.sin(TWO_PI * i / m) + 1) + matrix.m03) * invWidth) - 0.5f));
-            float ypos =
-                (float) (2 * (((y + h / 2 * (Math.cos(TWO_PI * i / m) + 1) + matrix.m13) * invHeight) - 0.5f));
-            float zpos  = 0;
-            int   red   = (int) (strokeR * 255);
-            int   green = (int) (strokeG * 255);
-            int   blue  = (int) (strokeB * 255);
-            if (first)
-            {
-                IldaPoint p = new IldaPoint(xpos, ypos, zpos, red, green, blue, true);
-                currentFrame.points.add(p);
-                first = false;
-            }
-            IldaPoint p = new IldaPoint(xpos, ypos, zpos, red, green, blue, false);
-            currentFrame.points.add(p);
-        }
     }
 
     @Override
