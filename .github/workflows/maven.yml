@@ -38,4 +38,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: ilda-snapshot-jar
-        path: /hope/runner/work/Ilda/Ilda/target/*.jar
+        path: /home/runner/work/Ilda/Ilda/target/*.jar
