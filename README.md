@@ -1,3 +1,5 @@
+[![Development build and test](https://github.com/colouredmirrorball/Ilda/actions/workflows/maven.yml/badge.svg)](https://github.com/colouredmirrorball/Ilda/actions/workflows/maven.yml)
+
 ilda
 ====
 
